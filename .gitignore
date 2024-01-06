@@ -1,4 +1,11 @@
 *.swp
 *.swo
 __pycache__
-python/LiteExpr*
+python/LiteExpr.interp
+python/LiteExpr.tokens
+python/LiteExprLexer.interp
+python/LiteExprLexer.py
+python/LiteExprLexer.tokens
+python/LiteExprListener.py
+python/LiteExprParser.py
+

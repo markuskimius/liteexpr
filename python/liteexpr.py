@@ -2,7 +2,7 @@ import math
 import antlr4
 from LiteExprLexer import LiteExprLexer
 from LiteExprParser import LiteExprParser
-from LiteExprListener import LiteExprListener
+from LiteExprVisitor import LiteExprVisitor
 
 
 ##############################################################################
@@ -65,12 +65,10 @@ class LE_RuntimeError(LE_Error): pass
 class LE_Compiled:
     def __init__(self, tree):
         self.tree = tree
-        self.walker = antlr4.ParseTreeWalker()
 
     def eval(self, symbolTable=None):
         evaluator = LE_Evaluator(symbolTable)
-
-        self.walker.walk(evaluator, self.tree)
+        evaluator.visit(self.tree)
 
         return evaluator.result[self.tree]
 
@@ -157,33 +155,45 @@ class LE_Object(dict):
 ##############################################################################
 # EVALUATOR
 
-class LE_Evaluator(LiteExprListener):
+class LE_Evaluator(LiteExprVisitor):
     def __init__(self, symbolTable=None):
         super().__init__()
         self.result = dict()
         self.symbolTable = LE_SymbolTable() if symbolTable is None else symbolTable
 
-    def exitFile(self, ctx):
+    def visitFile(self, ctx):
+        self.visitChildren(ctx)
+
         lastExpr = ctx.expr()[-1]
 
         self.result[ctx] = self.result[lastExpr].value
 
-    def exitString(self, ctx):
+    def visitString(self, ctx):
+        self.visitChildren(ctx)
+
         try:
             self.result[ctx] = LE_String(_decodeString(ctx.STRING().getText()[1:-1]))
         except LE_SyntaxError as e:
             raise LE_SyntaxError(str(e), ctx.start.line, ctx.start.column) from None
 
-    def exitDouble(self, ctx):
+    def visitDouble(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = LE_Double(ctx.DOUBLE().getText())
 
-    def exitHex(self, ctx):
+    def visitHex(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = LE_Int(ctx.HEX().getText()[2:], 16)
 
-    def exitInt(self, ctx):
+    def visitInt(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = LE_Int(ctx.INT().getText())
 
-    def exitCall(self, ctx):
+    def visitCall(self, ctx):
+        self.visitChildren(ctx)
+
         fn = self.result[ctx.varname()].value
         args = self.result[ctx.list_()].value
 
@@ -194,19 +204,29 @@ class LE_Evaluator(LiteExprListener):
         except LE_RuntimeError as e:
             raise LE_RuntimeError(f"Runtime error while executing {ctx.getText()}: {str(e)}", ctx.start.line, ctx.start.column) from None
 
-    def exitVariable(self, ctx):
+    def visitVariable(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = self.result[ctx.varname()]
 
-    def exitObject(self, ctx):
+    def visitObject(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = self.result[ctx.pairlist()]
 
-    def exitArray(self, ctx):
+    def visitArray(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = self.result[ctx.list_()]
 
-    def exitParen(self, ctx):
+    def visitParen(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = self.result[ctx.expr()]
 
-    def exitPostfixOp(self, ctx):
+    def visitPostfixOp(self, ctx):
+        self.visitChildren(ctx)
+
         var = self.result[ctx.varname()]
         op = ctx.op.text
         T = type(var.value)
@@ -215,7 +235,9 @@ class LE_Evaluator(LiteExprListener):
         elif op == "--" : self.result[ctx] = var.value; var.value = T(var.value - 1)
         else            : raise LE_SyntaxError("Unknown postfix operator `{op}`", ctx.start.line, ctx.start.column)
 
-    def exitPrefixOp(self, ctx):
+    def visitPrefixOp(self, ctx):
+        self.visitChildren(ctx)
+
         var = self.result[ctx.varname()]
         op = ctx.op.text
         T = type(var.value)
@@ -224,7 +246,9 @@ class LE_Evaluator(LiteExprListener):
         elif op == "--" : var = T(var.value - 1); self.result[ctx] = var.value
         else            : raise LE_SyntaxError("Unknown prefix operator `{op}`", ctx.start.line, ctx.start.column)
 
-    def exitUnaryOp(self, ctx):
+    def visitUnaryOp(self, ctx):
+        self.visitChildren(ctx)
+
         value = self.result[ctx.expr()].value
         op = ctx.op.text
         T = type(value)
@@ -235,7 +259,9 @@ class LE_Evaluator(LiteExprListener):
         elif op == "-"  : self.result[ctx] = T(-value)
         else            : raise LE_SyntaxError("Unknown unary operator `{op}`", ctx.start.line, ctx.start.column)
 
-    def exitBinaryOp(self, ctx):
+    def visitBinaryOp(self, ctx):
+        self.visitChildren(ctx)
+
         op = ctx.op.text
         value = (
             self.result[ctx.expr(0)].value,
@@ -265,7 +291,9 @@ class LE_Evaluator(LiteExprListener):
         elif op == "||"  : self.result[ctx] = LE_Int(value[0] or  value[1])
         else             : raise LE_SyntaxError("Unknown binary operator `{op}`", ctx.start.line, ctx.start.column)
 
-    def exitAssignOp(self, ctx):
+    def visitAssignOp(self, ctx):
+        self.visitChildren(ctx)
+
         op = ctx.op.text
         var = self.result[ctx.varname()]
         value2 = self.result[ctx.expr()].value
@@ -292,7 +320,9 @@ class LE_Evaluator(LiteExprListener):
 
         var.value = self.result[ctx]
 
-    def exitTertiaryOp(self, ctx):
+    def visitTertiaryOp(self, ctx):
+        self.visitChildren(ctx)
+
         op = (
             ctx.op1.text,
             ctx.op2.text,
@@ -306,37 +336,49 @@ class LE_Evaluator(LiteExprListener):
         if op[0] == "?" and op[1] == ":" : self.result[ctx] = LiteExprDatum(value[1] if value[0] else value[2])
         else                             : raise LE_SyntaxError("Unknown tertiary operator `{op[0]} {op[1]}`", ctx.start.line, ctx.start.column)
 
-    def exitIndexedVar(self, ctx):
+    def visitIndexedVar(self, ctx):
+        self.visitChildren(ctx)
+
         array = self.result[ctx.varname()].value
         index = self.result[ctx.expr()].value
 
         self.result[ctx] = LE_Variable(index, array)
 
-    def exitMemberVar(self, ctx):
+    def visitMemberVar(self, ctx):
+        self.visitChildren(ctx)
+
         base = self.result[ctx.varname(0)].value
         member = self.result[ctx.varname(1)].name
 
         self.result[ctx] = LE_Variable(member, base)
 
-    def exitSimpleVar(self, ctx):
+    def visitSimpleVar(self, ctx):
+        self.visitChildren(ctx)
+
         varname = ctx.ID().getText()
 
         self.result[ctx] = LE_Variable(varname, self.symbolTable)
 
-    def exitPairlist(self, ctx):
+    def visitPairlist(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = LE_Object()
 
         for pair in ctx.pair():
             for k,v in self.result[pair].items():
                 self.result[ctx][k] = v
 
-    def exitPair(self, ctx):
+    def visitPair(self, ctx):
+        self.visitChildren(ctx)
+
         name = ctx.ID().getText()
         value = self.result[ctx.expr()]
 
         self.result[ctx] = { LE_String(name) : value }
 
-    def exitList(self, ctx):
+    def visitList(self, ctx):
+        self.visitChildren(ctx)
+
         self.result[ctx] = LE_Array()
 
         for item in ctx.expr():

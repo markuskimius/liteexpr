@@ -1,7 +1,7 @@
 all: LiteExpr.tokens
 
 LiteExpr.tokens: ../LiteExpr.g4
-	antlr4 -Dlanguage=Python3 -Xexact-output-dir $^ -o .
+	antlr4 -Dlanguage=Python3 -visitor -no-listener -Xexact-output-dir $^ -o .
 
 gui1:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/001-*.le

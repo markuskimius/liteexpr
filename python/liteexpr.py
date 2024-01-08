@@ -168,61 +168,81 @@ class LE_Evaluator(LiteExprVisitor):
 
         self.result[ctx] = self.result[lastExpr].value
 
-    def visitString(self, ctx):
-        self.visitChildren(ctx)
+        return self.result[ctx]
 
-        try:
-            self.result[ctx] = LE_String(_decodeString(ctx.STRING().getText()[1:-1]))
-        except LE_SyntaxError as e:
-            raise LE_SyntaxError(str(e), ctx.start.line, ctx.start.column) from None
+    def visitString(self, ctx):
+        if ctx not in self.result:
+            try:
+                self.result[ctx] = LE_String(_decodeString(ctx.STRING().getText()[1:-1]))
+            except LE_SyntaxError as e:
+                raise LE_SyntaxError(str(e), ctx.start.line, ctx.start.column) from None
+
+        return self.result[ctx]
 
     def visitDouble(self, ctx):
-        self.visitChildren(ctx)
+        if ctx not in self.result:
+            self.result[ctx] = LE_Double(ctx.DOUBLE().getText())
 
-        self.result[ctx] = LE_Double(ctx.DOUBLE().getText())
+        return self.result[ctx]
 
     def visitHex(self, ctx):
-        self.visitChildren(ctx)
+        if ctx not in self.result:
+            self.result[ctx] = LE_Int(ctx.HEX().getText()[2:], 16)
 
-        self.result[ctx] = LE_Int(ctx.HEX().getText()[2:], 16)
+        return self.result[ctx]
 
     def visitInt(self, ctx):
-        self.visitChildren(ctx)
+        if ctx not in self.result:
+            self.result[ctx] = LE_Int(ctx.INT().getText())
 
-        self.result[ctx] = LE_Int(ctx.INT().getText())
+        return self.result[ctx]
 
     def visitCall(self, ctx):
-        self.visitChildren(ctx)
-
+        self.visit(ctx.varname())
         fn = self.result[ctx.varname()].value
-        args = self.result[ctx.list_()].value
+
+        if hasattr(fn, "opts") and fn.opts["delayvisit"]:
+            args = ctx.list_().expr()
+        else:
+            self.visit(ctx.list_())
+            args = self.result[ctx.list_()].value
 
         try:
-            self.result[ctx] = fn(self.symbolTable, *args)
+            self.result[ctx] = fn(*args, visitor=self, sym=self.symbolTable)
         except LE_SyntaxError as e:
             raise LE_SyntaxError(f"Syntax error while executing {ctx.getText()}: {str(e)}", ctx.start.line, ctx.start.column) from None
         except LE_RuntimeError as e:
             raise LE_RuntimeError(f"Runtime error while executing {ctx.getText()}: {str(e)}", ctx.start.line, ctx.start.column) from None
+
+        return self.result[ctx]
 
     def visitVariable(self, ctx):
         self.visitChildren(ctx)
 
         self.result[ctx] = self.result[ctx.varname()]
 
+        return self.result[ctx]
+
     def visitObject(self, ctx):
         self.visitChildren(ctx)
 
         self.result[ctx] = self.result[ctx.pairlist()]
+
+        return self.result[ctx]
 
     def visitArray(self, ctx):
         self.visitChildren(ctx)
 
         self.result[ctx] = self.result[ctx.list_()]
 
+        return self.result[ctx]
+
     def visitParen(self, ctx):
         self.visitChildren(ctx)
 
         self.result[ctx] = self.result[ctx.expr()]
+
+        return self.result[ctx]
 
     def visitPostfixOp(self, ctx):
         self.visitChildren(ctx)
@@ -235,6 +255,8 @@ class LE_Evaluator(LiteExprVisitor):
         elif op == "--" : self.result[ctx] = var.value; var.value = T(var.value - 1)
         else            : raise LE_SyntaxError("Unknown postfix operator `{op}`", ctx.start.line, ctx.start.column)
 
+        return self.result[ctx]
+
     def visitPrefixOp(self, ctx):
         self.visitChildren(ctx)
 
@@ -245,6 +267,8 @@ class LE_Evaluator(LiteExprVisitor):
         if   op == "++" : var = T(var.value + 1); self.result[ctx] = var.value
         elif op == "--" : var = T(var.value - 1); self.result[ctx] = var.value
         else            : raise LE_SyntaxError("Unknown prefix operator `{op}`", ctx.start.line, ctx.start.column)
+
+        return self.result[ctx]
 
     def visitUnaryOp(self, ctx):
         self.visitChildren(ctx)
@@ -259,82 +283,70 @@ class LE_Evaluator(LiteExprVisitor):
         elif op == "-"  : self.result[ctx] = T(-value)
         else            : raise LE_SyntaxError("Unknown unary operator `{op}`", ctx.start.line, ctx.start.column)
 
+        return self.result[ctx]
+
     def visitBinaryOp(self, ctx):
-        self.visitChildren(ctx)
-
         op = ctx.op.text
-        value = (
-            self.result[ctx.expr(0)].value,
-            self.result[ctx.expr(1)].value,
-        )
-        T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
 
-        if   op == "**"  : self.result[ctx] = (LE_Double if value[1] < 0 else T)(value[0] **  value[1])
-        elif op == "*"   : self.result[ctx] = T(value[0] *   value[1])
-        elif op == "/"   : self.result[ctx] = T(value[0] /   value[1])
-        elif op == "%"   : self.result[ctx] = LE_Int(value[0] %   value[1])
-        elif op == "+"   : self.result[ctx] = LE_String(str(value[0]) + str(value[1])) if isinstance(value[0],str) or isinstance(value[1],str) else T(value[0] + value[1])
-        elif op == "-"   : self.result[ctx] = T(value[0] -   value[1])
-        elif op == "<<"  : self.result[ctx] = LE_Int(value[0] <<  value[1])
-        elif op == ">>"  : self.result[ctx] = LE_Int(value[0] >>  value[1])
-        elif op == ">>>" : self.result[ctx] = LE_Int((value[0] & INTMASK) >> value[1])
-        elif op == "<"   : self.result[ctx] = LE_Int(value[0] <   value[1])
-        elif op == "<="  : self.result[ctx] = LE_Int(value[0] <=  value[1])
-        elif op == ">"   : self.result[ctx] = LE_Int(value[0] >   value[1])
-        elif op == ">="  : self.result[ctx] = LE_Int(value[0] >=  value[1])
-        elif op == "=="  : self.result[ctx] = LE_Int(value[0] ==  value[1])
-        elif op == "!="  : self.result[ctx] = LE_Int(value[0] !=  value[1])
-        elif op == "&"   : self.result[ctx] = LE_Int(value[0] &   value[1])
-        elif op == "^"   : self.result[ctx] = LE_Int(value[0] ^   value[1])
-        elif op == "|"   : self.result[ctx] = LE_Int(value[0] |   value[1])
-        elif op == "&&"  : self.result[ctx] = LE_Int(value[0] and value[1])
-        elif op == "||"  : self.result[ctx] = LE_Int(value[0] or  value[1])
+        if   op == "**"  : self.result[ctx] = _op_pow(*ctx.expr(), visitor=self)
+        elif op == "*"   : self.result[ctx] = _op_mul(*ctx.expr(), visitor=self)
+        elif op == "/"   : self.result[ctx] = _op_div(*ctx.expr(), visitor=self)
+        elif op == "+"   : self.result[ctx] = _op_add(*ctx.expr(), visitor=self)
+        elif op == "-"   : self.result[ctx] = _op_sub(*ctx.expr(), visitor=self)
+        elif op == "%"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value %   self.visit(ctx.expr(1)).value)
+        elif op == "<<"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value <<  self.visit(ctx.expr(1)).value)
+        elif op == ">>"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value >>  self.visit(ctx.expr(1)).value)
+        elif op == "<"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value <   self.visit(ctx.expr(1)).value)
+        elif op == "<="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value <=  self.visit(ctx.expr(1)).value)
+        elif op == ">"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value >   self.visit(ctx.expr(1)).value)
+        elif op == ">="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value >=  self.visit(ctx.expr(1)).value)
+        elif op == "=="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value ==  self.visit(ctx.expr(1)).value)
+        elif op == "!="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value !=  self.visit(ctx.expr(1)).value)
+        elif op == "&"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value &   self.visit(ctx.expr(1)).value)
+        elif op == "^"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value ^   self.visit(ctx.expr(1)).value)
+        elif op == "|"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value |   self.visit(ctx.expr(1)).value)
+        elif op == "&&"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value and self.visit(ctx.expr(1)).value)
+        elif op == "||"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value or  self.visit(ctx.expr(1)).value)
+        elif op == ">>>" : self.result[ctx] = LE_Int((self.visit(ctx.expr(0)).value & INTMASK) >> self.visit(ctx.expr(1)).value)
         else             : raise LE_SyntaxError("Unknown binary operator `{op}`", ctx.start.line, ctx.start.column)
 
+        return self.result[ctx]
+
     def visitAssignOp(self, ctx):
-        self.visitChildren(ctx)
-
         op = ctx.op.text
-        var = self.result[ctx.varname()]
-        value2 = self.result[ctx.expr()].value
+        var = self.visit(ctx.varname())
 
-        if op == "=" : self.result[ctx] = value2
-        else         :
-            T = LE_Int if isinstance(var.value,int) and isinstance(var.value,int) else LE_Double
-
-            if   op == "**="  : self.result[ctx] = (LE_Double if value2 < 0 else T)(var.value **  value2)
-            elif op == "*="   : self.result[ctx] = T(var.value *   value2)
-            elif op == "/="   : self.result[ctx] = T(var.value /   value2)
-            elif op == "%="   : self.result[ctx] = LE_Int(var.value %   value2)
-            elif op == "+="   : self.result[ctx] = LE_String(str(var.value) + str(value2)) if isinstance(var.value,str) or isinstance(value2,str) else T(var.value + value2)
-            elif op == "-="   : self.result[ctx] = T(var.value -   value2)
-            elif op == "<<="  : self.result[ctx] = LE_Int(var.value <<  value2)
-            elif op == ">>="  : self.result[ctx] = LE_Int(var.value >>  value2)
-            elif op == ">>>=" : self.result[ctx] = LE_Int((var.value & INTMASK) >> value2)
-            elif op == "&="   : self.result[ctx] = LE_Int(var.value &   value2)
-            elif op == "^="   : self.result[ctx] = LE_Int(var.value ^   value2)
-            elif op == "|="   : self.result[ctx] = LE_Int(var.value |   value2)
-            elif op == "&&="  : self.result[ctx] = LE_Int(var.value and value2)
-            elif op == "||="  : self.result[ctx] = LE_Int(var.value or  value2)
-            else              : raise LE_SyntaxError("Unknown assign operator `{op}`", ctx.start.line, ctx.start.column)
+        if   op == "="    : self.result[ctx] = self.visit(ctx.expr()).value
+        elif op == "**="  : self.result[ctx] = _op_pow(var, ctx.expr(), visitor=self)
+        elif op == "*="   : self.result[ctx] = _op_mul(var, ctx.expr(), visitor=self)
+        elif op == "/="   : self.result[ctx] = _op_div(var, ctx.expr(), visitor=self)
+        elif op == "+="   : self.result[ctx] = _op_add(var, ctx.expr(), visitor=self)
+        elif op == "-="   : self.result[ctx] = _op_sub(var, ctx.expr(), visitor=self)
+        elif op == "%="   : self.result[ctx] = LE_Int(var.value %   self.visit(ctx.expr()).value)
+        elif op == "<<="  : self.result[ctx] = LE_Int(var.value <<  self.visit(ctx.expr()).value)
+        elif op == ">>="  : self.result[ctx] = LE_Int(var.value >>  self.visit(ctx.expr()).value)
+        elif op == "&="   : self.result[ctx] = LE_Int(var.value &   self.visit(ctx.expr()).value)
+        elif op == "^="   : self.result[ctx] = LE_Int(var.value ^   self.visit(ctx.expr()).value)
+        elif op == "|="   : self.result[ctx] = LE_Int(var.value |   self.visit(ctx.expr()).value)
+        elif op == "&&="  : self.result[ctx] = LE_Int(var.value and self.visit(ctx.expr()).value)
+        elif op == "||="  : self.result[ctx] = LE_Int(var.value or  self.visit(ctx.expr()).value)
+        elif op == ">>>=" : self.result[ctx] = LE_Int((var.value & INTMASK) >> self.visit(ctx.expr()).value)
+        else              : raise LE_SyntaxError("Unknown assign operator `{op}`", ctx.start.line, ctx.start.column)
 
         var.value = self.result[ctx]
 
-    def visitTertiaryOp(self, ctx):
-        self.visitChildren(ctx)
+        return self.result[ctx]
 
+    def visitTertiaryOp(self, ctx):
         op = (
             ctx.op1.text,
             ctx.op2.text,
         )
-        value = (
-            self.result[ctx.expr(0)].value,
-            self.result[ctx.expr(1)].value,
-            self.result[ctx.expr(2)].value,
-        )
 
-        if op[0] == "?" and op[1] == ":" : self.result[ctx] = LiteExprDatum(value[1] if value[0] else value[2])
+        if op[0] == "?" and op[1] == ":" : self.result[ctx] = self.visit(ctx.expr(1)).value if self.visit(ctx.expr(0)).value else self.visit(ctx.expr(2)).value
         else                             : raise LE_SyntaxError("Unknown tertiary operator `{op[0]} {op[1]}`", ctx.start.line, ctx.start.column)
+
+        return self.result[ctx]
 
     def visitIndexedVar(self, ctx):
         self.visitChildren(ctx)
@@ -344,6 +356,8 @@ class LE_Evaluator(LiteExprVisitor):
 
         self.result[ctx] = LE_Variable(index, array)
 
+        return self.result[ctx]
+
     def visitMemberVar(self, ctx):
         self.visitChildren(ctx)
 
@@ -352,12 +366,16 @@ class LE_Evaluator(LiteExprVisitor):
 
         self.result[ctx] = LE_Variable(member, base)
 
+        return self.result[ctx]
+
     def visitSimpleVar(self, ctx):
         self.visitChildren(ctx)
 
         varname = ctx.ID().getText()
 
         self.result[ctx] = LE_Variable(varname, self.symbolTable)
+
+        return self.result[ctx]
 
     def visitPairlist(self, ctx):
         self.visitChildren(ctx)
@@ -368,6 +386,8 @@ class LE_Evaluator(LiteExprVisitor):
             for k,v in self.result[pair].items():
                 self.result[ctx][k] = v
 
+        return self.result[ctx]
+
     def visitPair(self, ctx):
         self.visitChildren(ctx)
 
@@ -376,6 +396,8 @@ class LE_Evaluator(LiteExprVisitor):
 
         self.result[ctx] = { LE_String(name) : value }
 
+        return self.result[ctx]
+
     def visitList(self, ctx):
         self.visitChildren(ctx)
 
@@ -383,6 +405,63 @@ class LE_Evaluator(LiteExprVisitor):
 
         for item in ctx.expr():
             self.result[ctx] += [self.result[item].value]
+
+        return self.result[ctx]
+
+
+def _op_pow(*args, **kwargs):
+    visitor = kwargs["visitor"]
+    value = (
+        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
+        visitor.visit(args[1]).value,
+    )
+    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+
+    return (LE_Double if value[1] < 0 else T)(value[0] ** value[1])
+
+
+def _op_mul(*args, **kwargs):
+    visitor = kwargs["visitor"]
+    value = (
+        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
+        visitor.visit(args[1]).value,
+    )
+    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+
+    return T(value[0] * value[1])
+
+
+def _op_div(*args, **kwargs):
+    visitor = kwargs["visitor"]
+    value = (
+        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
+        visitor.visit(args[1]).value,
+    )
+    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+
+    return T(value[0] / value[1])
+
+
+def _op_add(*args, **kwargs):
+    visitor = kwargs["visitor"]
+    value = (
+        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
+        visitor.visit(args[1]).value,
+    )
+    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+
+    return LE_String(str(value[0]) + str(value[1])) if isinstance(value[0],str) or isinstance(value[1],str) else T(value[0] + value[1])
+
+
+def _op_sub(*args, **kwargs):
+    visitor = kwargs["visitor"]
+    value = (
+        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
+        visitor.visit(args[1]).value,
+    )
+    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+
+    return T(value[0] - value[1])
 
 
 ##############################################################################
@@ -424,51 +503,110 @@ def _encodeString(s):
 ##############################################################################
 # BUILTIN FUNCTIONS
 
-builtins = {
-    "CEIL"  : lambda s,  x : LE_Int(math.ceil(x)),
-    "EVAL"  : lambda s,  x : eval(x, s),
-    "FLOOR" : lambda s,  x : LE_Int(math.floor(x)),
-    "FOR"   : lambda s,  a, b, c, d : __builtin_for(s, a, b, c, d),
-    "IF"    : lambda s, *x : __builtin_if(s, *x),
-    "LEN"   : lambda s,  x : LE_Int(len(x)),
-    "PRINT" : lambda s, *x : __builtin_print(s, *x),
-    "ROUND" : lambda s, *x : LE_Int(round(*x)),
-    "SQRT"  : lambda s,  x : LE_Double(math.sqrt(x)),
-    "WHILE" : lambda s,  a, b: __builtin_while(s, a, b),
-}
+class LE_Function:
+    def __init__(self, fn, **kwargs):
+        self.fn = fn
+        self.opts = {
+            "minargs"    : kwargs.get("minargs", kwargs.get("nargs", 0)),
+            "maxargs"    : kwargs.get("maxargs", kwargs.get("nargs", float("Inf"))),
+            "delayvisit" : kwargs.get("delayvisit", False),
+        }
 
-def __builtin_for(s, a, b, c, d):
-    eval(a, s)
+        # Validation
+        if   self.opts["minargs"] > self.opts["maxargs"]:
+            raise LE_SyntaxError(f"minargs ({self.opts['minargs']}) is greater than than maxargs ({self.opts['maxargs']})")
 
-    while(eval(b, s)):
-        eval(d, s)
-        eval(c, s)
+    def __call__(self, *args, **kwargs):
+        minargs = self.opts["minargs"]
+        maxargs = self.opts["maxargs"]
 
-    return LE_Int(0)
+        if   len(args) < minargs or maxargs < len(args):
+            raise LE_SyntaxError(f"Invalid argument count; expected [{minargs}, {maxargs}], got {len(args)}")
 
-def __builtin_if(s, *x):
-    v = x[-1]
+        return self.fn(*args, **kwargs)
+
+
+def __builtin_ceil(value, **kwargs):
+    return LE_Int(math.ceil(value))
+
+
+def __builtin_eval(value, **kwargs):
+    return eval(value, kwargs["sym"])
+
+
+def __builtin_floor(value, **kwargs):
+    return LE_Int(math.floor(value))
+
+
+def __builtin_for(init, cond, incr, block, **kwargs):
+    visitor = kwargs["visitor"]
+    result = LE_Int(0)
+
+    visitor.visit(init)
+
+    while(visitor.visit(cond).value):
+        result = visitor.visit(block)
+        visitor.visit(incr)
+
+    return result
+
+
+def __builtin_if(*args, **kwargs):
+    visitor = kwargs["visitor"]
+    result = LE_Int(0)
     i = 0
 
-    while i+1 < len(x):
-        if eval(x[i], s): v = x[i+1]
+    while i+1 < len(args):
+        if visitor.visit(args[i]).value:
+            result = visitor.visit(args[i+1])
+            break
+
         i += 2
 
-    return eval(v, s)
+    if i+1 == len(args):
+        result = visitor.visit(args[-1])
 
-def __builtin_print(s, *x):
-    o = []
+    return result
 
-    for y in x:
-        o += [y.value]
 
-    print(*o)
+def __builtin_len(value, **kwargs):
+    return LE_Int(len(value))
 
-    return LE_Int(0)
 
-def __builtin_while(s, a, b):
-    while(eval(a, s)):
-        eval(b, s)
+def __builtin_print(*args, **kwargs):
+    print(*[x.value for x in args])
 
-    return LE_Int(0)
+    return LE_Int(len(args))
+
+
+def __builtin_round(value, **kwargs):
+    return LE_Int(round(value))
+
+
+def __builtin_sqrt(value, **kwargs):
+    return LE_Double(math.sqrt(value))
+
+
+def __builtin_while(cond, expr, **kwargs):
+    visitor = kwargs["visitor"]
+    result = LE_Int(0)
+
+    while(visitor.visit(cond).value):
+        result = visitor.visit(expr)
+
+    return result
+
+
+builtins = {
+    "CEIL"  : LE_Function(__builtin_ceil , nargs=1                   ),
+    "EVAL"  : LE_Function(__builtin_eval , nargs=1                   ),
+    "FLOOR" : LE_Function(__builtin_floor, nargs=1                   ),
+    "FOR"   : LE_Function(__builtin_for  , nargs=4  , delayvisit=True),
+    "IF"    : LE_Function(__builtin_if   , minargs=2, delayvisit=True),
+    "LEN"   : LE_Function(__builtin_len  , nargs=1                   ),
+    "PRINT" : LE_Function(__builtin_print                            ),
+    "ROUND" : LE_Function(__builtin_round, nargs=1                   ),
+    "SQRT"  : LE_Function(__builtin_sqrt , nargs=1                   ),
+    "WHILE" : LE_Function(__builtin_while, nargs=2  , delayvisit=True),
+}
 

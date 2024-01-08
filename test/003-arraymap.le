@@ -19,8 +19,8 @@ PRINT("I have " + LEN(students) + " students:");
 PRINT(students[0].first + " " + students[0].last);
 
 # Test the loop
-FOR("i = 1", "i < LEN(students)", "i++", "
+FOR(i = 1, i < LEN(students), i++,
     PRINT(students[i].first, students[i].last)
-");
+);
 
 "Done!"

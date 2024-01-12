@@ -7,3 +7,6 @@ LiteExprLexer.tokens
 LiteExprListener.py
 LiteExprParser.py
 LiteExprVisitor.py
+build
+dist
+liteexpr.egg-info

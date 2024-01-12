@@ -1,7 +1,19 @@
-all: LiteExpr.tokens
+all: lib/LiteExprVisitor.py
 
-LiteExpr.tokens: ../LiteExpr.g4
-	antlr4 -Dlanguage=Python3 -visitor -no-listener -Xexact-output-dir $^ -o .
+lib/LiteExprVisitor.py: ../LiteExpr.g4
+	antlr4 -Dlanguage=Python3 -visitor -no-listener -Xexact-output-dir $^ -o lib
+
+dist: lib/LiteExprVisitor.py
+	./setup.py sdist
+
+upload: dist
+	python3 -m twine upload dist/*.tar.gz
+
+install: dist
+	pip3 install .
+
+uninstall:
+	pip3 uninstall liteexpr
 
 gui1:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/001-*.le
@@ -40,6 +52,6 @@ test6: LiteExpr.tokens
 	./test.py ../test/006-*.le
 
 clean:
-	rm -rf LiteExpr*.py *.interp *.tokens __pycache__
+	rm -rf lib/LiteExpr*.py lib/*.interp lib/*.tokens lib/__pycache__ build dist
 
 # vim:noet

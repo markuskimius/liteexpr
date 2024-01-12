@@ -1,8 +1,13 @@
+__copyright__ = "Copyright 2023-2024 Mark Kim"
+__license__ = "Apache 2.0"
+__version__ = "0.0.1"
+__author__ = "Mark Kim"
+
 import math
 import antlr4
-from LiteExprLexer import LiteExprLexer
-from LiteExprParser import LiteExprParser
-from LiteExprVisitor import LiteExprVisitor
+from .LiteExprLexer import LiteExprLexer
+from .LiteExprParser import LiteExprParser
+from .LiteExprVisitor import LiteExprVisitor
 
 
 ##############################################################################

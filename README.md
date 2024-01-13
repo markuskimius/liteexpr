@@ -31,7 +31,7 @@ In the order of highest to lowest precedence:
 | ----------------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------- |
 | `++` `--`                                                                                             |                           | Postfix increment, decrement                                    |
 | `++` `--`                                                                                             |                           | Prefix increment, decrement                                     |
-| `!`<br>`~`<br>`-`                                                                                     |                           | Logical not<br>Bitwise not<br>Positive, negative                |
+| `!`<br>`~`<br>`+` `-`                                                                                 |                           | Logical not<br>Bitwise not<br>Positive, negative                |
 | `**`                                                                                                  | right-to-left             | Power                                                           |
 | `*` `/` `%`                                                                                           |                           | Multiply, divide, modulus                                       |
 | `+` `-`                                                                                               |                           | Add, subtract                                                   |

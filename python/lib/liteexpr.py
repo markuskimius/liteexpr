@@ -342,7 +342,7 @@ class LE_Evaluator(LiteExprVisitor):
 
         return self.result[ctx]
 
-    def visitTertiaryOp(self, ctx):
+    def visitTernaryOp(self, ctx):
         op = (
             ctx.op1.text,
             ctx.op2.text,
@@ -550,8 +550,8 @@ def __builtin_for(init, cond, incr, block, **kwargs):
     visitor.visit(init)
 
     while(visitor.visit(cond).value):
-        result = visitor.visit(block)
-        visitor.visit(incr)
+        visitor.visit(block)
+        result = visitor.visit(incr)
 
     return result
 

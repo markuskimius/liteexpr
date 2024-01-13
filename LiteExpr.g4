@@ -29,7 +29,8 @@ expr    : STRING                                # String
         | expr op='||' expr                     # BinaryOp
         | <assoc=right> varname op=('='|'**='|'*='|'/='|'%='|'+='|'-='|'<<='|'>>='|'>>>='|'&='|'^='|'|='|'&&='|'||=') expr
                                                 # AssignOp
-        | expr op1='?' expr op2=':' expr        # TertiaryOp
+        | <assoc=right> expr op1='?' expr op2=':' expr
+                                                # TernaryOp
         ;
 
 varname : varname '[' expr ']'                  # IndexedVar

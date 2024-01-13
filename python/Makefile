@@ -9,7 +9,7 @@ dist: lib/LiteExprVisitor.py
 upload: dist
 	python3 -m twine upload dist/*.tar.gz
 
-install: dist
+install: lib/LiteExprVisitor.py
 	pip3 install .
 
 uninstall:
@@ -33,22 +33,22 @@ gui5:
 gui6:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/006-*.le
 
-test1: LiteExpr.tokens
+test1: lib/LiteExprVisitor.py
 	./test.py ../test/001-*.le
 
-test2: LiteExpr.tokens
+test2: lib/LiteExprVisitor.py
 	./test.py ../test/002-*.le
 
-test3: LiteExpr.tokens
+test3: lib/LiteExprVisitor.py
 	./test.py ../test/003-*.le
 
-test4: LiteExpr.tokens
+test4: lib/LiteExprVisitor.py
 	./test.py ../test/004-*.le
 
-test5: LiteExpr.tokens
+test5: lib/LiteExprVisitor.py
 	./test.py ../test/005-*.le
 
-test6: LiteExpr.tokens
+test6: lib/LiteExprVisitor.py
 	./test.py ../test/006-*.le
 
 clean:

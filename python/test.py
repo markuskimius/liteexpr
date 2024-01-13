@@ -31,9 +31,7 @@ def main():
 
 
 def doMyThing(fd):
-    output = liteexpr.evalfd(fd)
-
-    print(output)
+    liteexpr.evalfd(fd)
 
 
 ##############################################################################

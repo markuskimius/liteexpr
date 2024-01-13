@@ -27,51 +27,27 @@ A light, expression language.
 
 In the order of highest to lowest precedence:
 
-| Operator           | Associativity[^1] | Description                   |
-| ------------------ | ----------------- | ----------------------------- |
-| `++` `--`          |                   | Postfix increment, decrement  |
-| ------------------ | ----------------- | ----------------------------- |
-| `++` `--`          |                   | Prefix increment, decrement   |
-| ------------------ | ----------------- | ----------------------------- |
-| `!`                |                   | Logical not                   |
-| `~`                |                   | Bitwise not                   |
-| `+` `-`            |                   | Positive, negative            |
-| ------------------ | ----------------- | ----------------------------- |
-| `**`               | right-to-left     | Power                         |
-| ------------------ | ----------------- | ----------------------------- |
-| `*` `/` `%`        |                   | Multiply, divide, modulus     |
-| ------------------ | ----------------- | ----------------------------- |
-| `+` `-`            |                   | Add, subtract                 |
-| ------------------ | ----------------- | ----------------------------- |
-| `<<`               |                   | Left shift                    |
-| `>>`               |                   | Right shift sign-extended     |
-| `>>>`              |                   | Right shift unsigned          |
-| ------------------ | ----------------- | ----------------------------- |
-| `<` `>` `<=` `>=`  |                   | Inequality                    |
-| ------------------ | ----------------- | ----------------------------- |
-| `==` `!=`          |                   | Equal to, not equal to        |
-| ------------------ | ----------------- | ----------------------------- |
-| `&`                |                   | Bitwise and                   |
-| ------------------ | ----------------- | ----------------------------- |
-| `^`                |                   | Bitwise xor                   |
-| ------------------ | ----------------- | ----------------------------- |
-| `|`                |                   | Bitwise or                    |
-| ------------------ | ----------------- | ----------------------------- |
-| `&&`               |                   | Boolean and                   |
-| ------------------ | ----------------- | ----------------------------- |
-| `||`               |                   | Boolean or                    |
-| ------------------ | ----------------- | ----------------------------- |
-| `=`                | right-to-left     | Assignment                    |
-| `**=`              |                   |                               |
-| `*=` `/=` `%=`     |                   |                               |
-| `+=` `-=`          |                   |                               |
-| `<<=` `>>=` `>>>=` |                   |                               |
-| `&=` `^=` `|=`     |                   |                               |
-| `&&=` `||=`        |                   |                               |
-| ------------------ | ----------------- | ----------------------------- |
-| `? ... :`          | right-to-left     | Ternary conditional           |
+| Operator                                                                                              | Associativity<sup>1</sup> | Description                                                     |
+| ----------------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------- |
+| `++` `--`                                                                                             |                           | Postfix increment, decrement                                    |
+| `++` `--`                                                                                             |                           | Prefix increment, decrement                                     |
+| `!`<br>`~`<br>`-`                                                                                     |                           | Logical not<br>Bitwise not<br>Positive, negative                |
+| `**`                                                                                                  | right-to-left             | Power                                                           |
+| `*` `/` `%`                                                                                           |                           | Multiply, divide, modulus                                       |
+| `+` `-`                                                                                               |                           | Add, subtract                                                   |
+| `<<`<br>`>>`<br>`>>>`                                                                                 |                           | Left shift<br>Right shift sign-extended<br>Right shift unsigned |
+| `<` `>` `<=` `>=`                                                                                     |                           | Inequality                                                      |
+| `==` `!=`                                                                                             |                           | Equal to, not equal to                                          |
+| `&`                                                                                                   |                           | Bitwise and                                                     |
+| `^`                                                                                                   |                           | Bitwise xor                                                     |
+| `\|`                                                                                                  |                           | Bitwise or                                                      |
+| `&&`                                                                                                  |                           | Boolean and                                                     |
+| `\|\|`                                                                                                |                           | Boolean or                                                      |
+| `=`<br>`**=`<br>`*=` `/=` `%=`<br>`+=` `-=`<br>`<<=` `>>=` `>>>=`<br>`&=` `^=` `\|=`<br>`&&=` `\|\|=` | right-to-left             | Assignment                                                      |
+| `? ... :`                                                                                             | right-to-left             | Ternary conditional                                             |
 
-[^1] Associativity is left-to-right unless noted otherwise.
+<sup>1</sup> Associativity is left-to-right unless noted otherwise.
+
 
 
 ## Built-In Functions

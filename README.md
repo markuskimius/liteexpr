@@ -22,7 +22,6 @@ A light, expression language.
 
 
 
-
 ## Operations
 
 In the order of highest to lowest precedence:
@@ -41,8 +40,8 @@ In the order of highest to lowest precedence:
 | `&`                                                                                                   |                           | Bitwise and                                                     |
 | `^`                                                                                                   |                           | Bitwise xor                                                     |
 | `\|`                                                                                                  |                           | Bitwise or                                                      |
-| `&&`                                                                                                  |                           | Boolean and                                                     |
-| `\|\|`                                                                                                |                           | Boolean or                                                      |
+| `&&`                                                                                                  |                           | Logical and                                                     |
+| `\|\|`                                                                                                |                           | Logical or                                                      |
 | `=`<br>`**=`<br>`*=` `/=` `%=`<br>`+=` `-=`<br>`<<=` `>>=` `>>>=`<br>`&=` `^=` `\|=`<br>`&&=` `\|\|=` | right-to-left             | Assignment                                                      |
 | `? ... :`                                                                                             | right-to-left             | Ternary conditional                                             |
 
@@ -58,7 +57,7 @@ In the order of highest to lowest precedence:
 * `FOR(expr1, expr2, expr3, expr4) -> any`
 * `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`
 * `LEN(string or array or object) -> int`
-* `PRINT(expr1, [expr2, [expr3, ...]]) -> int`
+* `PRINT(any, [any, [any, ...]]) -> int`
 * `ROUND(int or double) -> int`
 * `SQRT(int or double) -> double`
 * `WHILE(expr1, expr2) -> any`

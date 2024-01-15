@@ -169,9 +169,11 @@ class LE_Evaluator(LiteExprVisitor):
     def visitFile(self, ctx):
         self.visitChildren(ctx)
 
-        lastExpr = ctx.expr()[-1]
-
-        self.result[ctx] = self.result[lastExpr].value
+        if len(ctx.expr()):
+            lastExpr = ctx.expr()[-1]
+            self.result[ctx] = self.result[lastExpr].value
+        else:
+            self.result[ctx] = LE_Int(0)
 
         return self.result[ctx]
 

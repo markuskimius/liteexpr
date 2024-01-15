@@ -576,7 +576,7 @@ def __builtin_function(sig, body, **kwargs):
 
     def function(*args, **kwargs):
         csym = LE_SymbolTable({
-            "args" : [visitor.visit(x).value for x in args],
+            "ARGS" : [visitor.visit(x).value for x in args],
         }, kwargs["sym"])
 
         return cbody.eval(csym)

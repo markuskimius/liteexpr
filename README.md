@@ -3,6 +3,12 @@
 A light, expression language.
 
 
+## Features
+
+* Pass variables to be evaluated within the expression.
+* Pass custom functions to be used within the expression.
+
+
 ## Supported Host Languages
 
 * [Python](python)

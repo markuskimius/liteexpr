@@ -1,6 +1,6 @@
 grammar LiteExpr;
 
-file    : expr ( ';' expr )* EOF
+file    : expr ( ';' expr )* ';'? EOF
         | EOF
         ;
 

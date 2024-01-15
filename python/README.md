@@ -5,7 +5,7 @@ A light, expression language.
 
 ## Language Overview
 
-For the language overview, see the [main page](..).
+For the language overview, see the [main page](https://github.com/markuskimius/liteexpr).
 The rest of the document describes using liteexpr with Python.
 
 
@@ -44,5 +44,5 @@ Alice's grade is A
 
 ## License
 
-[Apache 2.0](../LICENSE)
+[Apache 2.0](https://github.com/markuskimius/liteexpr/blob/main/LICENSE)
 

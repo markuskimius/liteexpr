@@ -61,6 +61,7 @@ In the order of highest to lowest precedence:
 * `EVAL(string) -> any`
 * `FLOOR(int or double) -> int`
 * `FOR(expr1, expr2, expr3, expr4) -> any`
+* `FUNCTION(string, expr) -> function`
 * `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`
 * `LEN(string or array or object) -> int`
 * `PRINT(any, [any, [any, ...]]) -> int`

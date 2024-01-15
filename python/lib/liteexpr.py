@@ -532,6 +532,10 @@ class LE_Function:
 
         return self.fn(*args, **kwargs)
 
+    @property
+    def value(self):
+        return self
+
 
 def __builtin_ceil(value, **kwargs):
     return LE_Int(math.ceil(value))
@@ -556,6 +560,28 @@ def __builtin_for(init, cond, incr, block, **kwargs):
         result = visitor.visit(incr)
 
     return result
+
+
+def __builtin_function(sig, body, **kwargs):
+    visitor = kwargs["visitor"]
+    sigstr = visitor.visit(sig).value
+    cbody = LE_Compiled(body)
+    minargs = 0
+    maxargs = 0
+
+    for c in sigstr:
+        if   c == "*" : maxargs = float("Inf")
+        elif c == "?" : minargs += 1; maxargs += 1
+        else          : raise LE_RuntimeError(f"'{c}' is an invalid function signature")
+
+    def function(*args, **kwargs):
+        csym = LE_SymbolTable({
+            "args" : [visitor.visit(x).value for x in args],
+        }, kwargs["sym"])
+
+        return cbody.eval(csym)
+
+    return LE_Function(function, minargs=minargs, maxargs=maxargs, delayvisit=True)
 
 
 def __builtin_if(*args, **kwargs):
@@ -605,15 +631,16 @@ def __builtin_while(cond, expr, **kwargs):
 
 
 builtins = {
-    "CEIL"  : LE_Function(__builtin_ceil , nargs=1                   ),
-    "EVAL"  : LE_Function(__builtin_eval , nargs=1                   ),
-    "FLOOR" : LE_Function(__builtin_floor, nargs=1                   ),
-    "FOR"   : LE_Function(__builtin_for  , nargs=4  , delayvisit=True),
-    "IF"    : LE_Function(__builtin_if   , minargs=2, delayvisit=True),
-    "LEN"   : LE_Function(__builtin_len  , nargs=1                   ),
-    "PRINT" : LE_Function(__builtin_print                            ),
-    "ROUND" : LE_Function(__builtin_round, nargs=1                   ),
-    "SQRT"  : LE_Function(__builtin_sqrt , nargs=1                   ),
-    "WHILE" : LE_Function(__builtin_while, nargs=2  , delayvisit=True),
+    "CEIL"     : LE_Function(__builtin_ceil     , nargs=1                   ),
+    "EVAL"     : LE_Function(__builtin_eval     , nargs=1                   ),
+    "FLOOR"    : LE_Function(__builtin_floor    , nargs=1                   ),
+    "FOR"      : LE_Function(__builtin_for      , nargs=4  , delayvisit=True),
+    "FUNCTION" : LE_Function(__builtin_function , nargs=2  , delayvisit=True),
+    "IF"       : LE_Function(__builtin_if       , minargs=2, delayvisit=True),
+    "LEN"      : LE_Function(__builtin_len      , nargs=1                   ),
+    "PRINT"    : LE_Function(__builtin_print                                ),
+    "ROUND"    : LE_Function(__builtin_round    , nargs=1                   ),
+    "SQRT"     : LE_Function(__builtin_sqrt     , nargs=1                   ),
+    "WHILE"    : LE_Function(__builtin_while    , nargs=2  , delayvisit=True),
 }
 

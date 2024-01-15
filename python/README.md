@@ -16,20 +16,29 @@ pip3 install liteexpr
 ```
 
 
-## Usage
+## Example
 
 ```python
 import liteexpr
 
-grades = {
-    "alice" : "A",
-    "bob"   : "B",
-}
+symbols = liteexpr.LE_SymbolTable({
+    "grades" : {
+        "alice" : "A",
+        "bob"   : "B",
+    }
+})
 
 liteexpr.eval("""
     PRINT("I have " + LEN(grades) + " students");
-    PRINT("Alice's grade is " + grades.alice)
-""", grades)
+    PRINT("Alice's grade is " + grades.alice);
+""", symbols)
+```
+
+Output:
+
+```
+I have 2 students
+Alice's grade is A
 ```
 
 

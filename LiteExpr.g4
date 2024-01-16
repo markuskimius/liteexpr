@@ -4,40 +4,39 @@ file    : expr EOF
         | EOF
         ;
 
-expr    : STRING                                # String
-        | DOUBLE                                # Double
-        | HEX                                   # Hex
-        | INT                                   # Int
-        | varname '(' list ')'                  # Call
-        | varname                               # Variable
-        | '{' pairlist '}'                      # Object
-        | '[' list ']'                          # Array
-        | '(' expr ')'                          # Paren
-        | varname op=('++'|'--')                # PostfixOp
-        | op=('++'|'--') varname                # PrefixOp
-        | op=('!'|'~'|'+'|'-') expr             # UnaryOp
-        | <assoc=right> expr op='**' expr       # BinaryOp
-        | expr op=('*'|'/'|'%') expr            # BinaryOp
-        | expr op=('+'|'-') expr                # BinaryOp
-        | expr op=('<<'|'>>'|'>>>') expr        # BinaryOp
-        | expr op=('<'|'<='|'>'|'>=') expr      # BinaryOp
-        | expr op=('=='|'!=') expr              # BinaryOp
-        | expr op='&' expr                      # BinaryOp
-        | expr op='^' expr                      # BinaryOp
-        | expr op='|' expr                      # BinaryOp
-        | expr op='&&' expr                     # BinaryOp
-        | expr op='||' expr                     # BinaryOp
+expr    : STRING                                        # String
+        | DOUBLE                                        # Double
+        | HEX                                           # Hex
+        | INT                                           # Int
+        | varname '(' list ')'                          # Call
+        | varname                                       # Variable
+        | '{' pairlist '}'                              # Object
+        | '[' list ']'                                  # Array
+        | '(' expr ')'                                  # Paren
+        | varname op=('++'|'--')                        # PostfixOp
+        | op=('++'|'--') varname                        # PrefixOp
+        | op=('!'|'~'|'+'|'-') expr                     # UnaryOp
+        | <assoc=right> expr op='**' expr               # BinaryOp
+        | expr op=('*'|'/'|'%') expr                    # BinaryOp
+        | expr op=('+'|'-') expr                        # BinaryOp
+        | expr op=('<<'|'>>'|'>>>') expr                # BinaryOp
+        | expr op=('<'|'<='|'>'|'>=') expr              # BinaryOp
+        | expr op=('=='|'!=') expr                      # BinaryOp
+        | expr op='&' expr                              # BinaryOp
+        | expr op='^' expr                              # BinaryOp
+        | expr op='|' expr                              # BinaryOp
+        | expr op='&&' expr                             # BinaryOp
+        | expr op='||' expr                             # BinaryOp
         | <assoc=right> varname op=('='|'**='|'*='|'/='|'%='|'+='|'-='|'<<='|'>>='|'>>>='|'&='|'^='|'|='|'&&='|'||=') expr
-                                                # AssignOp
-        | <assoc=right> expr op1='?' expr op2=':' expr
-                                                # TernaryOp
-        | expr op=';' expr                      # BinaryOp
-        | expr ';'                              # Term
+                                                        # AssignOp
+        | <assoc=right> expr op1='?' expr op2=':' expr  # TernaryOp
+        | expr op=';' expr                              # BinaryOp
+        | expr ';'                                      # Term
         ;
 
-varname : varname '[' expr ']'                  # IndexedVar
-        | varname '.' varname                   # MemberVar
-        | ID                                    # SimpleVar
+varname : varname '[' expr ']'                          # IndexedVar
+        | varname '.' varname                           # MemberVar
+        | ID                                            # SimpleVar
         ;
 
 pairlist: pair (',' pair)* ','?

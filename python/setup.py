@@ -26,7 +26,7 @@ setup(
                          packages = [ "liteexpr" ],
                       package_dir = { "" : "src" },
                  install_requires = [ "antlr4-python3-runtime" ],
-                   extras_Require = {
+                   extras_require = {
                         "compile" : [
                             "antlr4-tools",
                         ]

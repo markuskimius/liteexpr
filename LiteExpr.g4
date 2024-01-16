@@ -1,6 +1,6 @@
 grammar LiteExpr;
 
-file    : expr ( ';' expr )* ';'? EOF
+file    : expr EOF
         | EOF
         ;
 
@@ -31,6 +31,8 @@ expr    : STRING                                # String
                                                 # AssignOp
         | <assoc=right> expr op1='?' expr op2=':' expr
                                                 # TernaryOp
+        | expr op=';' expr                      # BinaryOp
+        | expr ';'                              # Term
         ;
 
 varname : varname '[' expr ']'                  # IndexedVar

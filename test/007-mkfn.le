@@ -1,0 +1,13 @@
+memo = [ 0, 1 ];
+
+fib = FUNCTION("?",
+    x = ARGS[0];
+
+    IF(x < LEN(memo),
+        memo[x]
+    ,
+        fib(x-2) + fib(x-1)
+    );
+);
+
+PRINT(fib(15));

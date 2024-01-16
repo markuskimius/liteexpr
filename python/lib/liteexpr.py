@@ -86,8 +86,9 @@ class LE_SymbolTable:
     def __getitem__(self, name):
         name = str(name)
 
-        if name in self.symbols : return self.symbols[name]
-        else                    : return self.parent[name]
+        if   name in self.symbols : return self.symbols[name]
+        elif self.parent is None  : raise LE_RuntimeError(f"{name} is not a valid symbol")
+        else                      : return self.parent[name]
 
     def __setitem__(self, name, value):
         name = str(name)
@@ -96,10 +97,18 @@ class LE_SymbolTable:
 
         return self.symbols[name]
 
+    def __active(self):
+        symbols = self.symbols
+
+        if self.parent:
+            symbols = self.parent.__active() | symbols
+
+        return symbols
+
     def __str__(self):
         import json
 
-        return json.dumps(self.symbols, indent=2, default=str)
+        return json.dumps(self.__active(), indent=2, default=str)
 
 
 ##############################################################################
@@ -169,11 +178,10 @@ class LE_Evaluator(LiteExprVisitor):
     def visitFile(self, ctx):
         self.visitChildren(ctx)
 
-        if len(ctx.expr()):
-            lastExpr = ctx.expr()[-1]
-            self.result[ctx] = self.result[lastExpr].value
+        if ctx.expr():
+            self.result[ctx] = self.result[ctx.expr()].value
         else:
-            self.result[ctx] = LE_Int(0)
+            self.result[ctx] = LE_Int()
 
         return self.result[ctx]
 
@@ -217,9 +225,9 @@ class LE_Evaluator(LiteExprVisitor):
         try:
             self.result[ctx] = fn(*args, visitor=self, sym=self.symbolTable)
         except LE_SyntaxError as e:
-            raise LE_SyntaxError(f"Syntax error while executing {ctx.getText()}: {str(e)}", ctx.start.line, ctx.start.column) from None
+            raise LE_SyntaxError(f"Syntax error while executing `{ctx.getText()}`:\n\t{str(e)}", ctx.start.line, ctx.start.column) from None
         except LE_RuntimeError as e:
-            raise LE_RuntimeError(f"Runtime error while executing {ctx.getText()}: {str(e)}", ctx.start.line, ctx.start.column) from None
+            raise LE_RuntimeError(f"Runtime error while executing `{ctx.getText()}`:\n\t{str(e)}", ctx.start.line, ctx.start.column) from None
 
         return self.result[ctx]
 
@@ -315,6 +323,7 @@ class LE_Evaluator(LiteExprVisitor):
         elif op == "&&"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value and self.visit(ctx.expr(1)).value)
         elif op == "||"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value or  self.visit(ctx.expr(1)).value)
         elif op == ">>>" : self.result[ctx] = LE_Int((self.visit(ctx.expr(0)).value & INTMASK) >> self.visit(ctx.expr(1)).value)
+        elif op == ";"   : self.visit(ctx.expr(0)); self.result[ctx] = self.visit(ctx.expr(1)).value
         else             : raise LE_SyntaxError("Unknown binary operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
@@ -372,6 +381,18 @@ class LE_Evaluator(LiteExprVisitor):
         member = self.result[ctx.varname(1)].name
 
         self.result[ctx] = LE_Variable(member, base)
+
+        return self.result[ctx]
+
+    def visitTerm(self, ctx):
+        self.visitChildren(ctx)
+
+        self.result[ctx] = self.result[ctx.expr()]
+
+        return self.result[ctx]
+
+    def visitNoop(self, ctx):
+        self.result[ctx] = LE_Int(0)
 
         return self.result[ctx]
 
@@ -576,12 +597,12 @@ def __builtin_function(sig, body, **kwargs):
 
     def function(*args, **kwargs):
         csym = LE_SymbolTable({
-            "ARGS" : [visitor.visit(x).value for x in args],
+            "ARGS" : LE_Array(args),
         }, kwargs["sym"])
 
         return cbody.eval(csym)
 
-    return LE_Function(function, minargs=minargs, maxargs=maxargs, delayvisit=True)
+    return LE_Function(function, minargs=minargs, maxargs=maxargs, delayvisit=False)
 
 
 def __builtin_if(*args, **kwargs):

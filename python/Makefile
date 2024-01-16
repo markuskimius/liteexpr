@@ -33,6 +33,9 @@ gui5:
 gui6:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/006-*.le
 
+gui7:
+	antlr4-parse ../LiteExpr.g4 file -gui ../test/007-*.le
+
 test1: lib/LiteExprVisitor.py
 	./test.py ../test/001-*.le
 
@@ -50,6 +53,9 @@ test5: lib/LiteExprVisitor.py
 
 test6: lib/LiteExprVisitor.py
 	./test.py ../test/006-*.le
+
+test7: lib/LiteExprVisitor.py
+	./test.py ../test/007-*.le
 
 clean:
 	rm -rf lib/LiteExpr*.py lib/*.interp lib/*.tokens lib/__pycache__ build dist

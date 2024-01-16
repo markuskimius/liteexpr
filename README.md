@@ -50,6 +50,7 @@ In the order of highest to lowest precedence:
 | `\|\|`                                                                                                |                           | Logical or                                                      |
 | `=`<br>`**=`<br>`*=` `/=` `%=`<br>`+=` `-=`<br>`<<=` `>>=` `>>>=`<br>`&=` `^=` `\|=`<br>`&&=` `\|\|=` | right-to-left             | Assignment                                                      |
 | `? ... :`                                                                                             | right-to-left             | Ternary conditional                                             |
+| `;`                                                                                                   |                           | Expression separator / terminator                               |
 
 <sup>1</sup> Associativity is left-to-right unless noted otherwise.
 

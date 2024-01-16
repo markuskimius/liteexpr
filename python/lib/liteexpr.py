@@ -159,6 +159,13 @@ class LE_Array(list):
     def value(self):
         return self
 
+    def __setitem__(self, index, value):
+        if   index < len(self)  : super().__setitem__(index, value)
+        elif index == len(self) : super().append(value)
+        else                    : raise LE_RuntimeError(f"Index `{index}` is out of array range")
+
+        return value
+
 
 class LE_Object(dict):
     @property

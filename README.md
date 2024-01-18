@@ -135,19 +135,21 @@ Following are functions built into liteexpr, arguments they accept, and their re
 * `CEIL(int or double) -> int`
 * `EVAL(string) -> any`
 * `FLOOR(int or double) -> int`
-* `FOR(expr1, expr2, expr3, expr4) -> any`[^2]
-* `FUNCTION(string, expr) -> function`[^2]
-* `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`[^2]
+* `FOR(expr1, expr2, expr3, expr4) -> any`[^1]
+* `FUNCTION(string, expr) -> function`[^1]
+* `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`[^1]
 * `LEN(string or array or object) -> int`
 * `PRINT(any, [any, [any, ...]]) -> int`
 * `ROUND(int or double) -> int`
 * `SQRT(int or double) -> double`
-* `WHILE(expr1, expr2) -> any`[^2]
+* `WHILE(expr1, expr2) -> any`[^1]
 
-[^2] These functions' arguments are delay-evaluated.
+[^1]: These functions' arguments are delay-evaluated.
 Typically, arguments to a function are evaluated before the function is called in order to pass the results of the evaluation to the function.
 However, flow-control functions such as `IF`, `FOR`, and `WHILE` need to be able to control when to evaluate its arguments;
 in order to support this behavior, its arguments are passed to these functions, and the functions themselves choose when to evaluate the arguments.
+Custom functions created with the `FUNCTION()` call always evaluate its arguments immediately;
+it is not possible to create a custom function with delay-evaluated arguments.
 
 The `FUNCTION()` function may be used to create a custom function within the expression;
 it returns a function object which may be assigned to a variable to be called in a later part of the expression.
@@ -167,9 +169,6 @@ To write to variables instantiated outside of the function scope, use the follow
 
 * `GLOBAL` - An object that can be used to access global variables.
 * `UPVAR` - An object that can be used to access variables one scope level above the function scope.
-
-Arguments passed to a custom function are always evaluated immediately;
-it is not possible to create a custom function with delay-evaluated arguments.
 
 
 ## License

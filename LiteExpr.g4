@@ -8,11 +8,11 @@ expr    : STRING                                        # String
         | DOUBLE                                        # Double
         | HEX                                           # Hex
         | INT                                           # Int
+        | '(' expr ')'                                  # Paren
         | varname '(' list ')'                          # Call
         | varname                                       # Variable
         | '{' pairlist '}'                              # Object
         | '[' list ']'                                  # Array
-        | '(' expr ')'                                  # Paren
         | varname op=('++'|'--')                        # PostfixOp
         | op=('++'|'--') varname                        # PrefixOp
         | op=('!'|'~'|'+'|'-') expr                     # UnaryOp

@@ -103,6 +103,10 @@ Following are valid identifiers, in the order of highest to lowest precedence:
 
 | Operator                                                                                              | Associativity<sup>1</sup> | Description                                                     |
 | ----------------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------- |
+| `( ... )`                                                                                             |                           | Grouping                                                        |
+| `.`                                                                                                   |                           | Object member accessor                                          |
+| `[ ... ]`                                                                                             |                           | Array element accessor                                          |
+| `( ... )`                                                                                             |                           | Function call                                                   |
 | `++` `--`                                                                                             |                           | Postfix increment, decrement                                    |
 | `++` `--`                                                                                             |                           | Prefix increment, decrement                                     |
 | `!`<br>`~`<br>`+` `-`                                                                                 |                           | Logical not<br>Bitwise not<br>Positive, negative                |

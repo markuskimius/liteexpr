@@ -15,6 +15,9 @@ install: lib/LiteExprVisitor.py
 uninstall:
 	pip3 uninstall liteexpr
 
+gui0:
+	antlr4-parse ../LiteExpr.g4 file -gui ../test/000-*.le
+
 gui1:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/001-*.le
 
@@ -36,6 +39,12 @@ gui6:
 gui7:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/007-*.le
 
+gui8:
+	antlr4-parse ../LiteExpr.g4 file -gui ../test/008-*.le
+
+test0: lib/LiteExprVisitor.py
+	./test.py ../test/000-*.le
+
 test1: lib/LiteExprVisitor.py
 	./test.py ../test/001-*.le
 
@@ -56,6 +65,9 @@ test6: lib/LiteExprVisitor.py
 
 test7: lib/LiteExprVisitor.py
 	./test.py ../test/007-*.le
+
+test8: lib/LiteExprVisitor.py
+	./test.py ../test/008-*.le
 
 clean:
 	rm -rf lib/LiteExpr*.py lib/*.interp lib/*.tokens lib/__pycache__ build dist

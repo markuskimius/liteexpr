@@ -1,7 +1,7 @@
 memo = [ 0, 1 ];
 
 fib = FUNCTION("?",
-    x = ARGS[0];
+    x = ARG[0];
 
     IF(x >= LEN(memo),
         x1 = fib(x-1);

@@ -34,8 +34,8 @@ expr    : STRING                                        # String
         | expr ';'                                      # Term
         ;
 
-varname : varname '[' expr ']'                          # IndexedVar
-        | varname '.' varname                           # MemberVar
+varname : varname '.' varname                           # MemberVar
+        | varname '[' expr ']'                          # IndexedVar
         | ID                                            # SimpleVar
         ;
 

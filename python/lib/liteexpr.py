@@ -82,6 +82,7 @@ class LE_SymbolTable:
     def __init__(self, symbols=dict(), parent=None):
         self.symbols = builtins | symbols if parent is None else symbols
         self.parent = parent
+        self.root = self if parent is None else parent.root
 
     def __getitem__(self, name):
         name = str(name)
@@ -602,10 +603,14 @@ def __builtin_function(sig, body, **kwargs):
         elif c == "?" : minargs += 1; maxargs += 1
         else          : raise LE_RuntimeError(f"'{c}' is an invalid function signature")
 
-    def function(*args, **kwargs):
+    def function(*args, **kwargs2):
         csym = LE_SymbolTable({
-            "ARGS" : LE_Array(args),
+            "ARG"    : LE_Array(args),
+            "GLOBAL" : kwargs["sym"].root,
         }, kwargs["sym"])
+
+        if kwargs["sym"].parent:
+            csym["UPVAR"] = kwargs["sym"]
 
         return cbody.eval(csym)
 

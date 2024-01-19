@@ -8,7 +8,7 @@ main = FUNCTION("",
             x1 = fib(x-1);
             x2 = fib(x-2);
 
-            UPVAR.memo[x] = x1 + x2;
+            LASTSCOPE.memo[x] = x1 + x2;
         );
 
         memo[x];

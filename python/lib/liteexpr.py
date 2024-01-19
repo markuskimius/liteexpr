@@ -610,7 +610,7 @@ def __builtin_function(sig, body, **kwargs):
         }, kwargs["sym"])
 
         if kwargs["sym"].parent:
-            csym["UPVAR"] = kwargs["sym"]
+            csym["LASTSCOPE"] = kwargs["sym"]
 
         return cbody.eval(csym)
 

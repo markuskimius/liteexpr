@@ -168,7 +168,7 @@ A variable instantiated outside of the function scope may only be read directly;
 To write to variables instantiated outside of the function scope, use the following automatic variables:
 
 * `GLOBAL` - An object that can be used to access global variables.
-* `LASTSCOPE` - An object that can be used to access variables one scope level above the function scope.
+* `UPSCOPE` - An object that can be used to access variables one scope level above the function scope.
 
 
 ## License

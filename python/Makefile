@@ -43,31 +43,31 @@ gui8:
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/008-*.le
 
 test0: lib/LiteExprVisitor.py
-	./test.py ../test/000-*.le
+	./test/le-runner.py ../test/00-*.le
 
 test1: lib/LiteExprVisitor.py
-	./test.py ../test/001-*.le
+	./test/le-runner.py ../test/01-*.le
 
 test2: lib/LiteExprVisitor.py
-	./test.py ../test/002-*.le
+	./test/le-runner.py ../test/02-*.le
 
 test3: lib/LiteExprVisitor.py
-	./test.py ../test/003-*.le
+	./test/le-runner.py ../test/03-*.le
 
 test4: lib/LiteExprVisitor.py
-	./test.py ../test/004-*.le
+	./test/le-runner.py ../test/04-*.le
 
 test5: lib/LiteExprVisitor.py
-	./test.py ../test/005-*.le
+	./test/le-runner.py ../test/05-*.le
 
 test6: lib/LiteExprVisitor.py
-	./test.py ../test/006-*.le
+	./test/le-runner.py ../test/06-*.le
 
 test7: lib/LiteExprVisitor.py
-	./test.py ../test/007-*.le
+	./test/le-runner.py ../test/07-*.le
 
 test8: lib/LiteExprVisitor.py
-	./test.py ../test/008-*.le
+	./test/le-runner.py ../test/08-*.le
 
 clean:
 	rm -rf lib/LiteExpr*.py lib/*.interp lib/*.tokens lib/__pycache__ build dist

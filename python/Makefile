@@ -18,9 +18,11 @@ uninstall:
 	pip3 uninstall liteexpr
 
 gui:
+	$(if $(TEST),,$(error Usage: make $@ TEST=<test#>))
 	antlr4-parse ../LiteExpr.g4 file -gui ../test/$(shell printf "%02d" $(TEST))-*.le
 
 test: lib/LiteExprVisitor.py
+	$(if $(TEST),,$(error Usage: make $@ TEST=<test#>))
 	./test/le-runner.py ../test/$(shell printf "%02d" $(TEST))-*.le
 
 clean:

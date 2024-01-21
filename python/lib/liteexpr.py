@@ -909,6 +909,10 @@ def __builtin_foreach(var, iterable, block, **kwargs):
     iterable = visitor.visit(iterable).value
     result = Int(0)
 
+
+    if not isinstance(var,Variable):
+        raise RuntimeError(f"Argument 1 to `FOREACH` must be a variable, got ({type(var).__name__})")
+
     if isinstance(iterable.value, list):
         for v in iterable:
             var.value = v
@@ -918,7 +922,7 @@ def __builtin_foreach(var, iterable, block, **kwargs):
             var.value = Array([k, v])
             result = visitor.visit(block).value
     else:
-        raise RuntimeError(f"Argument 2 to `FOREACH` must be an iterable: ({type(iterable).__name__})")
+        raise RuntimeError(f"Argument 2 to `FOREACH` must be an iterable, got ({type(iterable).__name__})")
 
     return result
 

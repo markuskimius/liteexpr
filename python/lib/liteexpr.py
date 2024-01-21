@@ -401,8 +401,8 @@ class Evaluator(LiteExprVisitor):
             elif op == "-"   : self.result[ctx] = _op_sub(left, self.visit(rexpr).value)
             elif op == "%"   : self.result[ctx] = _op_mod(left, self.visit(rexpr).value)
             elif op == "<<"  : self.result[ctx] = _op_shl(left, self.visit(rexpr).value)
-            elif op == ">>"  : self.result[ctx] = _op_shr(left, self.visit(rexpr).value)
-            elif op == ">>>" : self.result[ctx] = _op_asr(left, self.visit(rexpr).value)
+            elif op == ">>"  : self.result[ctx] = _op_asr(left, self.visit(rexpr).value)
+            elif op == ">>>" : self.result[ctx] = _op_shr(left, self.visit(rexpr).value)
             elif op == "<"   : self.result[ctx] = _op_lt (left, self.visit(rexpr).value)
             elif op == "<="  : self.result[ctx] = _op_lte(left, self.visit(rexpr).value)
             elif op == ">"   : self.result[ctx] = _op_gt (left, self.visit(rexpr).value)
@@ -435,8 +435,8 @@ class Evaluator(LiteExprVisitor):
             elif op == "-="   : self.result[ctx] = _op_sub(var.value, self.visit(rexpr).value)
             elif op == "%="   : self.result[ctx] = _op_mod(var.value, self.visit(rexpr).value)
             elif op == "<<="  : self.result[ctx] = _op_shl(var.value, self.visit(rexpr).value)
-            elif op == ">>="  : self.result[ctx] = _op_shr(var.value, self.visit(rexpr).value)
-            elif op == ">>>=" : self.result[ctx] = _op_asr(var.value, self.visit(rexpr).value)
+            elif op == ">>="  : self.result[ctx] = _op_asr(var.value, self.visit(rexpr).value)
+            elif op == ">>>=" : self.result[ctx] = _op_shr(var.value, self.visit(rexpr).value)
             elif op == "&="   : self.result[ctx] = _op_and(var.value, self.visit(rexpr).value)
             elif op == "^="   : self.result[ctx] = _op_xor(var.value, self.visit(rexpr).value)
             elif op == "|="   : self.result[ctx] = _op_or (var.value, self.visit(rexpr).value)
@@ -646,7 +646,7 @@ def _op_shl(left, right):
     raise RuntimeError(f"Unsupported operand type(s) for `<<`: ({type(left).__name__},{type(right).__name__})")
 
 
-def _op_shr(left, right):
+def _op_asr(left, right):
     if isinstance(left,int) and isinstance(right,int):
         if right >= 0 : return Int(left >> right)
         else          : raise RuntimeError(f"Invalid attempt to shift `>>` by a negative amount: {right}")
@@ -654,7 +654,7 @@ def _op_shr(left, right):
     raise RuntimeError(f"Unsupported operand type(s) for `>>`: ({type(left).__name__},{type(right).__name__})")
 
 
-def _op_asr(left, right):
+def _op_shr(left, right):
     if isinstance(left,int) and isinstance(right,int):
         if right >= 0 : return Int((left & INTMASK) >> right)
         else          : raise RuntimeError(f"Invalid attempt to shift `>>>` by a negative amount: {right}")

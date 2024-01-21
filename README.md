@@ -125,7 +125,7 @@ Following are valid identifiers, in the order of highest to lowest precedence:
 | `? ... :`                                                                                             | right-to-left             | Ternary conditional                                             |
 | `;`                                                                                                   |                           | Expression separator / terminator                               |
 
-[^1] Associativity is left-to-right unless noted otherwise.
+[^1]: Associativity is left-to-right unless noted otherwise.
 
 
 ## Built-In Functions

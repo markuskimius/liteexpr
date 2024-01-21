@@ -109,7 +109,7 @@ class SymbolTable:
         symbols = dict()
 
         if self.parent:
-            symbols["__parent__"] = self.parent.__all()
+            symbols["__PARENT__"] = self.parent.__all()
 
         for k,v in self.symbols.items():
             if   k in ("GLOBAL", "UPSCOPE") : symbols[k] = f"<{k}>"

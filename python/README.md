@@ -21,7 +21,7 @@ pip3 install liteexpr
 ```python
 import liteexpr
 
-symbols = liteexpr.LE_SymbolTable({
+symbols = liteexpr.SymbolTable({
     "grades" : {
         "alice" : "A",
         "bob"   : "B",

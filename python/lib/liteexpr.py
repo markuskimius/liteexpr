@@ -14,6 +14,7 @@ from .LiteExprVisitor import LiteExprVisitor
 # CONSTANTS
 
 INTMASK = 0xffffffffffffffff
+INTMAX  = (INTMASK >> 1)
 
 
 ##############################################################################
@@ -40,9 +41,9 @@ def compile(code):
     except antlr4.error.Errors.ParseCancellationException as e:
         t = e.args[0].offendingToken
 
-        raise LE_SyntaxError(f"Unexpected token `{t.text}`", t.line, t.column) from None
+        raise SyntaxError(f"Unexpected token `{t.text}`", t.line, t.column) from None
 
-    return LE_Compiled(tree)
+    return Compiled(tree)
 
 
 def compilefd(fd):
@@ -54,134 +55,215 @@ def compilefd(fd):
 ##############################################################################
 # EXCEPTIONS
 
-class LE_Error(Exception):
+class Error(Exception):
     def __init__(self, text, line=None, column=None):
         if   column is None and line is None : super().__init__(f"{text}")
         elif column is None                  : super().__init__(f"[line {line}] {text}")
         else                                 : super().__init__(f"[line {line}, col {column}] {text}")
 
-class LE_SyntaxError(LE_Error): pass
-class LE_RuntimeError(LE_Error): pass
+class SyntaxError(Error): pass
+class RuntimeError(Error): pass
 
 
 ##############################################################################
 # HELPER CLASSES
 
-class LE_Compiled:
+class Compiled:
     def __init__(self, tree):
         self.tree = tree
 
     def eval(self, symbolTable=None):
-        evaluator = LE_Evaluator(symbolTable)
+        evaluator = Evaluator(symbolTable)
         evaluator.visit(self.tree)
 
         return evaluator.result[self.tree]
 
 
-class LE_SymbolTable:
+class SymbolTable:
     def __init__(self, symbols=dict(), parent=None):
-        self.symbols = builtins | symbols if parent is None else symbols
+        self.symbols = dict()
         self.parent = parent
         self.root = self if parent is None else parent.root
+
+        if self.parent is None:
+            self.symbols |= builtins
+
+        for k,v in symbols.items():
+            self.__setitem__(k,v)
 
     def __getitem__(self, name):
         name = str(name)
 
         if   name in self.symbols : return self.symbols[name]
-        elif self.parent is None  : raise LE_RuntimeError(f"{name} is not a valid symbol")
+        elif self.parent is None  : raise RuntimeError(f"{name} is not a valid symbol")
         else                      : return self.parent[name]
 
     def __setitem__(self, name, value):
         name = str(name)
 
-        self.symbols[name] = value
+        self.symbols[name] = _to_levalue(value)
 
         return self.symbols[name]
 
-    def __active(self):
-        symbols = self.symbols
+    def __all(self):
+        symbols = dict()
 
         if self.parent:
-            symbols = self.parent.__active() | symbols
+            symbols["__parent__"] = self.parent.__all()
+
+        for k,v in self.symbols.items():
+            if   k in ("GLOBAL", "UPSCOPE") : symbols[k] = f"<{k}>"
+            elif isinstance(v,SymbolTable)  : symbols[k] = v.__all()
+            else                            : symbols[k] = v
 
         return symbols
 
     def __str__(self):
         import json
 
-        return json.dumps(self.__active(), indent=2, default=str)
+        return json.dumps(self.__all(), indent=2, default=str)
+
+    @property
+    def value(self):
+        return self
 
 
 ##############################################################################
 # TYPES
 
-class LE_Variable:
+class Variable:
     def __init__(self, name, container):
         self.name = name
         self.container = container
 
     @property
     def value(self):
-        if   isinstance(self.container, LE_SymbolTable) : return self.container[self.name]
-        elif isinstance(self.container, list)           : return self.container[self.name]
-        elif isinstance(self.container, dict)           : return self.container[self.name]
-        else                                            : return self.container
+        try:
+            if   isinstance(self.container, SymbolTable) : return self.container[self.name]
+            elif isinstance(self.container, list)        : return self.container[self.name]
+            elif isinstance(self.container, dict)        : return self.container[self.name]
+            else                                         : return self.container
+        except IndexError as e:
+            raise RuntimeError(str(e)) from None
 
     @value.setter
     def value(self, value):
-        if   isinstance(self.container, LE_SymbolTable) : self.container[self.name] = value
-        elif isinstance(self.container, list)           : self.container[self.name] = value
-        elif isinstance(self.container, dict)           : self.container[self.name] = value
-        else                                            : self.container = value
+        if   isinstance(self.container, SymbolTable) : self.container[self.name] = value
+        elif isinstance(self.container, list)        : self.container[self.name] = value
+        elif isinstance(self.container, dict)        : self.container[self.name] = value
+        else                                         : self.container = value
 
         return value
 
 
-class LE_Int(int):
+class Int(int):
+    def __new__(cls, value, *args, **kwargs):
+        #
+        # Integer has no limit in Python, but liteexpr's integer is a signed
+        # 64-bit.  To simulate a signed 64-bit in Python, we reduce the
+        # precision every time liteexpr integer type is instantiated.  And we
+        # have to do this in __new__ instead of __init__ because the int
+        # built-in type we're subclassing is immutable.
+        #
+
+        value = int(value, *args, **kwargs) & INTMASK
+
+        if value > INTMAX:
+            value = -((value ^ INTMASK) + 1)
+
+        return super(Int, cls).__new__(cls, value)
+
     @property
     def value(self):
         return self
 
 
-class LE_Double(float):
+class Double(float):
+    def __new__(cls, value, *args, **kwargs):
+        #
+        # liteexpr doesn't support complex numbers.  A complex result can occur
+        # by the ** operator, for example `-1 ** 0.5` (for some strange reason,
+        # Python resolves -1 ** 0.5 to a complex number only if -1 and 0.5 are
+        # stored in variables, not literals.)
+        #
+        if isinstance(value,complex) : value = "NaN"
+
+        return super(Double, cls).__new__(cls, value, *args, **kwargs)
+
+    @property
+    def value(self):
+        return self
+
+    def __truediv__(self, other):
+        if   other == 0 and self == 0                  : return Double("NaN")
+        if   other == 0 and math.isnan(self)           : return Double("NaN")
+        elif other == 0 and math.copysign(1, self) > 0 : return Double("Inf")
+        elif other == 0 and math.copysign(1, self) < 1 : return Double("-Inf")
+        else                                           : return super().__truediv__(other)
+
+    def __str__(self):
+        if   math.isnan(self)              : return "NaN"
+        elif math.isinf(self) and self > 0 : return "Inf"
+        elif math.isinf(self) and self < 0 : return "-Inf"
+
+        return super().__str__()
+
+
+class String(str):
     @property
     def value(self):
         return self
 
 
-class LE_String(str):
-    @property
-    def value(self):
-        return self
-
-
-class LE_Array(list):
+class Array(list):
     @property
     def value(self):
         return self
 
     def __setitem__(self, index, value):
+        value = _to_levalue(value)
+
         if   index < len(self)  : super().__setitem__(index, value)
         elif index == len(self) : super().append(value)
-        else                    : raise LE_RuntimeError(f"Index `{index}` is out of array range")
+        else                    : raise RuntimeError(f"Index `{index}` is out of array range (<{len(self)})")
 
         return value
 
 
-class LE_Object(dict):
+class Object(dict):
     @property
     def value(self):
         return self
+
+    def __setitem__(self, key, value):
+        value = _to_levalue(value)
+
+        super().__setitem__(key, value)
+
+        return value
+
+
+def _to_levalue(value):
+    if   isinstance(value,SymbolTable) : value = value
+    elif isinstance(value,int)         : value = Int(value)
+    elif isinstance(value,float)       : value = Double(value)
+    elif isinstance(value,str)         : value = String(value)
+    elif isinstance(value,list)        : value = Array([_to_levalue(v) for v in value])
+    elif isinstance(value,dict)        : value = Object({str(k):_to_levalue(v) for k,v in value.items()})
+    elif callable(value)               : value = Function(value)
+    else                               : raise SyntaxError("Unsupported data type `{type(value)}`")
+
+    return value
 
 
 ##############################################################################
 # EVALUATOR
 
-class LE_Evaluator(LiteExprVisitor):
+class Evaluator(LiteExprVisitor):
     def __init__(self, symbolTable=None):
         super().__init__()
         self.result = dict()
-        self.symbolTable = LE_SymbolTable() if symbolTable is None else symbolTable
+        self.symbolTable = SymbolTable() if symbolTable is None else symbolTable
 
     def visitFile(self, ctx):
         self.visitChildren(ctx)
@@ -189,34 +271,34 @@ class LE_Evaluator(LiteExprVisitor):
         if ctx.expr():
             self.result[ctx] = self.result[ctx.expr()].value
         else:
-            self.result[ctx] = LE_Int()
+            self.result[ctx] = Int(0)
 
         return self.result[ctx]
 
     def visitString(self, ctx):
         if ctx not in self.result:
             try:
-                self.result[ctx] = LE_String(_decodeString(ctx.STRING().getText()[1:-1]))
-            except LE_SyntaxError as e:
-                raise LE_SyntaxError(str(e), ctx.start.line, ctx.start.column) from None
+                self.result[ctx] = String(_decodeString(ctx.STRING().getText()[1:-1]))
+            except SyntaxError as e:
+                raise SyntaxError(str(e), ctx.start.line, ctx.start.column) from None
 
         return self.result[ctx]
 
     def visitDouble(self, ctx):
         if ctx not in self.result:
-            self.result[ctx] = LE_Double(ctx.DOUBLE().getText())
+            self.result[ctx] = Double(ctx.DOUBLE().getText())
 
         return self.result[ctx]
 
     def visitHex(self, ctx):
         if ctx not in self.result:
-            self.result[ctx] = LE_Int(ctx.HEX().getText()[2:], 16)
+            self.result[ctx] = Int(ctx.HEX().getText()[2:], 16)
 
         return self.result[ctx]
 
     def visitInt(self, ctx):
         if ctx not in self.result:
-            self.result[ctx] = LE_Int(ctx.INT().getText())
+            self.result[ctx] = Int(ctx.INT().getText())
 
         return self.result[ctx]
 
@@ -232,10 +314,10 @@ class LE_Evaluator(LiteExprVisitor):
 
         try:
             self.result[ctx] = fn(*args, visitor=self, sym=self.symbolTable)
-        except LE_SyntaxError as e:
-            raise LE_SyntaxError(f"Syntax error while executing `{ctx.getText()}`:\n\t{str(e)}", ctx.start.line, ctx.start.column) from None
-        except LE_RuntimeError as e:
-            raise LE_RuntimeError(f"Runtime error while executing `{ctx.getText()}`:\n\t{str(e)}", ctx.start.line, ctx.start.column) from None
+        except SyntaxError as e:
+            raise SyntaxError(f"Syntax error while executing `{ctx.getText()}`:\n\t{str(e)}", ctx.start.line, ctx.start.column) from None
+        except RuntimeError as e:
+            raise RuntimeError(f"Runtime error while executing `{ctx.getText()}`:\n\t{str(e)}", ctx.start.line, ctx.start.column) from None
 
         return self.result[ctx]
 
@@ -272,11 +354,10 @@ class LE_Evaluator(LiteExprVisitor):
 
         var = self.result[ctx.varname()]
         op = ctx.op.text
-        T = type(var.value)
 
-        if   op == "++" : self.result[ctx] = var.value; var.value = T(var.value + 1)
-        elif op == "--" : self.result[ctx] = var.value; var.value = T(var.value - 1)
-        else            : raise LE_SyntaxError("Unknown postfix operator `{op}`", ctx.start.line, ctx.start.column)
+        if   op == "++" : self.result[ctx] = var.value; var.value = _op_inc(var.value)
+        elif op == "--" : self.result[ctx] = var.value; var.value = _op_dec(var.value)
+        else            : raise SyntaxError("Unknown postfix operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -285,11 +366,10 @@ class LE_Evaluator(LiteExprVisitor):
 
         var = self.result[ctx.varname()]
         op = ctx.op.text
-        T = type(var.value)
 
-        if   op == "++" : var = T(var.value + 1); self.result[ctx] = var.value
-        elif op == "--" : var = T(var.value - 1); self.result[ctx] = var.value
-        else            : raise LE_SyntaxError("Unknown prefix operator `{op}`", ctx.start.line, ctx.start.column)
+        if   op == "++" : var = _op_inc(var.value); self.result[ctx] = var.value
+        elif op == "--" : var = _op_dec(var.value); self.result[ctx] = var.value
+        else            : raise SyntaxError("Unknown prefix operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -300,62 +380,71 @@ class LE_Evaluator(LiteExprVisitor):
         op = ctx.op.text
         T = type(value)
 
-        if   op == "!"  : self.result[ctx] = LE_Int(not value)
-        elif op == "~"  : self.result[ctx] = LE_Int(~value)
-        elif op == "+"  : self.result[ctx] = value
-        elif op == "-"  : self.result[ctx] = T(-value)
-        else            : raise LE_SyntaxError("Unknown unary operator `{op}`", ctx.start.line, ctx.start.column)
+        if   op == "!"  : self.result[ctx] = _op_not(value)
+        elif op == "~"  : self.result[ctx] = _op_inv(value)
+        elif op == "+"  : self.result[ctx] = _op_pos(value)
+        elif op == "-"  : self.result[ctx] = _op_neg(value)
+        else            : raise SyntaxError("Unknown unary operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
     def visitBinaryOp(self, ctx):
         op = ctx.op.text
+        left = self.visit(ctx.expr(0)).value
+        rexpr = ctx.expr(1)
 
-        if   op == "**"  : self.result[ctx] = _op_pow(*ctx.expr(), visitor=self)
-        elif op == "*"   : self.result[ctx] = _op_mul(*ctx.expr(), visitor=self)
-        elif op == "/"   : self.result[ctx] = _op_div(*ctx.expr(), visitor=self)
-        elif op == "+"   : self.result[ctx] = _op_add(*ctx.expr(), visitor=self)
-        elif op == "-"   : self.result[ctx] = _op_sub(*ctx.expr(), visitor=self)
-        elif op == "%"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value %   self.visit(ctx.expr(1)).value)
-        elif op == "<<"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value <<  self.visit(ctx.expr(1)).value)
-        elif op == ">>"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value >>  self.visit(ctx.expr(1)).value)
-        elif op == "<"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value <   self.visit(ctx.expr(1)).value)
-        elif op == "<="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value <=  self.visit(ctx.expr(1)).value)
-        elif op == ">"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value >   self.visit(ctx.expr(1)).value)
-        elif op == ">="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value >=  self.visit(ctx.expr(1)).value)
-        elif op == "=="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value ==  self.visit(ctx.expr(1)).value)
-        elif op == "!="  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value !=  self.visit(ctx.expr(1)).value)
-        elif op == "&"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value &   self.visit(ctx.expr(1)).value)
-        elif op == "^"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value ^   self.visit(ctx.expr(1)).value)
-        elif op == "|"   : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value |   self.visit(ctx.expr(1)).value)
-        elif op == "&&"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value and self.visit(ctx.expr(1)).value)
-        elif op == "||"  : self.result[ctx] = LE_Int(self.visit(ctx.expr(0)).value or  self.visit(ctx.expr(1)).value)
-        elif op == ">>>" : self.result[ctx] = LE_Int((self.visit(ctx.expr(0)).value & INTMASK) >> self.visit(ctx.expr(1)).value)
-        elif op == ";"   : self.visit(ctx.expr(0)); self.result[ctx] = self.visit(ctx.expr(1)).value
-        else             : raise LE_SyntaxError("Unknown binary operator `{op}`", ctx.start.line, ctx.start.column)
+        try:
+            if   op == "**"  : self.result[ctx] = _op_pow(left, self.visit(rexpr).value)
+            elif op == "*"   : self.result[ctx] = _op_mul(left, self.visit(rexpr).value)
+            elif op == "/"   : self.result[ctx] = _op_div(left, self.visit(rexpr).value)
+            elif op == "+"   : self.result[ctx] = _op_add(left, self.visit(rexpr).value)
+            elif op == "-"   : self.result[ctx] = _op_sub(left, self.visit(rexpr).value)
+            elif op == "%"   : self.result[ctx] = _op_mod(left, self.visit(rexpr).value)
+            elif op == "<<"  : self.result[ctx] = _op_shl(left, self.visit(rexpr).value)
+            elif op == ">>"  : self.result[ctx] = _op_shr(left, self.visit(rexpr).value)
+            elif op == ">>>" : self.result[ctx] = _op_asr(left, self.visit(rexpr).value)
+            elif op == "<"   : self.result[ctx] = _op_lt (left, self.visit(rexpr).value)
+            elif op == "<="  : self.result[ctx] = _op_lte(left, self.visit(rexpr).value)
+            elif op == ">"   : self.result[ctx] = _op_gt (left, self.visit(rexpr).value)
+            elif op == ">="  : self.result[ctx] = _op_gte(left, self.visit(rexpr).value)
+            elif op == "=="  : self.result[ctx] = _op_eq (left, self.visit(rexpr).value)
+            elif op == "!="  : self.result[ctx] = _op_ne (left, self.visit(rexpr).value)
+            elif op == "&"   : self.result[ctx] = _op_and(left, self.visit(rexpr).value)
+            elif op == "^"   : self.result[ctx] = _op_xor(left, self.visit(rexpr).value)
+            elif op == "|"   : self.result[ctx] = _op_or (left, self.visit(rexpr).value)
+            elif op == "||"  : self.result[ctx] = _op_or_logical(left, rexpr, visitor=self)
+            elif op == "&&"  : self.result[ctx] = _op_and_logical(left, rexpr, visitor=self)
+            elif op == ";"   : self.result[ctx] = self.visit(rexpr).value
+            else             : raise SyntaxError("Unknown binary operator `{op}`", ctx.op.line, ctx.op.column)
+        except RuntimeError as e:
+            raise RuntimeError(str(e), ctx.op.line, ctx.op.column) from None
 
         return self.result[ctx]
 
     def visitAssignOp(self, ctx):
         op = ctx.op.text
         var = self.visit(ctx.varname())
+        rexpr = ctx.expr()
 
-        if   op == "="    : self.result[ctx] = self.visit(ctx.expr()).value
-        elif op == "**="  : self.result[ctx] = _op_pow(var, ctx.expr(), visitor=self)
-        elif op == "*="   : self.result[ctx] = _op_mul(var, ctx.expr(), visitor=self)
-        elif op == "/="   : self.result[ctx] = _op_div(var, ctx.expr(), visitor=self)
-        elif op == "+="   : self.result[ctx] = _op_add(var, ctx.expr(), visitor=self)
-        elif op == "-="   : self.result[ctx] = _op_sub(var, ctx.expr(), visitor=self)
-        elif op == "%="   : self.result[ctx] = LE_Int(var.value %   self.visit(ctx.expr()).value)
-        elif op == "<<="  : self.result[ctx] = LE_Int(var.value <<  self.visit(ctx.expr()).value)
-        elif op == ">>="  : self.result[ctx] = LE_Int(var.value >>  self.visit(ctx.expr()).value)
-        elif op == "&="   : self.result[ctx] = LE_Int(var.value &   self.visit(ctx.expr()).value)
-        elif op == "^="   : self.result[ctx] = LE_Int(var.value ^   self.visit(ctx.expr()).value)
-        elif op == "|="   : self.result[ctx] = LE_Int(var.value |   self.visit(ctx.expr()).value)
-        elif op == "&&="  : self.result[ctx] = LE_Int(var.value and self.visit(ctx.expr()).value)
-        elif op == "||="  : self.result[ctx] = LE_Int(var.value or  self.visit(ctx.expr()).value)
-        elif op == ">>>=" : self.result[ctx] = LE_Int((var.value & INTMASK) >> self.visit(ctx.expr()).value)
-        else              : raise LE_SyntaxError("Unknown assign operator `{op}`", ctx.start.line, ctx.start.column)
+        try:
+            if   op == "="    : self.result[ctx] = self.visit(rexpr).value
+            elif op == "**="  : self.result[ctx] = _op_pow(var.value, self.visit(rexpr).value)
+            elif op == "*="   : self.result[ctx] = _op_mul(var.value, self.visit(rexpr).value)
+            elif op == "/="   : self.result[ctx] = _op_div(var.value, self.visit(rexpr).value)
+            elif op == "+="   : self.result[ctx] = _op_add(var.value, self.visit(rexpr).value)
+            elif op == "-="   : self.result[ctx] = _op_sub(var.value, self.visit(rexpr).value)
+            elif op == "%="   : self.result[ctx] = _op_mod(var.value, self.visit(rexpr).value)
+            elif op == "<<="  : self.result[ctx] = _op_shl(var.value, self.visit(rexpr).value)
+            elif op == ">>="  : self.result[ctx] = _op_shr(var.value, self.visit(rexpr).value)
+            elif op == ">>>=" : self.result[ctx] = _op_asr(var.value, self.visit(rexpr).value)
+            elif op == "&="   : self.result[ctx] = _op_and(var.value, self.visit(rexpr).value)
+            elif op == "^="   : self.result[ctx] = _op_xor(var.value, self.visit(rexpr).value)
+            elif op == "|="   : self.result[ctx] = _op_or (var.value, self.visit(rexpr).value)
+            elif op == "||="  : self.result[ctx] = _op_or_logical(var.value, rexpr, visitor=self)
+            elif op == "&&="  : self.result[ctx] = _op_and_logical(var.value, rexpr, visitor=self)
+            else              : raise SyntaxError("Unknown assign operator `{op}`", ctx.op.line, ctx.op.column)
+        except RuntimeError as e:
+            raise RuntimeError(str(e), ctx.op.line, ctx.op.column) from None
 
         var.value = self.result[ctx]
 
@@ -368,7 +457,7 @@ class LE_Evaluator(LiteExprVisitor):
         )
 
         if op[0] == "?" and op[1] == ":" : self.result[ctx] = self.visit(ctx.expr(1)).value if self.visit(ctx.expr(0)).value else self.visit(ctx.expr(2)).value
-        else                             : raise LE_SyntaxError("Unknown tertiary operator `{op[0]} {op[1]}`", ctx.start.line, ctx.start.column)
+        else                             : raise SyntaxError("Unknown tertiary operator `{op[0]} {op[1]}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -378,7 +467,7 @@ class LE_Evaluator(LiteExprVisitor):
         array = self.result[ctx.varname()].value
         index = self.result[ctx.expr()].value
 
-        self.result[ctx] = LE_Variable(index, array)
+        self.result[ctx] = Variable(index, array)
 
         return self.result[ctx]
 
@@ -388,7 +477,7 @@ class LE_Evaluator(LiteExprVisitor):
         base = self.result[ctx.varname(0)].value
         member = self.result[ctx.varname(1)].name
 
-        self.result[ctx] = LE_Variable(member, base)
+        self.result[ctx] = Variable(member, base)
 
         return self.result[ctx]
 
@@ -400,7 +489,7 @@ class LE_Evaluator(LiteExprVisitor):
         return self.result[ctx]
 
     def visitNoop(self, ctx):
-        self.result[ctx] = LE_Int(0)
+        self.result[ctx] = Int(0)
 
         return self.result[ctx]
 
@@ -409,14 +498,14 @@ class LE_Evaluator(LiteExprVisitor):
 
         varname = ctx.ID().getText()
 
-        self.result[ctx] = LE_Variable(varname, self.symbolTable)
+        self.result[ctx] = Variable(varname, self.symbolTable)
 
         return self.result[ctx]
 
     def visitPairlist(self, ctx):
         self.visitChildren(ctx)
 
-        self.result[ctx] = LE_Object()
+        self.result[ctx] = Object()
 
         for pair in ctx.pair():
             for k,v in self.result[pair].items():
@@ -430,14 +519,14 @@ class LE_Evaluator(LiteExprVisitor):
         name = ctx.ID().getText()
         value = self.result[ctx.expr()]
 
-        self.result[ctx] = { LE_String(name) : value }
+        self.result[ctx] = { String(name) : value }
 
         return self.result[ctx]
 
     def visitList(self, ctx):
         self.visitChildren(ctx)
 
-        self.result[ctx] = LE_Array()
+        self.result[ctx] = Array()
 
         for item in ctx.expr():
             self.result[ctx] += [self.result[item].value]
@@ -445,59 +534,258 @@ class LE_Evaluator(LiteExprVisitor):
         return self.result[ctx]
 
 
-def _op_pow(*args, **kwargs):
-    visitor = kwargs["visitor"]
-    value = (
-        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
-        visitor.visit(args[1]).value,
-    )
-    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+def _op_inc(value):
+    if   isinstance(value,int) : return Int(value+1)
 
-    return (LE_Double if value[1] < 0 else T)(value[0] ** value[1])
+    raise RuntimeError(f"Unsupported operand type for `++`: ({type(value).__name__})")
 
 
-def _op_mul(*args, **kwargs):
-    visitor = kwargs["visitor"]
-    value = (
-        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
-        visitor.visit(args[1]).value,
-    )
-    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+def _op_dec(value):
+    if   isinstance(value,int) : return Int(value-1)
 
-    return T(value[0] * value[1])
+    raise RuntimeError(f"Unsupported operand type for `--`: ({type(value).__name__})")
 
 
-def _op_div(*args, **kwargs):
-    visitor = kwargs["visitor"]
-    value = (
-        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
-        visitor.visit(args[1]).value,
-    )
-    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+def _op_not(value):
+    if   isinstance(value,int)   : return Int(value == 0)
+    elif isinstance(value,float) : return Int(value == 0.0)
+    elif isinstance(value,str)   : return Int(value == "")
+    elif isinstance(value,list)  : return Int(len(value) == 0)
+    elif isinstance(value,dict)  : return Int(len(value) == 0)
 
-    return T(value[0] / value[1])
-
-
-def _op_add(*args, **kwargs):
-    visitor = kwargs["visitor"]
-    value = (
-        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
-        visitor.visit(args[1]).value,
-    )
-    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
-
-    return LE_String(str(value[0]) + str(value[1])) if isinstance(value[0],str) or isinstance(value[1],str) else T(value[0] + value[1])
+    raise RuntimeError(f"Unsupported operand type for `!`: ({type(value).__name__})")
 
 
-def _op_sub(*args, **kwargs):
-    visitor = kwargs["visitor"]
-    value = (
-        args[0].value if isinstance(args[0],LE_Variable) else visitor.visit(args[0]).value,
-        visitor.visit(args[1]).value,
-    )
-    T = LE_Int if isinstance(value[0],int) and isinstance(value[1],int) else LE_Double
+def _op_inv(value):
+    if   isinstance(value,int)   : return Int(~value)
 
-    return T(value[0] - value[1])
+    raise RuntimeError(f"Unsupported operand type for `~`: ({type(value).__name__})")
+
+
+def _op_pos(value):
+    if   isinstance(value,int)   : return Int(value)
+    elif isinstance(value,float) : return Double(value)
+
+    raise RuntimeError(f"Unsupported operand type for `+`: ({type(value).__name__})")
+
+
+def _op_neg(value):
+    if   isinstance(value,int)   : return Int(-value)
+    elif isinstance(value,float) : return Double(-value)
+
+    raise RuntimeError(f"Unsupported operand type for `-`: ({type(value).__name__})")
+
+
+def _op_pow(left, right):
+    try:
+        if   isinstance(left,int)   and isinstance(right,int)   : return (Double if right < 0 else Int)(left ** right)
+        elif isinstance(left,int)   and isinstance(right,float) : return Double(left ** right)
+        elif isinstance(left,float) and isinstance(right,int)   : return Double(left ** right)
+        elif isinstance(left,float) and isinstance(right,float) : return Double(left ** right)
+    except ZeroDivisionError as e:
+        raise RuntimeError(f"Negative power of zero: ({left} ** {right})") from None
+
+    raise RuntimeError(f"Unsupported operand type(s) for `**`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_mul(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left * right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Double(left * right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Double(left * right)
+    elif isinstance(left,float) and isinstance(right,float) : return Double(left * right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `*`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_div(left, right):
+    try:
+        if   isinstance(left,int)   and isinstance(right,int)   : return Int(left // right)
+        elif isinstance(left,int)   and isinstance(right,float) : return Double(Double(left) / Double(right))
+        elif isinstance(left,float) and isinstance(right,int)   : return Double(Double(left) / Double(right))
+        elif isinstance(left,float) and isinstance(right,float) : return Double(Double(left) / Double(right))
+    except ZeroDivisionError as e:
+        raise RuntimeError(f"Division by zero: ({left} / {right})") from None
+
+    raise RuntimeError(f"Unsupported operand type(s) for `/`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_add(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left + right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Double(left + right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Double(left + right)
+    elif isinstance(left,float) and isinstance(right,float) : return Double(left + right)
+    elif isinstance(left,list)  and isinstance(right,list)  : return Array(left + right)
+    elif isinstance(left,str)   or  isinstance(right,str)   : return String(str(left) + str(right))
+
+    raise RuntimeError(f"Unsupported operand type(s) for `+`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_sub(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left - right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Double(left - right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Double(left - right)
+    elif isinstance(left,float) and isinstance(right,float) : return Double(left - right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `-`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_mod(left, right):
+    try:
+        if   isinstance(left,int)   and isinstance(right,int)   : return Int(left % right)
+    except ZeroDivisionError as e:
+        raise RuntimeError(f"Modulus by zero: ({left} % {right})") from None
+
+    raise RuntimeError(f"Unsupported operand type(s) for `%`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_shl(left, right):
+    if isinstance(left,int) and isinstance(right,int):
+        if right >= 0 : return Int(left << right)
+        else          : raise RuntimeError(f"Invalid attempt to shift `<<` by a negative amount: {right}")
+
+    raise RuntimeError(f"Unsupported operand type(s) for `<<`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_shr(left, right):
+    if isinstance(left,int) and isinstance(right,int):
+        if right >= 0 : return Int(left >> right)
+        else          : raise RuntimeError(f"Invalid attempt to shift `>>` by a negative amount: {right}")
+
+    raise RuntimeError(f"Unsupported operand type(s) for `>>`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_asr(left, right):
+    if isinstance(left,int) and isinstance(right,int):
+        if right >= 0 : return Int((left & INTMASK) >> right)
+        else          : raise RuntimeError(f"Invalid attempt to shift `>>>` by a negative amount: {right}")
+
+    raise RuntimeError(f"Unsupported operand type(s) for `>>>`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_lt(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left < right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Int(left < right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Int(left < right)
+    elif isinstance(left,float) and isinstance(right,float) : return Int(left < right)
+    elif isinstance(left,str)   and isinstance(right,str)   : return Int(left < right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `<`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_lte(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left <= right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Int(left <= right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Int(left <= right)
+    elif isinstance(left,float) and isinstance(right,float) : return Int(left <= right)
+    elif isinstance(left,str)   and isinstance(right,str)   : return Int(left <= right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `<=`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_gt(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left > right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Int(left > right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Int(left > right)
+    elif isinstance(left,float) and isinstance(right,float) : return Int(left > right)
+    elif isinstance(left,str)   and isinstance(right,str)   : return Int(left > right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `>`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_gte(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left >= right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Int(left >= right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Int(left >= right)
+    elif isinstance(left,float) and isinstance(right,float) : return Int(left >= right)
+    elif isinstance(left,str)   and isinstance(right,str)   : return Int(left >= right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `>=`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_eq(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left == right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Int(left == right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Int(left == right)
+    elif isinstance(left,float) and isinstance(right,float) : return Int(left == right)
+    elif isinstance(left,str)   and isinstance(right,str)   : return Int(left == right)
+    elif isinstance(left,list)  and isinstance(right,list)  : return Int(left == right)
+    elif isinstance(left,dict)  and isinstance(right,dict)  : return Int(left == right)
+    else                                                    : return Int(False)
+
+
+def _op_ne(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left != right)
+    elif isinstance(left,int)   and isinstance(right,float) : return Int(left != right)
+    elif isinstance(left,float) and isinstance(right,int)   : return Int(left != right)
+    elif isinstance(left,float) and isinstance(right,float) : return Int(left != right)
+    elif isinstance(left,str)   and isinstance(right,str)   : return Int(left != right)
+    elif isinstance(left,list)  and isinstance(right,list)  : return Int(left != right)
+    elif isinstance(left,dict)  and isinstance(right,dict)  : return Int(left != right)
+    else                                                    : return Int(True)
+
+
+def _op_and(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left & right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `^`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_xor(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left ^ right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `^`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_or(left, right):
+    if   isinstance(left,int)   and isinstance(right,int)   : return Int(left | right)
+
+    raise RuntimeError(f"Unsupported operand type(s) for `|`: ({type(left).__name__},{type(right).__name__})")
+
+
+def _op_or_logical(left, rexpr, **kwargs):
+    result = None
+
+    if   isinstance(left,int)   : result = Int(left != 0)
+    elif isinstance(left,float) : result = Int(left != 0.0)
+    elif isinstance(left,str)   : result = Int(left != "")
+    elif isinstance(left,list)  : result = Int(len(left) != 0)
+    elif isinstance(left,dict)  : result = Int(len(left) != 0)
+    else : raise RuntimeError(f"Unsupported operand type(s) for `||`: ({type(left).__name__},{type(right).__name__})")
+
+    if not result:
+        right = kwargs["visitor"].visit(rexpr).value
+
+        if   isinstance(right,int)   : result = Int(right != 0)
+        elif isinstance(right,float) : result = Int(right != 0.0)
+        elif isinstance(right,str)   : result = Int(right != "")
+        elif isinstance(right,list)  : result = Int(len(right) != 0)
+        elif isinstance(right,dict)  : result = Int(len(right) != 0)
+        else : raise RuntimeError(f"Unsupported operand type(s) for `||`: ({type(left).__name__},{type(right).__name__})")
+
+    return result
+
+
+def _op_and_logical(left, rexpr, **kwargs):
+    result = None
+
+    if   isinstance(left,int)   : result = Int(left != 0)
+    elif isinstance(left,float) : result = Int(left != 0.0)
+    elif isinstance(left,str)   : result = Int(left != "")
+    elif isinstance(left,list)  : result = Int(len(left) != 0)
+    elif isinstance(left,dict)  : result = Int(len(left) != 0)
+    else : raise RuntimeError(f"Unsupported operand type(s) for `&&`: ({type(left).__name__},{type(right).__name__})")
+
+    if result:
+        right = kwargs["visitor"].visit(rexpr).value
+
+        if   isinstance(right,int)   : result = Int(right != 0)
+        elif isinstance(right,float) : result = Int(right != 0.0)
+        elif isinstance(right,str)   : result = Int(right != "")
+        elif isinstance(right,list)  : result = Int(len(right) != 0)
+        elif isinstance(right,dict)  : result = Int(len(right) != 0)
+        else : raise RuntimeError(f"Unsupported operand type(s) for `&&`: ({type(left).__name__},{type(right).__name__})")
+
+    return result
 
 
 ##############################################################################
@@ -519,7 +807,7 @@ def _decodeString(s):
         elif s[i:i+2] == "\\x"    : decoded += chr(int(s[i+2:i+4], 16)); i+=4
         elif s[i:i+2] == "\\u"    : decoded += chr(int(s[i+2:i+6], 16)); i+=6
         elif s[i:i+2] == "\\U"    : decoded += chr(int(s[i+2:i+10], 16)); i+=10
-        elif s[i:i+1] == "\\"     : raise LE_SyntaxError(f"Invalid backslash sequence in string at position {i}")
+        elif s[i:i+1] == "\\"     : raise SyntaxError(f"Invalid backslash sequence in string at position {i}")
         else                      : decoded += s[i]; i+=1
 
     return decoded
@@ -539,7 +827,7 @@ def _encodeString(s):
 ##############################################################################
 # BUILTIN FUNCTIONS
 
-class LE_Function:
+class Function:
     def __init__(self, fn, **kwargs):
         self.fn = fn
         self.opts = {
@@ -550,16 +838,19 @@ class LE_Function:
 
         # Validation
         if   self.opts["minargs"] > self.opts["maxargs"]:
-            raise LE_SyntaxError(f"minargs ({self.opts['minargs']}) is greater than than maxargs ({self.opts['maxargs']})")
+            raise SyntaxError(f"minargs ({self.opts['minargs']}) is greater than than maxargs ({self.opts['maxargs']})")
 
     def __call__(self, *args, **kwargs):
         minargs = self.opts["minargs"]
         maxargs = self.opts["maxargs"]
 
         if   len(args) < minargs or maxargs < len(args):
-            raise LE_SyntaxError(f"Invalid argument count; expected [{minargs}, {maxargs}], got {len(args)}")
+            raise SyntaxError(f"Invalid argument count; expected [{minargs}, {maxargs}], got {len(args)}")
 
         return self.fn(*args, **kwargs)
+
+    def __str__(self):
+        return "<Function>"
 
     @property
     def value(self):
@@ -567,7 +858,7 @@ class LE_Function:
 
 
 def __builtin_ceil(value, **kwargs):
-    return LE_Int(math.ceil(value))
+    return Int(math.ceil(value))
 
 
 def __builtin_eval(value, **kwargs):
@@ -575,12 +866,12 @@ def __builtin_eval(value, **kwargs):
 
 
 def __builtin_floor(value, **kwargs):
-    return LE_Int(math.floor(value))
+    return Int(math.floor(value))
 
 
 def __builtin_for(init, cond, incr, block, **kwargs):
     visitor = kwargs["visitor"]
-    result = LE_Int(0)
+    result = Int(0)
 
     visitor.visit(init)
 
@@ -594,18 +885,18 @@ def __builtin_for(init, cond, incr, block, **kwargs):
 def __builtin_function(sig, body, **kwargs):
     visitor = kwargs["visitor"]
     sigstr = visitor.visit(sig).value
-    cbody = LE_Compiled(body)
+    cbody = Compiled(body)
     minargs = 0
     maxargs = 0
 
     for c in sigstr:
         if   c == "*" : maxargs = float("Inf")
         elif c == "?" : minargs += 1; maxargs += 1
-        else          : raise LE_RuntimeError(f"'{c}' is an invalid function signature")
+        else          : raise RuntimeError(f"'{c}' is an invalid function signature")
 
     def function(*args, **kwargs2):
-        csym = LE_SymbolTable({
-            "ARG"    : LE_Array(args),
+        csym = SymbolTable({
+            "ARG"    : Array(args),
             "GLOBAL" : kwargs["sym"].root,
         }, kwargs["sym"])
 
@@ -614,12 +905,12 @@ def __builtin_function(sig, body, **kwargs):
 
         return cbody.eval(csym)
 
-    return LE_Function(function, minargs=minargs, maxargs=maxargs, delayvisit=False)
+    return Function(function, minargs=minargs, maxargs=maxargs, delayvisit=False)
 
 
 def __builtin_if(*args, **kwargs):
     visitor = kwargs["visitor"]
-    result = LE_Int(0)
+    result = Int(0)
     i = 0
 
     while i+1 < len(args):
@@ -636,26 +927,26 @@ def __builtin_if(*args, **kwargs):
 
 
 def __builtin_len(value, **kwargs):
-    return LE_Int(len(value))
+    return Int(len(value))
 
 
 def __builtin_print(*args, **kwargs):
     print(*[x.value for x in args])
 
-    return LE_Int(len(args))
+    return Int(len(args))
 
 
 def __builtin_round(value, **kwargs):
-    return LE_Int(round(value))
+    return Int(round(value))
 
 
 def __builtin_sqrt(value, **kwargs):
-    return LE_Double(math.sqrt(value))
+    return Double(math.sqrt(value))
 
 
 def __builtin_while(cond, expr, **kwargs):
     visitor = kwargs["visitor"]
-    result = LE_Int(0)
+    result = Int(0)
 
     while(visitor.visit(cond).value):
         result = visitor.visit(expr)
@@ -664,16 +955,16 @@ def __builtin_while(cond, expr, **kwargs):
 
 
 builtins = {
-    "CEIL"     : LE_Function(__builtin_ceil     , nargs=1                   ),
-    "EVAL"     : LE_Function(__builtin_eval     , nargs=1                   ),
-    "FLOOR"    : LE_Function(__builtin_floor    , nargs=1                   ),
-    "FOR"      : LE_Function(__builtin_for      , nargs=4  , delayvisit=True),
-    "FUNCTION" : LE_Function(__builtin_function , nargs=2  , delayvisit=True),
-    "IF"       : LE_Function(__builtin_if       , minargs=2, delayvisit=True),
-    "LEN"      : LE_Function(__builtin_len      , nargs=1                   ),
-    "PRINT"    : LE_Function(__builtin_print                                ),
-    "ROUND"    : LE_Function(__builtin_round    , nargs=1                   ),
-    "SQRT"     : LE_Function(__builtin_sqrt     , nargs=1                   ),
-    "WHILE"    : LE_Function(__builtin_while    , nargs=2  , delayvisit=True),
+    "CEIL"     : Function(__builtin_ceil     , nargs=1                   ),
+    "EVAL"     : Function(__builtin_eval     , nargs=1                   ),
+    "FLOOR"    : Function(__builtin_floor    , nargs=1                   ),
+    "FOR"      : Function(__builtin_for      , nargs=4  , delayvisit=True),
+    "FUNCTION" : Function(__builtin_function , nargs=2  , delayvisit=True),
+    "IF"       : Function(__builtin_if       , minargs=2, delayvisit=True),
+    "LEN"      : Function(__builtin_len      , nargs=1                   ),
+    "PRINT"    : Function(__builtin_print                                ),
+    "ROUND"    : Function(__builtin_round    , nargs=1                   ),
+    "SQRT"     : Function(__builtin_sqrt     , nargs=1                   ),
+    "WHILE"    : Function(__builtin_while    , nargs=2  , delayvisit=True),
 }
 

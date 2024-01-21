@@ -22,7 +22,7 @@ import liteexpr
 
 
 def main():
-    symbols = liteexpr.LE_SymbolTable({
+    symbols = liteexpr.SymbolTable({
         "grades" : {
             "alice" : "A",
             "bob"   : "B",
@@ -33,10 +33,6 @@ def main():
         PRINT("I have " + LEN(grades) + " students");
         PRINT("Alice's grade is " + grades.alice);
     """, symbols)
-
-
-def doMyThing(fd):
-    liteexpr.evalfd(fd)
 
 
 ##############################################################################

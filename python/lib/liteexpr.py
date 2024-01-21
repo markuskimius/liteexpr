@@ -3,6 +3,7 @@ __license__ = "Apache 2.0"
 __version__ = "0.0.7"
 __author__ = "Mark Kim"
 
+import json
 import math
 import antlr4
 from .LiteExprLexer import LiteExprLexer
@@ -119,8 +120,6 @@ class SymbolTable:
         return symbols
 
     def __str__(self):
-        import json
-
         return json.dumps(self.__all(), indent=2, default=str)
 
     @property
@@ -229,6 +228,9 @@ class Array(list):
 
         return value
 
+    def __str__(self):
+        return json.dumps(self, indent=2, default=str)
+
 
 class Object(dict):
     @property
@@ -241,6 +243,9 @@ class Object(dict):
         super().__setitem__(key, value)
 
         return value
+
+    def __str__(self):
+        return json.dumps(self, indent=2, default=str)
 
 
 def _to_levalue(value):
@@ -845,7 +850,7 @@ class Function:
         maxargs = self.opts["maxargs"]
 
         if   len(args) < minargs or maxargs < len(args):
-            raise SyntaxError(f"Invalid argument count; expected [{minargs}, {maxargs}], got {len(args)}")
+            raise SyntaxError(f"Invalid argument count. min={minargs}, max={maxargs}, got={len(args)}")
 
         return self.fn(*args, **kwargs)
 
@@ -858,15 +863,31 @@ class Function:
 
 
 def __builtin_ceil(value, **kwargs):
-    return Int(math.ceil(value))
+    if   isinstance(value,int)                         : return Int(value)
+    elif isinstance(value,float) and math.isnan(value) : raise RuntimeError(f"Unsupported argument to `CEIL`: ({type(value)})")
+    elif isinstance(value,float) and math.isinf(value) : raise RuntimeError(f"Unsupported argument to `CEIL`: ({type(value)})")
+    elif isinstance(value,float) and value > INTMAX    : raise RuntimeError(f"Number too large for `CEIL`: ({type(value)})")
+    elif isinstance(value,float) and value < -INTMAX-1 : raise RuntimeError(f"Number too negative for `CEIL`: ({type(value)})")
+    elif isinstance(value,float)                       : return Int(math.ceil(value))
+
+    raise RuntimeError(f"Unsupported argument to `CEIL`: ({type(value).__name__})")
 
 
 def __builtin_eval(value, **kwargs):
-    return eval(value, kwargs["sym"])
+    if   isinstance(value,str)   : return eval(value, kwargs["sym"])
+
+    raise RuntimeError(f"Unsupported argument to `EVAL`: ({type(value).__name__})")
 
 
 def __builtin_floor(value, **kwargs):
-    return Int(math.floor(value))
+    if   isinstance(value,int)                         : return Int(value)
+    elif isinstance(value,float) and math.isnan(value) : raise RuntimeError(f"Unsupported argument to `FLOOR`: ({type(value)})")
+    elif isinstance(value,float) and math.isinf(value) : raise RuntimeError(f"Unsupported argument to `FLOOR`: ({type(value)})")
+    elif isinstance(value,float) and value > INTMAX    : raise RuntimeError(f"Number too large for `FLOOR`: ({type(value)})")
+    elif isinstance(value,float) and value < -INTMAX-1 : raise RuntimeError(f"Number too negative for `FLOOR`: ({type(value)})")
+    elif isinstance(value,float)                       : return Int(math.floor(value))
+
+    raise RuntimeError(f"Unsupported argument to `FLOOR`: ({type(value).__name__})")
 
 
 def __builtin_for(init, cond, incr, block, **kwargs):
@@ -927,7 +948,11 @@ def __builtin_if(*args, **kwargs):
 
 
 def __builtin_len(value, **kwargs):
-    return Int(len(value))
+    if   isinstance(value,str)   : return Int(len(value))
+    elif isinstance(value,list)  : return Int(len(value))
+    elif isinstance(value,dict)  : return Int(len(value))
+
+    raise RuntimeError(f"Unsupported argument to `LEN`: ({type(value).__name__})")
 
 
 def __builtin_print(*args, **kwargs):
@@ -937,11 +962,23 @@ def __builtin_print(*args, **kwargs):
 
 
 def __builtin_round(value, **kwargs):
-    return Int(round(value))
+    if   isinstance(value,int)                         : return Int(value)
+    elif isinstance(value,float) and math.isnan(value) : raise RuntimeError(f"Unsupported argument to `ROUND`: ({type(value)})")
+    elif isinstance(value,float) and math.isinf(value) : raise RuntimeError(f"Unsupported argument to `ROUND`: ({type(value)})")
+    elif isinstance(value,float) and value > INTMAX    : raise RuntimeError(f"Number too large for `ROUND`: ({type(value)})")
+    elif isinstance(value,float) and value < -INTMAX-1 : raise RuntimeError(f"Number too negative for `ROUND`: ({type(value)})")
+    elif isinstance(value,float)                       : return Int(round(value))
+
+    raise RuntimeError(f"Unsupported argument to `ROUND`: ({type(value).__name__})")
 
 
 def __builtin_sqrt(value, **kwargs):
-    return Double(math.sqrt(value))
+    if   isinstance(value,int)   and value >= 0 : return Double(math.sqrt(value))
+    elif isinstance(value,int)   and value <  0 : return Double("NaN")
+    elif isinstance(value,float) and value >= 0 : return Double(math.sqrt(value))
+    elif isinstance(value,float) and value <  0 : return Double("NaN")
+
+    raise RuntimeError(f"Unsupported argument to `SQRT`: ({type(value).__name__})")
 
 
 def __builtin_while(cond, expr, **kwargs):

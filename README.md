@@ -101,7 +101,7 @@ the object's element may be accessed by the object's name followed by the period
 
 Following are valid identifiers, in the order of highest to lowest precedence:
 
-| Operator                                                                                              | Associativity<sup>1</sup> | Description                                                     |
+| Operator                                                                                              | Associativity[^1]         | Description                                                     |
 | ----------------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------- |
 | `( ... )`                                                                                             |                           | Grouping                                                        |
 | `.`                                                                                                   |                           | Object member accessor                                          |
@@ -125,7 +125,7 @@ Following are valid identifiers, in the order of highest to lowest precedence:
 | `? ... :`                                                                                             | right-to-left             | Ternary conditional                                             |
 | `;`                                                                                                   |                           | Expression separator / terminator                               |
 
-<sup>1</sup> Associativity is left-to-right unless noted otherwise.
+[^1] Associativity is left-to-right unless noted otherwise.
 
 
 ## Built-In Functions

@@ -131,3 +131,4 @@ WHILE("x")      => [line 1, col 0] Syntax error while executing `WHILE(i)`:	Inva
 Alice's grade is A
 Bob's grade is B
 Charlie's grade is C
+=> 1

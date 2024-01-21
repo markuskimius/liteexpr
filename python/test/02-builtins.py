@@ -61,7 +61,7 @@ def main():
             expr = f"{builtin}({i})"
             print(f"{expr:<15} => {result}")
 
-    liteexpr.eval("""
+    result = liteexpr.eval("""
         FOREACH(record, grades,
             name = record[0];
             grade = record[1];
@@ -69,6 +69,8 @@ def main():
             PRINT(name + "'s grade is " + grade);
         )
     """, grades)
+
+    print(f"=> {result}")
 
 
 ##############################################################################

@@ -136,6 +136,7 @@ Following are functions built into liteexpr, arguments they accept, and their re
 * `EVAL(string) -> any`
 * `FLOOR(int or double) -> int`
 * `FOR(expr1, expr2, expr3, expr4) -> any`[^2]
+* `FOREACH(variable, iterable, expr) -> any`[^2]
 * `FUNCTION(string, expr) -> function`[^2]
 * `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`[^2]
 * `LEN(string or array or object) -> int`

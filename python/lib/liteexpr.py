@@ -903,6 +903,26 @@ def __builtin_for(init, cond, incr, block, **kwargs):
     return result
 
 
+def __builtin_foreach(var, iterable, block, **kwargs):
+    visitor = kwargs["visitor"]
+    var = visitor.visit(var)
+    iterable = visitor.visit(iterable).value
+    result = Int(0)
+
+    if isinstance(iterable.value, list):
+        for v in iterable:
+            var.value = v
+            result = visitor.visit(block).value
+    elif isinstance(iterable.value, dict):
+        for k,v in iterable.items():
+            var.value = Array([k, v])
+            result = visitor.visit(block).value
+    else:
+        raise RuntimeError(f"Argument 2 to `FOREACH` must be an iterable: ({type(iterable).__name__})")
+
+    return result
+
+
 def __builtin_function(sig, body, **kwargs):
     visitor = kwargs["visitor"]
     sigstr = visitor.visit(sig).value
@@ -996,6 +1016,7 @@ builtins = {
     "EVAL"     : Function(__builtin_eval     , nargs=1                   ),
     "FLOOR"    : Function(__builtin_floor    , nargs=1                   ),
     "FOR"      : Function(__builtin_for      , nargs=4  , delayvisit=True),
+    "FOREACH"  : Function(__builtin_foreach  , nargs=3  , delayvisit=True),
     "FUNCTION" : Function(__builtin_function , nargs=2  , delayvisit=True),
     "IF"       : Function(__builtin_if       , minargs=2, delayvisit=True),
     "LEN"      : Function(__builtin_len      , nargs=1                   ),

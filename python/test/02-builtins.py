@@ -25,6 +25,7 @@ BUILTINS = [
     "EVAL",
     "FLOOR",
     "FOR",
+    "FOREACH",
     "FUNCTION",
     "IF",
     "LEN",
@@ -39,6 +40,13 @@ def main():
     nan = float("NaN")
     inf = float("Inf")
     ninf = float("-Inf")
+    grades = liteexpr.SymbolTable({
+        "grades" : {
+            "Alice"   : "A",
+            "Bob"     : "B",
+            "Charlie" : "C"
+        }
+    })
 
     for i in [ 0, 7, 3.5, -7, -3.5, nan, inf, ninf, '""', '"x"' ]:
         for builtin in BUILTINS:
@@ -52,6 +60,15 @@ def main():
 
             expr = f"{builtin}({i})"
             print(f"{expr:<15} => {result}")
+
+    liteexpr.eval("""
+        FOREACH(record, grades,
+            name = record[0];
+            grade = record[1];
+
+            PRINT(name + "'s grade is " + grade);
+        )
+    """, grades)
 
 
 ##############################################################################

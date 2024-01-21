@@ -2,6 +2,7 @@ CEIL(0)         => 0
 EVAL(0)         => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Int)
 FLOOR(0)        => 0
 FOR(0)          => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(0)      => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(0)     => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(0)           => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(0)          => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Int)
@@ -14,6 +15,7 @@ CEIL(7)         => 7
 EVAL(7)         => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Int)
 FLOOR(7)        => 7
 FOR(7)          => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(7)      => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(7)     => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(7)           => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(7)          => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Int)
@@ -26,6 +28,7 @@ CEIL(3.5)       => 4
 EVAL(3.5)       => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Double)
 FLOOR(3.5)      => 3
 FOR(3.5)        => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(3.5)    => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(3.5)   => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(3.5)         => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(3.5)        => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Double)
@@ -38,6 +41,7 @@ CEIL(-7)        => -7
 EVAL(-7)        => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Int)
 FLOOR(-7)       => -7
 FOR(-7)         => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(-7)     => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(-7)    => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(-7)          => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(-7)         => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Int)
@@ -50,6 +54,7 @@ CEIL(-3.5)      => -3
 EVAL(-3.5)      => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Double)
 FLOOR(-3.5)     => -4
 FOR(-3.5)       => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(-3.5)   => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(-3.5)  => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(-3.5)        => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(-3.5)       => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Double)
@@ -62,6 +67,7 @@ CEIL(nan)       => [line 1, col 0] Runtime error while executing `CEIL(i)`:	Unsu
 EVAL(nan)       => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Double)
 FLOOR(nan)      => [line 1, col 0] Runtime error while executing `FLOOR(i)`:	Unsupported argument to `FLOOR`: (<class 'liteexpr.liteexpr.Double'>)
 FOR(nan)        => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(nan)    => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(nan)   => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(nan)         => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(nan)        => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Double)
@@ -74,6 +80,7 @@ CEIL(inf)       => [line 1, col 0] Runtime error while executing `CEIL(i)`:	Unsu
 EVAL(inf)       => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Double)
 FLOOR(inf)      => [line 1, col 0] Runtime error while executing `FLOOR(i)`:	Unsupported argument to `FLOOR`: (<class 'liteexpr.liteexpr.Double'>)
 FOR(inf)        => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(inf)    => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(inf)   => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(inf)         => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(inf)        => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Double)
@@ -86,6 +93,7 @@ CEIL(-inf)      => [line 1, col 0] Runtime error while executing `CEIL(i)`:	Unsu
 EVAL(-inf)      => [line 1, col 0] Runtime error while executing `EVAL(i)`:	Unsupported argument to `EVAL`: (Double)
 FLOOR(-inf)     => [line 1, col 0] Runtime error while executing `FLOOR(i)`:	Unsupported argument to `FLOOR`: (<class 'liteexpr.liteexpr.Double'>)
 FOR(-inf)       => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH(-inf)   => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION(-inf)  => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF(-inf)        => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN(-inf)       => [line 1, col 0] Runtime error while executing `LEN(i)`:	Unsupported argument to `LEN`: (Double)
@@ -98,6 +106,7 @@ CEIL("")        => [line 1, col 0] Runtime error while executing `CEIL(i)`:	Unsu
 EVAL("")        => 
 FLOOR("")       => [line 1, col 0] Runtime error while executing `FLOOR(i)`:	Unsupported argument to `FLOOR`: (String)
 FOR("")         => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH("")     => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION("")    => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF("")          => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN("")         => 2
@@ -110,6 +119,7 @@ CEIL("x")       => [line 1, col 0] Runtime error while executing `CEIL(i)`:	Unsu
 EVAL("x")       => x
 FLOOR("x")      => [line 1, col 0] Runtime error while executing `FLOOR(i)`:	Unsupported argument to `FLOOR`: (String)
 FOR("x")        => [line 1, col 0] Syntax error while executing `FOR(i)`:	Invalid argument count. min=4, max=4, got=1
+FOREACH("x")    => [line 1, col 0] Syntax error while executing `FOREACH(i)`:	Invalid argument count. min=3, max=3, got=1
 FUNCTION("x")   => [line 1, col 0] Syntax error while executing `FUNCTION(i)`:	Invalid argument count. min=2, max=2, got=1
 IF("x")         => [line 1, col 0] Syntax error while executing `IF(i)`:	Invalid argument count. min=2, max=inf, got=1
 LEN("x")        => 3
@@ -118,3 +128,6 @@ PRINT("x")      => 1
 ROUND("x")      => [line 1, col 0] Runtime error while executing `ROUND(i)`:	Unsupported argument to `ROUND`: (String)
 SQRT("x")       => [line 1, col 0] Runtime error while executing `SQRT(i)`:	Unsupported argument to `SQRT`: (String)
 WHILE("x")      => [line 1, col 0] Syntax error while executing `WHILE(i)`:	Invalid argument count. min=2, max=2, got=1
+Alice's grade is A
+Bob's grade is B
+Charlie's grade is C

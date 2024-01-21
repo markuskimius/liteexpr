@@ -135,16 +135,16 @@ Following are functions built into liteexpr, arguments they accept, and their re
 * `CEIL(int or double) -> int`
 * `EVAL(string) -> any`
 * `FLOOR(int or double) -> int`
-* `FOR(expr1, expr2, expr3, expr4) -> any`[^1]
-* `FUNCTION(string, expr) -> function`[^1]
-* `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`[^1]
+* `FOR(expr1, expr2, expr3, expr4) -> any`[^2]
+* `FUNCTION(string, expr) -> function`[^2]
+* `IF(expr1, then1, [expr2, then2, [expr3, then3, ...]], [else]) -> any`[^2]
 * `LEN(string or array or object) -> int`
 * `PRINT(any, [any, [any, ...]]) -> int`
 * `ROUND(int or double) -> int`
 * `SQRT(int or double) -> double`
-* `WHILE(expr1, expr2) -> any`[^1]
+* `WHILE(expr1, expr2) -> any`[^2]
 
-[^1]: These functions' arguments are delay-evaluated.
+[^2]: These functions' arguments are delay-evaluated.
 Typically, arguments to a function are evaluated before the function is called in order to pass the results of the evaluation to the function.
 However, flow-control functions such as `IF`, `FOR`, and `WHILE` need to be able to control when to evaluate its arguments;
 in order to support this behavior, its arguments are passed to these functions, and the functions themselves choose when to evaluate the arguments.

@@ -147,7 +147,7 @@ Following are functions built into liteexpr, arguments they accept, and their re
 
 [^2]: These functions' arguments are delay-evaluated.
 Typically, arguments to a function are evaluated before the function is called in order to pass the results of the evaluation to the function.
-However, flow-control functions such as `IF`, `FOR`, and `WHILE` need to be able to control when to evaluate its arguments;
+However, flow-control functions such as `IF`, `FOR`, `FOREACH`, and `WHILE` need to be able to control when to evaluate its arguments;
 in order to support this behavior, its arguments are passed to these functions, and the functions themselves choose when to evaluate the arguments.
 Custom functions created with the `FUNCTION()` call always evaluate its arguments immediately;
 it is not possible to create a custom function with delay-evaluated arguments.

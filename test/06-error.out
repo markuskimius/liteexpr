@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "/Users/mark/src/liteexpr/python/./test/le-runner.py", line 41, in <module>
+    main()
+  File "/Users/mark/src/liteexpr/python/./test/le-runner.py", line 27, in main
+    doMyThing(fd)
+  File "/Users/mark/src/liteexpr/python/./test/le-runner.py", line 34, in doMyThing
+    liteexpr.evalfd(fd)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/liteexpr.py", line 26, in evalfd
+    return eval(code, symbols)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/liteexpr.py", line 32, in eval
+    return compiled.eval(symbols)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/liteexpr.py", line 77, in eval
+    evaluator.visit(self.tree)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/antlr4/tree/Tree.py", line 34, in visit
+    return tree.accept(self)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/LiteExprParser.py", line 200, in accept
+    return visitor.visitFile(self)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/liteexpr.py", line 269, in visitFile
+    self.visitChildren(ctx)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/antlr4/tree/Tree.py", line 44, in visitChildren
+    childResult = c.accept(self)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/LiteExprParser.py", line 339, in accept
+    return visitor.visitString(self)
+  File "/Users/mark/Library/Python/3.9/lib/python/site-packages/liteexpr/liteexpr.py", line 283, in visitString
+    raise SyntaxError(str(e), ctx.start.line, ctx.start.column) from None
+liteexpr.liteexpr.SyntaxError: [line 1, col 0] Invalid backslash sequence in string at position 12

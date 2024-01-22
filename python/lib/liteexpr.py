@@ -150,7 +150,7 @@ class Variable:
         elif isinstance(container, dict)        and name in container        : return container[name]
         elif isinstance(container, dict)                                     : raise RuntimeError(f"Invalid key: `{container}` has no key `{name}`")
         elif isinstance(container, list) and 0<=name and name<len(container) : return container[name]
-        elif isinstance(container, list)                                     : raise RuntimeError(f"Array index `{name}` out of range. max={len(container)}")
+        elif isinstance(container, list)                                     : raise RuntimeError(f"Array index `{name}` out of range, expected < {len(container)}")
         else                                                                 : return self.container
 
     @value.setter

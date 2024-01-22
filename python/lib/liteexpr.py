@@ -92,6 +92,11 @@ class SymbolTable:
         for k,v in symbols.items():
             self.__setitem__(k,v)
 
+    def __contains__(self, item):
+        if   item in self.symbols : return True
+        elif self.parent          : return self.parent.__contains__(item)
+        else                      : return False
+
     def __getitem__(self, name):
         name = str(name)
 
@@ -137,13 +142,16 @@ class Variable:
 
     @property
     def value(self):
-        try:
-            if   isinstance(self.container, SymbolTable) : return self.container[self.name]
-            elif isinstance(self.container, list)        : return self.container[self.name]
-            elif isinstance(self.container, dict)        : return self.container[self.name]
-            else                                         : return self.container
-        except IndexError as e:
-            raise RuntimeError(str(e)) from None
+        name = self.name
+        container = self.container
+
+        if   isinstance(container, SymbolTable) and name in container        : return container[name]
+        elif isinstance(container, SymbolTable)                              : raise RuntimeError(f"Invalid key: `{container}` has no key `{name}`")
+        elif isinstance(container, dict)        and name in container        : return container[name]
+        elif isinstance(container, dict)                                     : raise RuntimeError(f"Invalid key: `{container}` has no key `{name}`")
+        elif isinstance(container, list) and 0<=name and name<len(container) : return container[name]
+        elif isinstance(container, list)                                     : raise RuntimeError(f"Array index `{name}` out of range. max={len(container)}")
+        else                                                                 : return self.container
 
     @value.setter
     def value(self, value):
@@ -256,7 +264,7 @@ def _to_levalue(value):
     elif isinstance(value,list)        : value = Array([_to_levalue(v) for v in value])
     elif isinstance(value,dict)        : value = Object({str(k):_to_levalue(v) for k,v in value.items()})
     elif callable(value)               : value = Function(value)
-    else                               : raise SyntaxError("Unsupported data type `{type(value)}`")
+    else                               : raise RuntimeError(f"Unsupported data type `{type(value)}`")
 
     return value
 
@@ -362,7 +370,7 @@ class Evaluator(LiteExprVisitor):
 
         if   op == "++" : self.result[ctx] = var.value; var.value = _op_inc(var.value)
         elif op == "--" : self.result[ctx] = var.value; var.value = _op_dec(var.value)
-        else            : raise SyntaxError("Unknown postfix operator `{op}`", ctx.start.line, ctx.start.column)
+        else            : raise SyntaxError(f"Unknown postfix operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -374,7 +382,7 @@ class Evaluator(LiteExprVisitor):
 
         if   op == "++" : var = _op_inc(var.value); self.result[ctx] = var.value
         elif op == "--" : var = _op_dec(var.value); self.result[ctx] = var.value
-        else            : raise SyntaxError("Unknown prefix operator `{op}`", ctx.start.line, ctx.start.column)
+        else            : raise SyntaxError(f"Unknown prefix operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -389,7 +397,7 @@ class Evaluator(LiteExprVisitor):
         elif op == "~"  : self.result[ctx] = _op_inv(value)
         elif op == "+"  : self.result[ctx] = _op_pos(value)
         elif op == "-"  : self.result[ctx] = _op_neg(value)
-        else            : raise SyntaxError("Unknown unary operator `{op}`", ctx.start.line, ctx.start.column)
+        else            : raise SyntaxError(f"Unknown unary operator `{op}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -420,7 +428,7 @@ class Evaluator(LiteExprVisitor):
             elif op == "||"  : self.result[ctx] = _op_or_logical(left, rexpr, visitor=self)
             elif op == "&&"  : self.result[ctx] = _op_and_logical(left, rexpr, visitor=self)
             elif op == ";"   : self.result[ctx] = self.visit(rexpr).value
-            else             : raise SyntaxError("Unknown binary operator `{op}`", ctx.op.line, ctx.op.column)
+            else             : raise SyntaxError(f"Unknown binary operator `{op}`", ctx.op.line, ctx.op.column)
         except RuntimeError as e:
             raise RuntimeError(str(e), ctx.op.line, ctx.op.column) from None
 
@@ -447,7 +455,7 @@ class Evaluator(LiteExprVisitor):
             elif op == "|="   : self.result[ctx] = _op_or (var.value, self.visit(rexpr).value)
             elif op == "||="  : self.result[ctx] = _op_or_logical(var.value, rexpr, visitor=self)
             elif op == "&&="  : self.result[ctx] = _op_and_logical(var.value, rexpr, visitor=self)
-            else              : raise SyntaxError("Unknown assign operator `{op}`", ctx.op.line, ctx.op.column)
+            else              : raise SyntaxError(f"Unknown assign operator `{op}`", ctx.op.line, ctx.op.column)
         except RuntimeError as e:
             raise RuntimeError(str(e), ctx.op.line, ctx.op.column) from None
 
@@ -461,8 +469,10 @@ class Evaluator(LiteExprVisitor):
             ctx.op2.text,
         )
 
-        if op[0] == "?" and op[1] == ":" : self.result[ctx] = self.visit(ctx.expr(1)).value if self.visit(ctx.expr(0)).value else self.visit(ctx.expr(2)).value
-        else                             : raise SyntaxError("Unknown tertiary operator `{op[0]} {op[1]}`", ctx.start.line, ctx.start.column)
+        if op[0] == "?" and op[1] == ":":
+            self.result[ctx] = self.visit(ctx.expr(1)).value if self.visit(ctx.expr(0)).value else self.visit(ctx.expr(2)).value
+        else:
+            raise SyntaxError(f"Unknown tertiary operator `{op[0]} {op[1]}`", ctx.start.line, ctx.start.column)
 
         return self.result[ctx]
 
@@ -472,6 +482,9 @@ class Evaluator(LiteExprVisitor):
         array = self.result[ctx.varname()].value
         index = self.result[ctx.expr()].value
 
+        if not isinstance(array, list) : raise RuntimeError(f"`{type(array).__name__}` cannot be used with `[]`, Array expected")
+        if not isinstance(index, int)  : raise RuntimeError(f"`Array index must be integer, got {type(array).__name__}`")
+
         self.result[ctx] = Variable(index, array)
 
         return self.result[ctx]
@@ -479,10 +492,18 @@ class Evaluator(LiteExprVisitor):
     def visitMemberVar(self, ctx):
         self.visitChildren(ctx)
 
-        base = self.result[ctx.varname(0)].value
-        member = self.result[ctx.varname(1)].name
+        obj = self.result[ctx.varname(0)].value
+        member = self.result[ctx.varname(1)]
 
-        self.result[ctx] = Variable(member, base)
+        # Left operand must be Object or SymbolTable
+        if not isinstance(obj,dict) and not isinstance(obj,SymbolTable):
+            raise RuntimeError(f"Unsupported operand type to the left of `.`: `{type(obj).__name__}`")
+
+        # Right operand must be a SimpleVar (Variable whose container a SymbolTable)
+        if not (isinstance(member,Variable) and isinstance(member.container,SymbolTable)):
+            raise RuntimeError(f"Unsupported operand type to the right of `.`: `{type(member).__name__}`")
+
+        self.result[ctx] = Variable(member.name, obj)
 
         return self.result[ctx]
 

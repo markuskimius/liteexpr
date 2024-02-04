@@ -824,7 +824,7 @@ def _decodeString(s):
     while i < len(s):
         if   s[i:i+2] == "\\\\"   : decoded += "\\"; i+=2
         elif s[i:i+2] == "\\\""   : decoded += "\""; i+=2
-        elif s[i:i+3] == "\\\r\n" : i+=2
+        elif s[i:i+3] == "\\\r\n" : i+=3
         elif s[i:i+2] == "\\\r"   : i+=2
         elif s[i:i+2] == "\\\n"   : i+=2
         elif s[i:i+2] == "\\t"    : decoded += "\t"; i+=2

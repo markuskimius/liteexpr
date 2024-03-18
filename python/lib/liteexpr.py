@@ -913,9 +913,7 @@ def __builtin_floor(value, **kwargs):
 
 def __builtin_for(init, cond, incr, block, **kwargs):
     visitor = kwargs["visitor"]
-    result = Int(0)
-
-    visitor.visit(init)
+    result = visitor.visit(init)
 
     while(visitor.visit(cond).value):
         visitor.visit(block)

@@ -913,11 +913,13 @@ def __builtin_floor(value, **kwargs):
 
 def __builtin_for(init, cond, incr, block, **kwargs):
     visitor = kwargs["visitor"]
-    result = visitor.visit(init)
+    result = Int(0)
+
+    visitor.visit(init)
 
     while(visitor.visit(cond).value):
-        visitor.visit(block)
-        result = visitor.visit(incr)
+        result = visitor.visit(block)
+        visitor.visit(incr)
 
     return result
 
@@ -927,7 +929,6 @@ def __builtin_foreach(var, iterable, block, **kwargs):
     var = visitor.visit(var)
     iterable = visitor.visit(iterable).value
     result = Int(0)
-
 
     if not isinstance(var,Variable):
         raise RuntimeError(f"Argument 1 to `FOREACH` must be a variable, got ({type(var).__name__})")

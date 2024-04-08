@@ -61,7 +61,7 @@ def main():
         for op in BINARYOPS:
             for j in [ 0, 3, 3.5, -4, -4.5, nan, inf, ninf, '"x"', '"y"' ]:
                 symbols = liteexpr.SymbolTable({ "i":i, "j":j })
-                expr = f"i {op} j"
+                expr = f"i{op}j"
 
                 try:
                     result = liteexpr.eval(expr, symbols)

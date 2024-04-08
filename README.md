@@ -39,6 +39,7 @@ example.
 
 ## Supported Host Languages
 
+* [C++](cpp)
 * [Python](python)
 
 

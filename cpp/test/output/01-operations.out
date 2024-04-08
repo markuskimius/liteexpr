@@ -1,0 +1,2280 @@
+       !    0 => 1
+       ~    0 => -1
+       +    0 => 0
+       -    0 => 0
+      ++    0 => 1
+      --    0 => -1
+       !    7 => 0
+       ~    7 => -8
+       +    7 => 7
+       -    7 => -7
+      ++    7 => 8
+      --    7 => 6
+       !  3.5 => 0
+       ~  3.5 => [line 1, col 1] Unsupported operand type for `~`: (DOUBLE)
+       +  3.5 => 3.5
+       -  3.5 => -3.5
+      ++  3.5 => [line 1, col 1] Unsupported operand type for `++`: (DOUBLE)
+      --  3.5 => [line 1, col 1] Unsupported operand type for `--`: (DOUBLE)
+       !   -7 => 0
+       ~   -7 => 6
+       +   -7 => -7
+       -   -7 => 7
+      ++   -7 => -6
+      --   -7 => -8
+       ! -3.5 => 0
+       ~ -3.5 => [line 1, col 1] Unsupported operand type for `~`: (DOUBLE)
+       + -3.5 => -3.5
+       - -3.5 => 3.5
+      ++ -3.5 => [line 1, col 1] Unsupported operand type for `++`: (DOUBLE)
+      -- -3.5 => [line 1, col 1] Unsupported operand type for `--`: (DOUBLE)
+       !  NaN => 0
+       ~  NaN => [line 1, col 1] Unsupported operand type for `~`: (DOUBLE)
+       +  NaN => NaN
+       -  NaN => NaN
+      ++  NaN => [line 1, col 1] Unsupported operand type for `++`: (DOUBLE)
+      --  NaN => [line 1, col 1] Unsupported operand type for `--`: (DOUBLE)
+       !  Inf => 0
+       ~  Inf => [line 1, col 1] Unsupported operand type for `~`: (DOUBLE)
+       +  Inf => Inf
+       -  Inf => -Inf
+      ++  Inf => [line 1, col 1] Unsupported operand type for `++`: (DOUBLE)
+      --  Inf => [line 1, col 1] Unsupported operand type for `--`: (DOUBLE)
+       ! -Inf => 0
+       ~ -Inf => [line 1, col 1] Unsupported operand type for `~`: (DOUBLE)
+       + -Inf => -Inf
+       - -Inf => Inf
+      ++ -Inf => [line 1, col 1] Unsupported operand type for `++`: (DOUBLE)
+      -- -Inf => [line 1, col 1] Unsupported operand type for `--`: (DOUBLE)
+       !   "" => 0
+       ~   "" => [line 1, col 1] Unsupported operand type for `~`: (STRING)
+       +   "" => [line 1, col 1] Unsupported operand type for `+`: (STRING)
+       -   "" => [line 1, col 1] Unsupported operand type for `-`: (STRING)
+      ++   "" => [line 1, col 1] Unsupported operand type for `++`: (STRING)
+      --   "" => [line 1, col 1] Unsupported operand type for `--`: (STRING)
+       !  "x" => 0
+       ~  "x" => [line 1, col 1] Unsupported operand type for `~`: (STRING)
+       +  "x" => [line 1, col 1] Unsupported operand type for `+`: (STRING)
+       -  "x" => [line 1, col 1] Unsupported operand type for `-`: (STRING)
+      ++  "x" => [line 1, col 1] Unsupported operand type for `++`: (STRING)
+      --  "x" => [line 1, col 1] Unsupported operand type for `--`: (STRING)
+   0  ++      => 0
+   0  --      => 0
+   7  ++      => 7
+   7  --      => 7
+ 3.5  ++      => [line 1, col 2] Unsupported operand type for `++`: (DOUBLE)
+ 3.5  --      => [line 1, col 2] Unsupported operand type for `--`: (DOUBLE)
+  -7  ++      => -7
+  -7  --      => -7
+-3.5  ++      => [line 1, col 2] Unsupported operand type for `++`: (DOUBLE)
+-3.5  --      => [line 1, col 2] Unsupported operand type for `--`: (DOUBLE)
+ NaN  ++      => [line 1, col 2] Unsupported operand type for `++`: (DOUBLE)
+ NaN  --      => [line 1, col 2] Unsupported operand type for `--`: (DOUBLE)
+ Inf  ++      => [line 1, col 2] Unsupported operand type for `++`: (DOUBLE)
+ Inf  --      => [line 1, col 2] Unsupported operand type for `--`: (DOUBLE)
+-Inf  ++      => [line 1, col 2] Unsupported operand type for `++`: (DOUBLE)
+-Inf  --      => [line 1, col 2] Unsupported operand type for `--`: (DOUBLE)
+  ""  ++      => [line 1, col 2] Unsupported operand type for `++`: (STRING)
+  ""  --      => [line 1, col 2] Unsupported operand type for `--`: (STRING)
+ "x"  ++      => [line 1, col 2] Unsupported operand type for `++`: (STRING)
+ "x"  --      => [line 1, col 2] Unsupported operand type for `--`: (STRING)
+   0  **    0 => 1
+   0  **    3 => 0
+   0  **  3.5 => 0.0
+   0  **   -4 => Inf
+   0  ** -4.5 => Inf
+   0  **  NaN => NaN
+   0  **  Inf => 0.0
+   0  ** -Inf => Inf
+   0  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (INTEGER,STRING)
+   0  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (INTEGER,STRING)
+   0   *    0 => 0
+   0   *    3 => 0
+   0   *  3.5 => 0.0
+   0   *   -4 => 0
+   0   * -4.5 => -0.0
+   0   *  NaN => NaN
+   0   *  Inf => NaN
+   0   * -Inf => NaN
+   0   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (INTEGER,STRING)
+   0   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (INTEGER,STRING)
+   0   /    0 => [line 1, col 2] Division by zero: (0 / 0)
+   0   /    3 => 0
+   0   /  3.5 => 0.0
+   0   /   -4 => 0
+   0   / -4.5 => -0.0
+   0   /  NaN => NaN
+   0   /  Inf => 0.0
+   0   / -Inf => -0.0
+   0   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (INTEGER,STRING)
+   0   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (INTEGER,STRING)
+   0   %    0 => [line 1, col 2] Modulus by zero: (0 % 0)
+   0   %    3 => 0
+   0   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   0   %   -4 => 0
+   0   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   0   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   0   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   0   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   0   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,STRING)
+   0   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,STRING)
+   0   +    0 => 0
+   0   +    3 => 3
+   0   +  3.5 => 3.5
+   0   +   -4 => -4
+   0   + -4.5 => -4.5
+   0   +  NaN => NaN
+   0   +  Inf => Inf
+   0   + -Inf => -Inf
+   0   +  "x" => 0"x"
+   0   +  "y" => 0"y"
+   0   -    0 => 0
+   0   -    3 => -3
+   0   -  3.5 => -3.5
+   0   -   -4 => 4
+   0   - -4.5 => 4.5
+   0   -  NaN => NaN
+   0   -  Inf => -Inf
+   0   - -Inf => Inf
+   0   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (INTEGER,STRING)
+   0   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (INTEGER,STRING)
+   0  <<    0 => 0
+   0  <<    3 => 0
+   0  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   0  <<   -4 => [line 1, col 2] Invalid attempt to shift `<<` by a negative amount: -4
+   0  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   0  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   0  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   0  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   0  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,STRING)
+   0  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,STRING)
+   0  >>    0 => 0
+   0  >>    3 => 0
+   0  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   0  >>   -4 => [line 1, col 2] Invalid attempt to shift `>>` by a negative amount: -4
+   0  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   0  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   0  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   0  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   0  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,STRING)
+   0  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,STRING)
+   0 >>>    0 => 0
+   0 >>>    3 => 0
+   0 >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   0 >>>   -4 => [line 1, col 2] Invalid attempt to shift `>>>` by a negative amount: -4
+   0 >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   0 >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   0 >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   0 >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   0 >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,STRING)
+   0 >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,STRING)
+   0   <    0 => 0
+   0   <    3 => 1
+   0   <  3.5 => 1
+   0   <   -4 => 0
+   0   < -4.5 => 0
+   0   <  NaN => 0
+   0   <  Inf => 1
+   0   < -Inf => 0
+   0   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (INTEGER,STRING)
+   0   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (INTEGER,STRING)
+   0  <=    0 => 1
+   0  <=    3 => 1
+   0  <=  3.5 => 1
+   0  <=   -4 => 0
+   0  <= -4.5 => 0
+   0  <=  NaN => 0
+   0  <=  Inf => 1
+   0  <= -Inf => 0
+   0  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (INTEGER,STRING)
+   0  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (INTEGER,STRING)
+   0   >    0 => 0
+   0   >    3 => 0
+   0   >  3.5 => 0
+   0   >   -4 => 1
+   0   > -4.5 => 1
+   0   >  NaN => 0
+   0   >  Inf => 0
+   0   > -Inf => 1
+   0   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (INTEGER,STRING)
+   0   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (INTEGER,STRING)
+   0  >=    0 => 1
+   0  >=    3 => 0
+   0  >=  3.5 => 0
+   0  >=   -4 => 1
+   0  >= -4.5 => 1
+   0  >=  NaN => 0
+   0  >=  Inf => 0
+   0  >= -Inf => 1
+   0  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (INTEGER,STRING)
+   0  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (INTEGER,STRING)
+   0  ==    0 => 1
+   0  ==    3 => 0
+   0  ==  3.5 => 0
+   0  ==   -4 => 0
+   0  == -4.5 => 0
+   0  ==  NaN => 0
+   0  ==  Inf => 0
+   0  == -Inf => 0
+   0  ==  "x" => 0
+   0  ==  "y" => 0
+   0  !=    0 => 0
+   0  !=    3 => 1
+   0  !=  3.5 => 1
+   0  !=   -4 => 1
+   0  != -4.5 => 1
+   0  !=  NaN => 1
+   0  !=  Inf => 1
+   0  != -Inf => 1
+   0  !=  "x" => 1
+   0  !=  "y" => 1
+   0   &    0 => 0
+   0   &    3 => 0
+   0   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   0   &   -4 => 0
+   0   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   0   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   0   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   0   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   0   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,STRING)
+   0   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,STRING)
+   0   ^    0 => 0
+   0   ^    3 => 3
+   0   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   0   ^   -4 => -4
+   0   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   0   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   0   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   0   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   0   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,STRING)
+   0   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,STRING)
+   0   |    0 => 0
+   0   |    3 => 3
+   0   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   0   |   -4 => -4
+   0   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   0   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   0   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   0   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   0   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,STRING)
+   0   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,STRING)
+   0  &&    0 => 0
+   0  &&    3 => 0
+   0  &&  3.5 => 0
+   0  &&   -4 => 0
+   0  && -4.5 => 0
+   0  &&  NaN => 0
+   0  &&  Inf => 0
+   0  && -Inf => 0
+   0  &&  "x" => 0
+   0  &&  "y" => 0
+   0  ||    0 => 0
+   0  ||    3 => 3
+   0  ||  3.5 => 3.5
+   0  ||   -4 => -4
+   0  || -4.5 => -4.5
+   0  ||  NaN => NaN
+   0  ||  Inf => Inf
+   0  || -Inf => -Inf
+   0  ||  "x" => "x"
+   0  ||  "y" => "y"
+ 0.0  **    0 => 1.0
+ 0.0  **    3 => 0.0
+ 0.0  **  3.5 => 0.0
+ 0.0  **   -4 => Inf
+ 0.0  ** -4.5 => Inf
+ 0.0  **  NaN => NaN
+ 0.0  **  Inf => 0.0
+ 0.0  ** -Inf => Inf
+ 0.0  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ 0.0  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ 0.0   *    0 => 0.0
+ 0.0   *    3 => 0.0
+ 0.0   *  3.5 => 0.0
+ 0.0   *   -4 => -0.0
+ 0.0   * -4.5 => -0.0
+ 0.0   *  NaN => NaN
+ 0.0   *  Inf => NaN
+ 0.0   * -Inf => NaN
+ 0.0   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ 0.0   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ 0.0   /    0 => NaN
+ 0.0   /    3 => 0.0
+ 0.0   /  3.5 => 0.0
+ 0.0   /   -4 => -0.0
+ 0.0   / -4.5 => -0.0
+ 0.0   /  NaN => NaN
+ 0.0   /  Inf => 0.0
+ 0.0   / -Inf => -0.0
+ 0.0   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ 0.0   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ 0.0   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 0.0   +    0 => 0.0
+ 0.0   +    3 => 3.0
+ 0.0   +  3.5 => 3.5
+ 0.0   +   -4 => -4.0
+ 0.0   + -4.5 => -4.5
+ 0.0   +  NaN => NaN
+ 0.0   +  Inf => Inf
+ 0.0   + -Inf => -Inf
+ 0.0   +  "x" => 0.0"x"
+ 0.0   +  "y" => 0.0"y"
+ 0.0   -    0 => 0.0
+ 0.0   -    3 => -3.0
+ 0.0   -  3.5 => -3.5
+ 0.0   -   -4 => 4.0
+ 0.0   - -4.5 => 4.5
+ 0.0   -  NaN => NaN
+ 0.0   -  Inf => -Inf
+ 0.0   - -Inf => Inf
+ 0.0   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ 0.0   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ 0.0  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 0.0  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 0.0 >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0 >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 0.0   <    0 => 0
+ 0.0   <    3 => 1
+ 0.0   <  3.5 => 1
+ 0.0   <   -4 => 0
+ 0.0   < -4.5 => 0
+ 0.0   <  NaN => 0
+ 0.0   <  Inf => 1
+ 0.0   < -Inf => 0
+ 0.0   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ 0.0   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ 0.0  <=    0 => 1
+ 0.0  <=    3 => 1
+ 0.0  <=  3.5 => 1
+ 0.0  <=   -4 => 0
+ 0.0  <= -4.5 => 0
+ 0.0  <=  NaN => 0
+ 0.0  <=  Inf => 1
+ 0.0  <= -Inf => 0
+ 0.0  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ 0.0  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ 0.0   >    0 => 0
+ 0.0   >    3 => 0
+ 0.0   >  3.5 => 0
+ 0.0   >   -4 => 1
+ 0.0   > -4.5 => 1
+ 0.0   >  NaN => 0
+ 0.0   >  Inf => 0
+ 0.0   > -Inf => 1
+ 0.0   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ 0.0   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ 0.0  >=    0 => 1
+ 0.0  >=    3 => 0
+ 0.0  >=  3.5 => 0
+ 0.0  >=   -4 => 1
+ 0.0  >= -4.5 => 1
+ 0.0  >=  NaN => 0
+ 0.0  >=  Inf => 0
+ 0.0  >= -Inf => 1
+ 0.0  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ 0.0  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ 0.0  ==    0 => 1
+ 0.0  ==    3 => 0
+ 0.0  ==  3.5 => 0
+ 0.0  ==   -4 => 0
+ 0.0  == -4.5 => 0
+ 0.0  ==  NaN => 0
+ 0.0  ==  Inf => 0
+ 0.0  == -Inf => 0
+ 0.0  ==  "x" => 0
+ 0.0  ==  "y" => 0
+ 0.0  !=    0 => 0
+ 0.0  !=    3 => 1
+ 0.0  !=  3.5 => 1
+ 0.0  !=   -4 => 1
+ 0.0  != -4.5 => 1
+ 0.0  !=  NaN => 1
+ 0.0  !=  Inf => 1
+ 0.0  != -Inf => 1
+ 0.0  !=  "x" => 1
+ 0.0  !=  "y" => 1
+ 0.0   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 0.0   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 0.0   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 0.0  &&    0 => 0.0
+ 0.0  &&    3 => 0.0
+ 0.0  &&  3.5 => 0.0
+ 0.0  &&   -4 => 0.0
+ 0.0  && -4.5 => 0.0
+ 0.0  &&  NaN => 0.0
+ 0.0  &&  Inf => 0.0
+ 0.0  && -Inf => 0.0
+ 0.0  &&  "x" => 0.0
+ 0.0  &&  "y" => 0.0
+ 0.0  ||    0 => 0
+ 0.0  ||    3 => 3
+ 0.0  ||  3.5 => 3.5
+ 0.0  ||   -4 => -4
+ 0.0  || -4.5 => -4.5
+ 0.0  ||  NaN => NaN
+ 0.0  ||  Inf => Inf
+ 0.0  || -Inf => -Inf
+ 0.0  ||  "x" => "x"
+ 0.0  ||  "y" => "y"
+   7  **    0 => 1
+   7  **    3 => 343
+   7  **  3.5 => 907.4927
+   7  **   -4 => 0.000416
+   7  ** -4.5 => 0.000157
+   7  **  NaN => NaN
+   7  **  Inf => Inf
+   7  ** -Inf => 0.0
+   7  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (INTEGER,STRING)
+   7  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (INTEGER,STRING)
+   7   *    0 => 0
+   7   *    3 => 21
+   7   *  3.5 => 24.5
+   7   *   -4 => -28
+   7   * -4.5 => -31.5
+   7   *  NaN => NaN
+   7   *  Inf => Inf
+   7   * -Inf => -Inf
+   7   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (INTEGER,STRING)
+   7   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (INTEGER,STRING)
+   7   /    0 => [line 1, col 2] Division by zero: (7 / 0)
+   7   /    3 => 2
+   7   /  3.5 => 2.0
+   7   /   -4 => -1
+   7   / -4.5 => -1.555556
+   7   /  NaN => NaN
+   7   /  Inf => 0.0
+   7   / -Inf => -0.0
+   7   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (INTEGER,STRING)
+   7   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (INTEGER,STRING)
+   7   %    0 => [line 1, col 2] Modulus by zero: (7 % 0)
+   7   %    3 => 1
+   7   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   7   %   -4 => 3
+   7   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   7   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   7   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   7   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+   7   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,STRING)
+   7   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,STRING)
+   7   +    0 => 7
+   7   +    3 => 10
+   7   +  3.5 => 10.5
+   7   +   -4 => 3
+   7   + -4.5 => 2.5
+   7   +  NaN => NaN
+   7   +  Inf => Inf
+   7   + -Inf => -Inf
+   7   +  "x" => 7"x"
+   7   +  "y" => 7"y"
+   7   -    0 => 7
+   7   -    3 => 4
+   7   -  3.5 => 3.5
+   7   -   -4 => 11
+   7   - -4.5 => 11.5
+   7   -  NaN => NaN
+   7   -  Inf => -Inf
+   7   - -Inf => Inf
+   7   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (INTEGER,STRING)
+   7   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (INTEGER,STRING)
+   7  <<    0 => 7
+   7  <<    3 => 56
+   7  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   7  <<   -4 => [line 1, col 2] Invalid attempt to shift `<<` by a negative amount: -4
+   7  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   7  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   7  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   7  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+   7  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,STRING)
+   7  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,STRING)
+   7  >>    0 => 7
+   7  >>    3 => 0
+   7  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   7  >>   -4 => [line 1, col 2] Invalid attempt to shift `>>` by a negative amount: -4
+   7  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   7  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   7  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   7  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+   7  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,STRING)
+   7  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,STRING)
+   7 >>>    0 => 7
+   7 >>>    3 => 0
+   7 >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   7 >>>   -4 => [line 1, col 2] Invalid attempt to shift `>>>` by a negative amount: -4
+   7 >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   7 >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   7 >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   7 >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+   7 >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,STRING)
+   7 >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,STRING)
+   7   <    0 => 0
+   7   <    3 => 0
+   7   <  3.5 => 0
+   7   <   -4 => 0
+   7   < -4.5 => 0
+   7   <  NaN => 0
+   7   <  Inf => 1
+   7   < -Inf => 0
+   7   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (INTEGER,STRING)
+   7   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (INTEGER,STRING)
+   7  <=    0 => 0
+   7  <=    3 => 0
+   7  <=  3.5 => 0
+   7  <=   -4 => 0
+   7  <= -4.5 => 0
+   7  <=  NaN => 0
+   7  <=  Inf => 1
+   7  <= -Inf => 0
+   7  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (INTEGER,STRING)
+   7  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (INTEGER,STRING)
+   7   >    0 => 1
+   7   >    3 => 1
+   7   >  3.5 => 1
+   7   >   -4 => 1
+   7   > -4.5 => 1
+   7   >  NaN => 0
+   7   >  Inf => 0
+   7   > -Inf => 1
+   7   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (INTEGER,STRING)
+   7   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (INTEGER,STRING)
+   7  >=    0 => 1
+   7  >=    3 => 1
+   7  >=  3.5 => 1
+   7  >=   -4 => 1
+   7  >= -4.5 => 1
+   7  >=  NaN => 0
+   7  >=  Inf => 0
+   7  >= -Inf => 1
+   7  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (INTEGER,STRING)
+   7  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (INTEGER,STRING)
+   7  ==    0 => 0
+   7  ==    3 => 0
+   7  ==  3.5 => 0
+   7  ==   -4 => 0
+   7  == -4.5 => 0
+   7  ==  NaN => 0
+   7  ==  Inf => 0
+   7  == -Inf => 0
+   7  ==  "x" => 0
+   7  ==  "y" => 0
+   7  !=    0 => 1
+   7  !=    3 => 1
+   7  !=  3.5 => 1
+   7  !=   -4 => 1
+   7  != -4.5 => 1
+   7  !=  NaN => 1
+   7  !=  Inf => 1
+   7  != -Inf => 1
+   7  !=  "x" => 1
+   7  !=  "y" => 1
+   7   &    0 => 0
+   7   &    3 => 3
+   7   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   7   &   -4 => 4
+   7   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   7   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   7   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   7   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+   7   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,STRING)
+   7   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,STRING)
+   7   ^    0 => 7
+   7   ^    3 => 4
+   7   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   7   ^   -4 => -5
+   7   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   7   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   7   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   7   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+   7   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,STRING)
+   7   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,STRING)
+   7   |    0 => 7
+   7   |    3 => 7
+   7   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   7   |   -4 => -1
+   7   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   7   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   7   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   7   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+   7   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,STRING)
+   7   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,STRING)
+   7  &&    0 => 0
+   7  &&    3 => 3
+   7  &&  3.5 => 3.5
+   7  &&   -4 => -4
+   7  && -4.5 => -4.5
+   7  &&  NaN => NaN
+   7  &&  Inf => Inf
+   7  && -Inf => -Inf
+   7  &&  "x" => "x"
+   7  &&  "y" => "y"
+   7  ||    0 => 7
+   7  ||    3 => 7
+   7  ||  3.5 => 7
+   7  ||   -4 => 7
+   7  || -4.5 => 7
+   7  ||  NaN => 7
+   7  ||  Inf => 7
+   7  || -Inf => 7
+   7  ||  "x" => 7
+   7  ||  "y" => 7
+ 3.5  **    0 => 1.0
+ 3.5  **    3 => 42.875
+ 3.5  **  3.5 => 80.21178
+ 3.5  **   -4 => 0.006664
+ 3.5  ** -4.5 => 0.003562
+ 3.5  **  NaN => NaN
+ 3.5  **  Inf => Inf
+ 3.5  ** -Inf => 0.0
+ 3.5  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ 3.5  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ 3.5   *    0 => 0.0
+ 3.5   *    3 => 10.5
+ 3.5   *  3.5 => 12.25
+ 3.5   *   -4 => -14.0
+ 3.5   * -4.5 => -15.75
+ 3.5   *  NaN => NaN
+ 3.5   *  Inf => Inf
+ 3.5   * -Inf => -Inf
+ 3.5   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ 3.5   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ 3.5   /    0 => Inf
+ 3.5   /    3 => 1.166667
+ 3.5   /  3.5 => 1.0
+ 3.5   /   -4 => -0.875
+ 3.5   / -4.5 => -0.777778
+ 3.5   /  NaN => NaN
+ 3.5   /  Inf => 0.0
+ 3.5   / -Inf => -0.0
+ 3.5   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ 3.5   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ 3.5   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ 3.5   +    0 => 3.5
+ 3.5   +    3 => 6.5
+ 3.5   +  3.5 => 7.0
+ 3.5   +   -4 => -0.5
+ 3.5   + -4.5 => -1.0
+ 3.5   +  NaN => NaN
+ 3.5   +  Inf => Inf
+ 3.5   + -Inf => -Inf
+ 3.5   +  "x" => 3.5"x"
+ 3.5   +  "y" => 3.5"y"
+ 3.5   -    0 => 3.5
+ 3.5   -    3 => 0.5
+ 3.5   -  3.5 => 0.0
+ 3.5   -   -4 => 7.5
+ 3.5   - -4.5 => 8.0
+ 3.5   -  NaN => NaN
+ 3.5   -  Inf => -Inf
+ 3.5   - -Inf => Inf
+ 3.5   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ 3.5   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ 3.5  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ 3.5  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ 3.5 >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5 >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ 3.5   <    0 => 0
+ 3.5   <    3 => 0
+ 3.5   <  3.5 => 0
+ 3.5   <   -4 => 0
+ 3.5   < -4.5 => 0
+ 3.5   <  NaN => 0
+ 3.5   <  Inf => 1
+ 3.5   < -Inf => 0
+ 3.5   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ 3.5   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ 3.5  <=    0 => 0
+ 3.5  <=    3 => 0
+ 3.5  <=  3.5 => 1
+ 3.5  <=   -4 => 0
+ 3.5  <= -4.5 => 0
+ 3.5  <=  NaN => 0
+ 3.5  <=  Inf => 1
+ 3.5  <= -Inf => 0
+ 3.5  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ 3.5  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ 3.5   >    0 => 1
+ 3.5   >    3 => 1
+ 3.5   >  3.5 => 0
+ 3.5   >   -4 => 1
+ 3.5   > -4.5 => 1
+ 3.5   >  NaN => 0
+ 3.5   >  Inf => 0
+ 3.5   > -Inf => 1
+ 3.5   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ 3.5   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ 3.5  >=    0 => 1
+ 3.5  >=    3 => 1
+ 3.5  >=  3.5 => 1
+ 3.5  >=   -4 => 1
+ 3.5  >= -4.5 => 1
+ 3.5  >=  NaN => 0
+ 3.5  >=  Inf => 0
+ 3.5  >= -Inf => 1
+ 3.5  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ 3.5  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ 3.5  ==    0 => 0
+ 3.5  ==    3 => 0
+ 3.5  ==  3.5 => 1
+ 3.5  ==   -4 => 0
+ 3.5  == -4.5 => 0
+ 3.5  ==  NaN => 0
+ 3.5  ==  Inf => 0
+ 3.5  == -Inf => 0
+ 3.5  ==  "x" => 0
+ 3.5  ==  "y" => 0
+ 3.5  !=    0 => 1
+ 3.5  !=    3 => 1
+ 3.5  !=  3.5 => 0
+ 3.5  !=   -4 => 1
+ 3.5  != -4.5 => 1
+ 3.5  !=  NaN => 1
+ 3.5  !=  Inf => 1
+ 3.5  != -Inf => 1
+ 3.5  !=  "x" => 1
+ 3.5  !=  "y" => 1
+ 3.5   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ 3.5   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ 3.5   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ 3.5  &&    0 => 0
+ 3.5  &&    3 => 3
+ 3.5  &&  3.5 => 3.5
+ 3.5  &&   -4 => -4
+ 3.5  && -4.5 => -4.5
+ 3.5  &&  NaN => NaN
+ 3.5  &&  Inf => Inf
+ 3.5  && -Inf => -Inf
+ 3.5  &&  "x" => "x"
+ 3.5  &&  "y" => "y"
+ 3.5  ||    0 => 3.5
+ 3.5  ||    3 => 3.5
+ 3.5  ||  3.5 => 3.5
+ 3.5  ||   -4 => 3.5
+ 3.5  || -4.5 => 3.5
+ 3.5  ||  NaN => 3.5
+ 3.5  ||  Inf => 3.5
+ 3.5  || -Inf => 3.5
+ 3.5  ||  "x" => 3.5
+ 3.5  ||  "y" => 3.5
+  -7  **    0 => 1
+  -7  **    3 => -343
+  -7  **  3.5 => NaN
+  -7  **   -4 => 0.000416
+  -7  ** -4.5 => NaN
+  -7  **  NaN => NaN
+  -7  **  Inf => Inf
+  -7  ** -Inf => 0.0
+  -7  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (INTEGER,STRING)
+  -7  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (INTEGER,STRING)
+  -7   *    0 => 0
+  -7   *    3 => -21
+  -7   *  3.5 => -24.5
+  -7   *   -4 => 28
+  -7   * -4.5 => 31.5
+  -7   *  NaN => NaN
+  -7   *  Inf => -Inf
+  -7   * -Inf => Inf
+  -7   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (INTEGER,STRING)
+  -7   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (INTEGER,STRING)
+  -7   /    0 => [line 1, col 2] Division by zero: (-7 / 0)
+  -7   /    3 => -2
+  -7   /  3.5 => -2.0
+  -7   /   -4 => 1
+  -7   / -4.5 => 1.555556
+  -7   /  NaN => NaN
+  -7   /  Inf => -0.0
+  -7   / -Inf => 0.0
+  -7   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (INTEGER,STRING)
+  -7   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (INTEGER,STRING)
+  -7   %    0 => [line 1, col 2] Modulus by zero: (-7 % 0)
+  -7   %    3 => -1
+  -7   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+  -7   %   -4 => -3
+  -7   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+  -7   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+  -7   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+  -7   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,DOUBLE)
+  -7   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,STRING)
+  -7   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (INTEGER,STRING)
+  -7   +    0 => -7
+  -7   +    3 => -4
+  -7   +  3.5 => -3.5
+  -7   +   -4 => -11
+  -7   + -4.5 => -11.5
+  -7   +  NaN => NaN
+  -7   +  Inf => Inf
+  -7   + -Inf => -Inf
+  -7   +  "x" => -7"x"
+  -7   +  "y" => -7"y"
+  -7   -    0 => -7
+  -7   -    3 => -10
+  -7   -  3.5 => -10.5
+  -7   -   -4 => -3
+  -7   - -4.5 => -2.5
+  -7   -  NaN => NaN
+  -7   -  Inf => -Inf
+  -7   - -Inf => Inf
+  -7   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (INTEGER,STRING)
+  -7   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (INTEGER,STRING)
+  -7  <<    0 => -7
+  -7  <<    3 => -56
+  -7  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+  -7  <<   -4 => [line 1, col 2] Invalid attempt to shift `<<` by a negative amount: -4
+  -7  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+  -7  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+  -7  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+  -7  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,DOUBLE)
+  -7  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,STRING)
+  -7  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (INTEGER,STRING)
+  -7  >>    0 => -7
+  -7  >>    3 => -1
+  -7  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+  -7  >>   -4 => [line 1, col 2] Invalid attempt to shift `>>` by a negative amount: -4
+  -7  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+  -7  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+  -7  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+  -7  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,DOUBLE)
+  -7  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,STRING)
+  -7  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (INTEGER,STRING)
+  -7 >>>    0 => -7
+  -7 >>>    3 => 2305843009213693951
+  -7 >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+  -7 >>>   -4 => [line 1, col 2] Invalid attempt to shift `>>>` by a negative amount: -4
+  -7 >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+  -7 >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+  -7 >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+  -7 >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,DOUBLE)
+  -7 >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,STRING)
+  -7 >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (INTEGER,STRING)
+  -7   <    0 => 1
+  -7   <    3 => 1
+  -7   <  3.5 => 1
+  -7   <   -4 => 1
+  -7   < -4.5 => 1
+  -7   <  NaN => 0
+  -7   <  Inf => 1
+  -7   < -Inf => 0
+  -7   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (INTEGER,STRING)
+  -7   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (INTEGER,STRING)
+  -7  <=    0 => 1
+  -7  <=    3 => 1
+  -7  <=  3.5 => 1
+  -7  <=   -4 => 1
+  -7  <= -4.5 => 1
+  -7  <=  NaN => 0
+  -7  <=  Inf => 1
+  -7  <= -Inf => 0
+  -7  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (INTEGER,STRING)
+  -7  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (INTEGER,STRING)
+  -7   >    0 => 0
+  -7   >    3 => 0
+  -7   >  3.5 => 0
+  -7   >   -4 => 0
+  -7   > -4.5 => 0
+  -7   >  NaN => 0
+  -7   >  Inf => 0
+  -7   > -Inf => 1
+  -7   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (INTEGER,STRING)
+  -7   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (INTEGER,STRING)
+  -7  >=    0 => 0
+  -7  >=    3 => 0
+  -7  >=  3.5 => 0
+  -7  >=   -4 => 0
+  -7  >= -4.5 => 0
+  -7  >=  NaN => 0
+  -7  >=  Inf => 0
+  -7  >= -Inf => 1
+  -7  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (INTEGER,STRING)
+  -7  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (INTEGER,STRING)
+  -7  ==    0 => 0
+  -7  ==    3 => 0
+  -7  ==  3.5 => 0
+  -7  ==   -4 => 0
+  -7  == -4.5 => 0
+  -7  ==  NaN => 0
+  -7  ==  Inf => 0
+  -7  == -Inf => 0
+  -7  ==  "x" => 0
+  -7  ==  "y" => 0
+  -7  !=    0 => 1
+  -7  !=    3 => 1
+  -7  !=  3.5 => 1
+  -7  !=   -4 => 1
+  -7  != -4.5 => 1
+  -7  !=  NaN => 1
+  -7  !=  Inf => 1
+  -7  != -Inf => 1
+  -7  !=  "x" => 1
+  -7  !=  "y" => 1
+  -7   &    0 => 0
+  -7   &    3 => 1
+  -7   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+  -7   &   -4 => -8
+  -7   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+  -7   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+  -7   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+  -7   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,DOUBLE)
+  -7   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,STRING)
+  -7   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (INTEGER,STRING)
+  -7   ^    0 => -7
+  -7   ^    3 => -6
+  -7   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+  -7   ^   -4 => 5
+  -7   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+  -7   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+  -7   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+  -7   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,DOUBLE)
+  -7   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,STRING)
+  -7   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (INTEGER,STRING)
+  -7   |    0 => -7
+  -7   |    3 => -5
+  -7   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+  -7   |   -4 => -3
+  -7   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+  -7   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+  -7   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+  -7   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,DOUBLE)
+  -7   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,STRING)
+  -7   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (INTEGER,STRING)
+  -7  &&    0 => 0
+  -7  &&    3 => 3
+  -7  &&  3.5 => 3.5
+  -7  &&   -4 => -4
+  -7  && -4.5 => -4.5
+  -7  &&  NaN => NaN
+  -7  &&  Inf => Inf
+  -7  && -Inf => -Inf
+  -7  &&  "x" => "x"
+  -7  &&  "y" => "y"
+  -7  ||    0 => -7
+  -7  ||    3 => -7
+  -7  ||  3.5 => -7
+  -7  ||   -4 => -7
+  -7  || -4.5 => -7
+  -7  ||  NaN => -7
+  -7  ||  Inf => -7
+  -7  || -Inf => -7
+  -7  ||  "x" => -7
+  -7  ||  "y" => -7
+-3.5  **    0 => 1.0
+-3.5  **    3 => -42.875
+-3.5  **  3.5 => NaN
+-3.5  **   -4 => 0.006664
+-3.5  ** -4.5 => NaN
+-3.5  **  NaN => NaN
+-3.5  **  Inf => Inf
+-3.5  ** -Inf => 0.0
+-3.5  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+-3.5  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+-3.5   *    0 => -0.0
+-3.5   *    3 => -10.5
+-3.5   *  3.5 => -12.25
+-3.5   *   -4 => 14.0
+-3.5   * -4.5 => 15.75
+-3.5   *  NaN => NaN
+-3.5   *  Inf => -Inf
+-3.5   * -Inf => Inf
+-3.5   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+-3.5   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+-3.5   /    0 => -Inf
+-3.5   /    3 => -1.166667
+-3.5   /  3.5 => -1.0
+-3.5   /   -4 => 0.875
+-3.5   / -4.5 => 0.777778
+-3.5   /  NaN => NaN
+-3.5   /  Inf => -0.0
+-3.5   / -Inf => 0.0
+-3.5   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+-3.5   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+-3.5   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-3.5   +    0 => -3.5
+-3.5   +    3 => -0.5
+-3.5   +  3.5 => 0.0
+-3.5   +   -4 => -7.5
+-3.5   + -4.5 => -8.0
+-3.5   +  NaN => NaN
+-3.5   +  Inf => Inf
+-3.5   + -Inf => -Inf
+-3.5   +  "x" => -3.5"x"
+-3.5   +  "y" => -3.5"y"
+-3.5   -    0 => -3.5
+-3.5   -    3 => -6.5
+-3.5   -  3.5 => -7.0
+-3.5   -   -4 => 0.5
+-3.5   - -4.5 => 1.0
+-3.5   -  NaN => NaN
+-3.5   -  Inf => -Inf
+-3.5   - -Inf => Inf
+-3.5   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+-3.5   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+-3.5  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-3.5  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-3.5 >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5 >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-3.5   <    0 => 1
+-3.5   <    3 => 1
+-3.5   <  3.5 => 1
+-3.5   <   -4 => 0
+-3.5   < -4.5 => 0
+-3.5   <  NaN => 0
+-3.5   <  Inf => 1
+-3.5   < -Inf => 0
+-3.5   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+-3.5   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+-3.5  <=    0 => 1
+-3.5  <=    3 => 1
+-3.5  <=  3.5 => 1
+-3.5  <=   -4 => 0
+-3.5  <= -4.5 => 0
+-3.5  <=  NaN => 0
+-3.5  <=  Inf => 1
+-3.5  <= -Inf => 0
+-3.5  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+-3.5  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+-3.5   >    0 => 0
+-3.5   >    3 => 0
+-3.5   >  3.5 => 0
+-3.5   >   -4 => 1
+-3.5   > -4.5 => 1
+-3.5   >  NaN => 0
+-3.5   >  Inf => 0
+-3.5   > -Inf => 1
+-3.5   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+-3.5   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+-3.5  >=    0 => 0
+-3.5  >=    3 => 0
+-3.5  >=  3.5 => 0
+-3.5  >=   -4 => 1
+-3.5  >= -4.5 => 1
+-3.5  >=  NaN => 0
+-3.5  >=  Inf => 0
+-3.5  >= -Inf => 1
+-3.5  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+-3.5  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+-3.5  ==    0 => 0
+-3.5  ==    3 => 0
+-3.5  ==  3.5 => 0
+-3.5  ==   -4 => 0
+-3.5  == -4.5 => 0
+-3.5  ==  NaN => 0
+-3.5  ==  Inf => 0
+-3.5  == -Inf => 0
+-3.5  ==  "x" => 0
+-3.5  ==  "y" => 0
+-3.5  !=    0 => 1
+-3.5  !=    3 => 1
+-3.5  !=  3.5 => 1
+-3.5  !=   -4 => 1
+-3.5  != -4.5 => 1
+-3.5  !=  NaN => 1
+-3.5  !=  Inf => 1
+-3.5  != -Inf => 1
+-3.5  !=  "x" => 1
+-3.5  !=  "y" => 1
+-3.5   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-3.5   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-3.5   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-3.5  &&    0 => 0
+-3.5  &&    3 => 3
+-3.5  &&  3.5 => 3.5
+-3.5  &&   -4 => -4
+-3.5  && -4.5 => -4.5
+-3.5  &&  NaN => NaN
+-3.5  &&  Inf => Inf
+-3.5  && -Inf => -Inf
+-3.5  &&  "x" => "x"
+-3.5  &&  "y" => "y"
+-3.5  ||    0 => -3.5
+-3.5  ||    3 => -3.5
+-3.5  ||  3.5 => -3.5
+-3.5  ||   -4 => -3.5
+-3.5  || -4.5 => -3.5
+-3.5  ||  NaN => -3.5
+-3.5  ||  Inf => -3.5
+-3.5  || -Inf => -3.5
+-3.5  ||  "x" => -3.5
+-3.5  ||  "y" => -3.5
+ NaN  **    0 => 1.0
+ NaN  **    3 => NaN
+ NaN  **  3.5 => NaN
+ NaN  **   -4 => NaN
+ NaN  ** -4.5 => NaN
+ NaN  **  NaN => NaN
+ NaN  **  Inf => NaN
+ NaN  ** -Inf => NaN
+ NaN  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ NaN  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ NaN   *    0 => NaN
+ NaN   *    3 => NaN
+ NaN   *  3.5 => NaN
+ NaN   *   -4 => NaN
+ NaN   * -4.5 => NaN
+ NaN   *  NaN => NaN
+ NaN   *  Inf => NaN
+ NaN   * -Inf => NaN
+ NaN   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ NaN   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ NaN   /    0 => NaN
+ NaN   /    3 => NaN
+ NaN   /  3.5 => NaN
+ NaN   /   -4 => NaN
+ NaN   / -4.5 => NaN
+ NaN   /  NaN => NaN
+ NaN   /  Inf => NaN
+ NaN   / -Inf => NaN
+ NaN   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ NaN   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ NaN   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ NaN   +    0 => NaN
+ NaN   +    3 => NaN
+ NaN   +  3.5 => NaN
+ NaN   +   -4 => NaN
+ NaN   + -4.5 => NaN
+ NaN   +  NaN => NaN
+ NaN   +  Inf => NaN
+ NaN   + -Inf => NaN
+ NaN   +  "x" => NaN"x"
+ NaN   +  "y" => NaN"y"
+ NaN   -    0 => NaN
+ NaN   -    3 => NaN
+ NaN   -  3.5 => NaN
+ NaN   -   -4 => NaN
+ NaN   - -4.5 => NaN
+ NaN   -  NaN => NaN
+ NaN   -  Inf => NaN
+ NaN   - -Inf => NaN
+ NaN   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ NaN   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ NaN  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ NaN  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ NaN >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ NaN   <    0 => 0
+ NaN   <    3 => 0
+ NaN   <  3.5 => 0
+ NaN   <   -4 => 0
+ NaN   < -4.5 => 0
+ NaN   <  NaN => 0
+ NaN   <  Inf => 0
+ NaN   < -Inf => 0
+ NaN   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ NaN   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ NaN  <=    0 => 0
+ NaN  <=    3 => 0
+ NaN  <=  3.5 => 0
+ NaN  <=   -4 => 0
+ NaN  <= -4.5 => 0
+ NaN  <=  NaN => 0
+ NaN  <=  Inf => 0
+ NaN  <= -Inf => 0
+ NaN  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ NaN  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ NaN   >    0 => 0
+ NaN   >    3 => 0
+ NaN   >  3.5 => 0
+ NaN   >   -4 => 0
+ NaN   > -4.5 => 0
+ NaN   >  NaN => 0
+ NaN   >  Inf => 0
+ NaN   > -Inf => 0
+ NaN   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ NaN   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ NaN  >=    0 => 0
+ NaN  >=    3 => 0
+ NaN  >=  3.5 => 0
+ NaN  >=   -4 => 0
+ NaN  >= -4.5 => 0
+ NaN  >=  NaN => 0
+ NaN  >=  Inf => 0
+ NaN  >= -Inf => 0
+ NaN  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ NaN  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ NaN  ==    0 => 0
+ NaN  ==    3 => 0
+ NaN  ==  3.5 => 0
+ NaN  ==   -4 => 0
+ NaN  == -4.5 => 0
+ NaN  ==  NaN => 0
+ NaN  ==  Inf => 0
+ NaN  == -Inf => 0
+ NaN  ==  "x" => 0
+ NaN  ==  "y" => 0
+ NaN  !=    0 => 1
+ NaN  !=    3 => 1
+ NaN  !=  3.5 => 1
+ NaN  !=   -4 => 1
+ NaN  != -4.5 => 1
+ NaN  !=  NaN => 1
+ NaN  !=  Inf => 1
+ NaN  != -Inf => 1
+ NaN  !=  "x" => 1
+ NaN  !=  "y" => 1
+ NaN   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ NaN   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ NaN   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ NaN  &&    0 => 0
+ NaN  &&    3 => 3
+ NaN  &&  3.5 => 3.5
+ NaN  &&   -4 => -4
+ NaN  && -4.5 => -4.5
+ NaN  &&  NaN => NaN
+ NaN  &&  Inf => Inf
+ NaN  && -Inf => -Inf
+ NaN  &&  "x" => "x"
+ NaN  &&  "y" => "y"
+ NaN  ||    0 => NaN
+ NaN  ||    3 => NaN
+ NaN  ||  3.5 => NaN
+ NaN  ||   -4 => NaN
+ NaN  || -4.5 => NaN
+ NaN  ||  NaN => NaN
+ NaN  ||  Inf => NaN
+ NaN  || -Inf => NaN
+ NaN  ||  "x" => NaN
+ NaN  ||  "y" => NaN
+ Inf  **    0 => 1.0
+ Inf  **    3 => Inf
+ Inf  **  3.5 => Inf
+ Inf  **   -4 => 0.0
+ Inf  ** -4.5 => 0.0
+ Inf  **  NaN => NaN
+ Inf  **  Inf => Inf
+ Inf  ** -Inf => 0.0
+ Inf  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ Inf  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+ Inf   *    0 => NaN
+ Inf   *    3 => Inf
+ Inf   *  3.5 => Inf
+ Inf   *   -4 => -Inf
+ Inf   * -4.5 => -Inf
+ Inf   *  NaN => NaN
+ Inf   *  Inf => Inf
+ Inf   * -Inf => -Inf
+ Inf   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ Inf   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+ Inf   /    0 => Inf
+ Inf   /    3 => Inf
+ Inf   /  3.5 => Inf
+ Inf   /   -4 => -Inf
+ Inf   / -4.5 => -Inf
+ Inf   /  NaN => NaN
+ Inf   /  Inf => NaN
+ Inf   / -Inf => NaN
+ Inf   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ Inf   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+ Inf   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+ Inf   +    0 => Inf
+ Inf   +    3 => Inf
+ Inf   +  3.5 => Inf
+ Inf   +   -4 => Inf
+ Inf   + -4.5 => Inf
+ Inf   +  NaN => NaN
+ Inf   +  Inf => Inf
+ Inf   + -Inf => NaN
+ Inf   +  "x" => Inf"x"
+ Inf   +  "y" => Inf"y"
+ Inf   -    0 => Inf
+ Inf   -    3 => Inf
+ Inf   -  3.5 => Inf
+ Inf   -   -4 => Inf
+ Inf   - -4.5 => Inf
+ Inf   -  NaN => NaN
+ Inf   -  Inf => NaN
+ Inf   - -Inf => Inf
+ Inf   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ Inf   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+ Inf  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+ Inf  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+ Inf >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+ Inf   <    0 => 0
+ Inf   <    3 => 0
+ Inf   <  3.5 => 0
+ Inf   <   -4 => 0
+ Inf   < -4.5 => 0
+ Inf   <  NaN => 0
+ Inf   <  Inf => 0
+ Inf   < -Inf => 0
+ Inf   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ Inf   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+ Inf  <=    0 => 0
+ Inf  <=    3 => 0
+ Inf  <=  3.5 => 0
+ Inf  <=   -4 => 0
+ Inf  <= -4.5 => 0
+ Inf  <=  NaN => 0
+ Inf  <=  Inf => 1
+ Inf  <= -Inf => 0
+ Inf  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ Inf  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+ Inf   >    0 => 1
+ Inf   >    3 => 1
+ Inf   >  3.5 => 1
+ Inf   >   -4 => 1
+ Inf   > -4.5 => 1
+ Inf   >  NaN => 0
+ Inf   >  Inf => 0
+ Inf   > -Inf => 1
+ Inf   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ Inf   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+ Inf  >=    0 => 1
+ Inf  >=    3 => 1
+ Inf  >=  3.5 => 1
+ Inf  >=   -4 => 1
+ Inf  >= -4.5 => 1
+ Inf  >=  NaN => 0
+ Inf  >=  Inf => 1
+ Inf  >= -Inf => 1
+ Inf  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ Inf  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+ Inf  ==    0 => 0
+ Inf  ==    3 => 0
+ Inf  ==  3.5 => 0
+ Inf  ==   -4 => 0
+ Inf  == -4.5 => 0
+ Inf  ==  NaN => 0
+ Inf  ==  Inf => 1
+ Inf  == -Inf => 0
+ Inf  ==  "x" => 0
+ Inf  ==  "y" => 0
+ Inf  !=    0 => 1
+ Inf  !=    3 => 1
+ Inf  !=  3.5 => 1
+ Inf  !=   -4 => 1
+ Inf  != -4.5 => 1
+ Inf  !=  NaN => 1
+ Inf  !=  Inf => 0
+ Inf  != -Inf => 1
+ Inf  !=  "x" => 1
+ Inf  !=  "y" => 1
+ Inf   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+ Inf   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+ Inf   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+ Inf  &&    0 => 0
+ Inf  &&    3 => 3
+ Inf  &&  3.5 => 3.5
+ Inf  &&   -4 => -4
+ Inf  && -4.5 => -4.5
+ Inf  &&  NaN => NaN
+ Inf  &&  Inf => Inf
+ Inf  && -Inf => -Inf
+ Inf  &&  "x" => "x"
+ Inf  &&  "y" => "y"
+ Inf  ||    0 => Inf
+ Inf  ||    3 => Inf
+ Inf  ||  3.5 => Inf
+ Inf  ||   -4 => Inf
+ Inf  || -4.5 => Inf
+ Inf  ||  NaN => Inf
+ Inf  ||  Inf => Inf
+ Inf  || -Inf => Inf
+ Inf  ||  "x" => Inf
+ Inf  ||  "y" => Inf
+-Inf  **    0 => 1.0
+-Inf  **    3 => -Inf
+-Inf  **  3.5 => Inf
+-Inf  **   -4 => 0.0
+-Inf  ** -4.5 => 0.0
+-Inf  **  NaN => NaN
+-Inf  **  Inf => Inf
+-Inf  ** -Inf => 0.0
+-Inf  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+-Inf  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (DOUBLE,STRING)
+-Inf   *    0 => NaN
+-Inf   *    3 => -Inf
+-Inf   *  3.5 => -Inf
+-Inf   *   -4 => Inf
+-Inf   * -4.5 => Inf
+-Inf   *  NaN => NaN
+-Inf   *  Inf => -Inf
+-Inf   * -Inf => Inf
+-Inf   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+-Inf   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (DOUBLE,STRING)
+-Inf   /    0 => -Inf
+-Inf   /    3 => -Inf
+-Inf   /  3.5 => -Inf
+-Inf   /   -4 => Inf
+-Inf   / -4.5 => Inf
+-Inf   /  NaN => NaN
+-Inf   /  Inf => NaN
+-Inf   / -Inf => NaN
+-Inf   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+-Inf   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (DOUBLE,STRING)
+-Inf   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (DOUBLE,*)
+-Inf   +    0 => -Inf
+-Inf   +    3 => -Inf
+-Inf   +  3.5 => -Inf
+-Inf   +   -4 => -Inf
+-Inf   + -4.5 => -Inf
+-Inf   +  NaN => NaN
+-Inf   +  Inf => NaN
+-Inf   + -Inf => -Inf
+-Inf   +  "x" => -Inf"x"
+-Inf   +  "y" => -Inf"y"
+-Inf   -    0 => -Inf
+-Inf   -    3 => -Inf
+-Inf   -  3.5 => -Inf
+-Inf   -   -4 => -Inf
+-Inf   - -4.5 => -Inf
+-Inf   -  NaN => NaN
+-Inf   -  Inf => -Inf
+-Inf   - -Inf => NaN
+-Inf   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+-Inf   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (DOUBLE,STRING)
+-Inf  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (DOUBLE,*)
+-Inf  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (DOUBLE,*)
+-Inf >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (DOUBLE,*)
+-Inf   <    0 => 1
+-Inf   <    3 => 1
+-Inf   <  3.5 => 1
+-Inf   <   -4 => 1
+-Inf   < -4.5 => 1
+-Inf   <  NaN => 0
+-Inf   <  Inf => 1
+-Inf   < -Inf => 0
+-Inf   <  "x" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+-Inf   <  "y" => [line 1, col 2] Unsupported operand type(s) for `<`: (DOUBLE,STRING)
+-Inf  <=    0 => 1
+-Inf  <=    3 => 1
+-Inf  <=  3.5 => 1
+-Inf  <=   -4 => 1
+-Inf  <= -4.5 => 1
+-Inf  <=  NaN => 0
+-Inf  <=  Inf => 1
+-Inf  <= -Inf => 1
+-Inf  <=  "x" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+-Inf  <=  "y" => [line 1, col 2] Unsupported operand type(s) for `<=`: (DOUBLE,STRING)
+-Inf   >    0 => 0
+-Inf   >    3 => 0
+-Inf   >  3.5 => 0
+-Inf   >   -4 => 0
+-Inf   > -4.5 => 0
+-Inf   >  NaN => 0
+-Inf   >  Inf => 0
+-Inf   > -Inf => 0
+-Inf   >  "x" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+-Inf   >  "y" => [line 1, col 2] Unsupported operand type(s) for `>`: (DOUBLE,STRING)
+-Inf  >=    0 => 0
+-Inf  >=    3 => 0
+-Inf  >=  3.5 => 0
+-Inf  >=   -4 => 0
+-Inf  >= -4.5 => 0
+-Inf  >=  NaN => 0
+-Inf  >=  Inf => 0
+-Inf  >= -Inf => 1
+-Inf  >=  "x" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+-Inf  >=  "y" => [line 1, col 2] Unsupported operand type(s) for `>=`: (DOUBLE,STRING)
+-Inf  ==    0 => 0
+-Inf  ==    3 => 0
+-Inf  ==  3.5 => 0
+-Inf  ==   -4 => 0
+-Inf  == -4.5 => 0
+-Inf  ==  NaN => 0
+-Inf  ==  Inf => 0
+-Inf  == -Inf => 1
+-Inf  ==  "x" => 0
+-Inf  ==  "y" => 0
+-Inf  !=    0 => 1
+-Inf  !=    3 => 1
+-Inf  !=  3.5 => 1
+-Inf  !=   -4 => 1
+-Inf  != -4.5 => 1
+-Inf  !=  NaN => 1
+-Inf  !=  Inf => 1
+-Inf  != -Inf => 0
+-Inf  !=  "x" => 1
+-Inf  !=  "y" => 1
+-Inf   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (DOUBLE,*)
+-Inf   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (DOUBLE,*)
+-Inf   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (DOUBLE,*)
+-Inf  &&    0 => 0
+-Inf  &&    3 => 3
+-Inf  &&  3.5 => 3.5
+-Inf  &&   -4 => -4
+-Inf  && -4.5 => -4.5
+-Inf  &&  NaN => NaN
+-Inf  &&  Inf => Inf
+-Inf  && -Inf => -Inf
+-Inf  &&  "x" => "x"
+-Inf  &&  "y" => "y"
+-Inf  ||    0 => -Inf
+-Inf  ||    3 => -Inf
+-Inf  ||  3.5 => -Inf
+-Inf  ||   -4 => -Inf
+-Inf  || -4.5 => -Inf
+-Inf  ||  NaN => -Inf
+-Inf  ||  Inf => -Inf
+-Inf  || -Inf => -Inf
+-Inf  ||  "x" => -Inf
+-Inf  ||  "y" => -Inf
+  ""  **    0 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **    3 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **  3.5 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **   -4 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  ** -4.5 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **  NaN => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **  Inf => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  ** -Inf => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+  ""   *    0 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *    3 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *  3.5 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *   -4 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   * -4.5 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *  NaN => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *  Inf => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   * -Inf => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+  ""   /    0 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /    3 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /  3.5 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /   -4 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   / -4.5 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /  NaN => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /  Inf => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   / -Inf => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+  ""   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+  ""   +    0 => ""0
+  ""   +    3 => ""3
+  ""   +  3.5 => ""3.5
+  ""   +   -4 => ""-4
+  ""   + -4.5 => ""-4.5
+  ""   +  NaN => ""NaN
+  ""   +  Inf => ""Inf
+  ""   + -Inf => ""-Inf
+  ""   +  "x" => """x"
+  ""   +  "y" => """y"
+  ""   -    0 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -    3 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -  3.5 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -   -4 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   - -4.5 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -  NaN => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -  Inf => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   - -Inf => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+  ""  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+  ""  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  ""  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+  "" >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  "" >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+  ""   <    0 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,INTEGER)
+  ""   <    3 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,INTEGER)
+  ""   <  3.5 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+  ""   <   -4 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,INTEGER)
+  ""   < -4.5 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+  ""   <  NaN => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+  ""   <  Inf => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+  ""   < -Inf => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+  ""   <  "x" => 1
+  ""   <  "y" => 1
+  ""  <=    0 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,INTEGER)
+  ""  <=    3 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,INTEGER)
+  ""  <=  3.5 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+  ""  <=   -4 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,INTEGER)
+  ""  <= -4.5 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+  ""  <=  NaN => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+  ""  <=  Inf => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+  ""  <= -Inf => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+  ""  <=  "x" => 1
+  ""  <=  "y" => 1
+  ""   >    0 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,INTEGER)
+  ""   >    3 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,INTEGER)
+  ""   >  3.5 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+  ""   >   -4 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,INTEGER)
+  ""   > -4.5 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+  ""   >  NaN => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+  ""   >  Inf => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+  ""   > -Inf => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+  ""   >  "x" => 0
+  ""   >  "y" => 0
+  ""  >=    0 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,INTEGER)
+  ""  >=    3 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,INTEGER)
+  ""  >=  3.5 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+  ""  >=   -4 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,INTEGER)
+  ""  >= -4.5 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+  ""  >=  NaN => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+  ""  >=  Inf => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+  ""  >= -Inf => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+  ""  >=  "x" => 0
+  ""  >=  "y" => 0
+  ""  ==    0 => 0
+  ""  ==    3 => 0
+  ""  ==  3.5 => 0
+  ""  ==   -4 => 0
+  ""  == -4.5 => 0
+  ""  ==  NaN => 0
+  ""  ==  Inf => 0
+  ""  == -Inf => 0
+  ""  ==  "x" => 0
+  ""  ==  "y" => 0
+  ""  !=    0 => 1
+  ""  !=    3 => 1
+  ""  !=  3.5 => 1
+  ""  !=   -4 => 1
+  ""  != -4.5 => 1
+  ""  !=  NaN => 1
+  ""  !=  Inf => 1
+  ""  != -Inf => 1
+  ""  !=  "x" => 1
+  ""  !=  "y" => 1
+  ""   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+  ""   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+  ""   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+  ""  &&    0 => 0
+  ""  &&    3 => 3
+  ""  &&  3.5 => 3.5
+  ""  &&   -4 => -4
+  ""  && -4.5 => -4.5
+  ""  &&  NaN => NaN
+  ""  &&  Inf => Inf
+  ""  && -Inf => -Inf
+  ""  &&  "x" => "x"
+  ""  &&  "y" => "y"
+  ""  ||    0 => ""
+  ""  ||    3 => ""
+  ""  ||  3.5 => ""
+  ""  ||   -4 => ""
+  ""  || -4.5 => ""
+  ""  ||  NaN => ""
+  ""  ||  Inf => ""
+  ""  || -Inf => ""
+  ""  ||  "x" => ""
+  ""  ||  "y" => ""
+ "x"  **    0 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **    3 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **  3.5 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **   -4 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  ** -4.5 => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **  NaN => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **  Inf => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  ** -Inf => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **  "x" => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"  **  "y" => [line 1, col 2] Unsupported operand type(s) for `**`: (STRING,*)
+ "x"   *    0 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *    3 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *  3.5 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *   -4 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   * -4.5 => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *  NaN => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *  Inf => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   * -Inf => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *  "x" => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   *  "y" => [line 1, col 2] Unsupported operand type(s) for `*`: (STRING,*)
+ "x"   /    0 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /    3 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /  3.5 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /   -4 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   / -4.5 => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /  NaN => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /  Inf => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   / -Inf => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /  "x" => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   /  "y" => [line 1, col 2] Unsupported operand type(s) for `/`: (STRING,*)
+ "x"   %    0 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %    3 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %  3.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %   -4 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   % -4.5 => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %  NaN => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %  Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   % -Inf => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %  "x" => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   %  "y" => [line 1, col 2] Unsupported operand type(s) for `%`: (STRING,*)
+ "x"   +    0 => "x"0
+ "x"   +    3 => "x"3
+ "x"   +  3.5 => "x"3.5
+ "x"   +   -4 => "x"-4
+ "x"   + -4.5 => "x"-4.5
+ "x"   +  NaN => "x"NaN
+ "x"   +  Inf => "x"Inf
+ "x"   + -Inf => "x"-Inf
+ "x"   +  "x" => "x""x"
+ "x"   +  "y" => "x""y"
+ "x"   -    0 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -    3 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -  3.5 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -   -4 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   - -4.5 => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -  NaN => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -  Inf => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   - -Inf => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -  "x" => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"   -  "y" => [line 1, col 2] Unsupported operand type(s) for `-`: (STRING,*)
+ "x"  <<    0 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<    3 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<  3.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<   -4 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  << -4.5 => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<  NaN => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<  Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  << -Inf => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<  "x" => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  <<  "y" => [line 1, col 2] Unsupported operand type(s) for `<<`: (STRING,*)
+ "x"  >>    0 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>    3 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x"  >>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>`: (STRING,*)
+ "x" >>>    0 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>    3 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>  3.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>   -4 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>> -4.5 => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>  NaN => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>  Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>> -Inf => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>  "x" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x" >>>  "y" => [line 1, col 2] Unsupported operand type(s) for `>>>`: (STRING,*)
+ "x"   <    0 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,INTEGER)
+ "x"   <    3 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,INTEGER)
+ "x"   <  3.5 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+ "x"   <   -4 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,INTEGER)
+ "x"   < -4.5 => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+ "x"   <  NaN => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+ "x"   <  Inf => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+ "x"   < -Inf => [line 1, col 2] Unsupported operand type(s) for `<`: (STRING,DOUBLE)
+ "x"   <  "x" => 0
+ "x"   <  "y" => 1
+ "x"  <=    0 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,INTEGER)
+ "x"  <=    3 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,INTEGER)
+ "x"  <=  3.5 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+ "x"  <=   -4 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,INTEGER)
+ "x"  <= -4.5 => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+ "x"  <=  NaN => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+ "x"  <=  Inf => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+ "x"  <= -Inf => [line 1, col 2] Unsupported operand type(s) for `<=`: (STRING,DOUBLE)
+ "x"  <=  "x" => 1
+ "x"  <=  "y" => 1
+ "x"   >    0 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,INTEGER)
+ "x"   >    3 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,INTEGER)
+ "x"   >  3.5 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+ "x"   >   -4 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,INTEGER)
+ "x"   > -4.5 => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+ "x"   >  NaN => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+ "x"   >  Inf => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+ "x"   > -Inf => [line 1, col 2] Unsupported operand type(s) for `>`: (STRING,DOUBLE)
+ "x"   >  "x" => 0
+ "x"   >  "y" => 0
+ "x"  >=    0 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,INTEGER)
+ "x"  >=    3 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,INTEGER)
+ "x"  >=  3.5 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+ "x"  >=   -4 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,INTEGER)
+ "x"  >= -4.5 => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+ "x"  >=  NaN => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+ "x"  >=  Inf => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+ "x"  >= -Inf => [line 1, col 2] Unsupported operand type(s) for `>=`: (STRING,DOUBLE)
+ "x"  >=  "x" => 1
+ "x"  >=  "y" => 0
+ "x"  ==    0 => 0
+ "x"  ==    3 => 0
+ "x"  ==  3.5 => 0
+ "x"  ==   -4 => 0
+ "x"  == -4.5 => 0
+ "x"  ==  NaN => 0
+ "x"  ==  Inf => 0
+ "x"  == -Inf => 0
+ "x"  ==  "x" => 1
+ "x"  ==  "y" => 0
+ "x"  !=    0 => 1
+ "x"  !=    3 => 1
+ "x"  !=  3.5 => 1
+ "x"  !=   -4 => 1
+ "x"  != -4.5 => 1
+ "x"  !=  NaN => 1
+ "x"  !=  Inf => 1
+ "x"  != -Inf => 1
+ "x"  !=  "x" => 0
+ "x"  !=  "y" => 1
+ "x"   &    0 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &    3 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &  3.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &   -4 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   & -4.5 => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &  NaN => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &  Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   & -Inf => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &  "x" => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   &  "y" => [line 1, col 2] Unsupported operand type(s) for `&`: (STRING,*)
+ "x"   ^    0 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^    3 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^  3.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^   -4 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^ -4.5 => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^  NaN => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^  Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^ -Inf => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^  "x" => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   ^  "y" => [line 1, col 2] Unsupported operand type(s) for `^`: (STRING,*)
+ "x"   |    0 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |    3 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |  3.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |   -4 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   | -4.5 => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |  NaN => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |  Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   | -Inf => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |  "x" => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"   |  "y" => [line 1, col 2] Unsupported operand type(s) for `|`: (STRING,*)
+ "x"  &&    0 => 0
+ "x"  &&    3 => 3
+ "x"  &&  3.5 => 3.5
+ "x"  &&   -4 => -4
+ "x"  && -4.5 => -4.5
+ "x"  &&  NaN => NaN
+ "x"  &&  Inf => Inf
+ "x"  && -Inf => -Inf
+ "x"  &&  "x" => "x"
+ "x"  &&  "y" => "y"
+ "x"  ||    0 => "x"
+ "x"  ||    3 => "x"
+ "x"  ||  3.5 => "x"
+ "x"  ||   -4 => "x"
+ "x"  || -4.5 => "x"
+ "x"  ||  NaN => "x"
+ "x"  ||  Inf => "x"
+ "x"  || -Inf => "x"
+ "x"  ||  "x" => "x"
+ "x"  ||  "y" => "x"

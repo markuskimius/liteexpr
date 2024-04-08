@@ -1,5 +1,4 @@
 #include <string>
-#include <memory>
 #include <iostream>
 #include "liteexpr.h"
 

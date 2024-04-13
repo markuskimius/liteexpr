@@ -1,12 +1,7 @@
-# liteexpr
+# liteexpr for C++
 
-A light, expression language.
-
-
-## Language Overview
-
+This document describes using liteexpr with C++.
 For the language overview, see the [main page](https://github.com/markuskimius/liteexpr).
-The rest of the document describes using liteexpr with C++.
 
 
 ## Installation
@@ -16,6 +11,7 @@ First, install Antlr 4.13.1 to `/usr/local/include/antlr4-runtime` and
 `/usr/local/lib/libantlr4-runtime.{so,dylib}`
 
 Then `make`.  Copy `*.h` and `libliteexpr.a` where you'd like.
+A C++ compiler that supports C++17 and later is required.
 
 
 ## Example

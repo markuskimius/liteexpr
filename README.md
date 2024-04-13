@@ -43,8 +43,8 @@ example.
 
 ## Supported Host Languages
 
-* [C++](cpp)
-* [Python](python)
+* [C++](cpp): C++17 and later.
+* [Python](python): Python 3.8 and later.
 
 
 ## Data Types

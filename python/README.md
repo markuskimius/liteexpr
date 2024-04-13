@@ -1,12 +1,7 @@
-# liteexpr
+# liteexpr for Python
 
-A light, expression language.
-
-
-## Language Overview
-
+This document describes using liteexpr with Python.
 For the language overview, see the [main page](https://github.com/markuskimius/liteexpr).
-The rest of the document describes using liteexpr with Python.
 
 
 ## Installation
@@ -14,6 +9,8 @@ The rest of the document describes using liteexpr with Python.
 ```sh
 pip3 install liteexpr
 ```
+
+Python 3.8 and later are supported.
 
 
 ## Example

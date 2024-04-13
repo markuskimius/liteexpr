@@ -23,10 +23,10 @@ setup(
     long_description_content_type = "text/markdown",
                          packages = [ "liteexpr" ],
                       package_dir = { "" : "src" },
-                 install_requires = [ "antlr4-python3-runtime" ],
+                 install_requires = [ "antlr4-python3-runtime==4.13.1" ],
                    extras_require = {
                         "compile" : [
-                            "antlr4-tools",
+                            "antlr4-tools>=0.2",
                         ]
                    },
              include_package_data = True,

@@ -1,4 +1,8 @@
 # liteexpr
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/badge/Release-v0.0.9-orange.svg)](https://github.com/markuskimius/liteexpr/releases/tag/0.0.9)
+[![Python3](https://img.shields.io/badge/Python-3.8-blue.svg)](python)
+[![C++17](https://img.shields.io/badge/C++-17-blue.svg)](cpp)
 
 A light, expression language.
 

@@ -1,6 +1,6 @@
 # liteexpr
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v0.0.10-orange.svg)](https://github.com/markuskimius/liteexpr/releases/tag/0.0.10)
+[![Release](https://img.shields.io/github/v/release/markuskimius/liteexpr?include_prereleases&label=Pre-release)](https://github.com/markuskimius/liteexpr/releases)
 [![Python3](https://img.shields.io/badge/Python-3.8-blue.svg)](python)
 [![C++17](https://img.shields.io/badge/C++-17-blue.svg)](cpp)
 
